@@ -17,6 +17,7 @@
 
 .navbar-links {
     display: flex;
+    align-items: center;
     list-style: none;
 }
 
