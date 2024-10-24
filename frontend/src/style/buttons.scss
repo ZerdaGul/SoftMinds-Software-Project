@@ -1,0 +1,15 @@
+.button {
+    &__long{
+        margin-top: 35px;
+        width: 335px;
+        height: 48px;
+        border: none;
+        background-color: $red;
+        font-size: 20px;
+        font-weight: 700;
+        color: #fff;
+        border-radius: 16px;
+        text-align: center;
+    }
+
+}
