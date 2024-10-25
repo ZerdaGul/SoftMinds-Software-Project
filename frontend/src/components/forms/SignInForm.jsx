@@ -1,10 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useState } from 'react';
-// import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 
-import CountryCode from './CountryCode';
+
 import "./form.scss";
 import back from '../../assets/icons/arrow-back.svg'
 import PhoneNumber from './PhoneNumber';
