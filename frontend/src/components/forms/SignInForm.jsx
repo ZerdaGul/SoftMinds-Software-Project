@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 
 import "./form.scss";
@@ -11,9 +12,10 @@ import PhoneNumber from './PhoneNumber';
 const SignInForm = () => {
     const [page, setPage] = useState(1);
     const [password, setPassword] = useState('');
+    const [country, setCountry] = useState('');
     const [userInfo, setUserInfo] = useState({name: '',
                                                 surname: '',
-                                                countrycode: '',
+                                                country: '',
                                                 phone: '',
                                                 email: '',
                                                 password: '',
@@ -28,25 +30,43 @@ const SignInForm = () => {
     }
     const navigate = useNavigate();
 
+    const getCountry = useCallback((country => setCountry(country)));
+
     const handleSubmit = (value) => {
         const {name,
         surname,
-        countrycode,
         phone,
         email,
         password}  = value;
+
+        
         
         const result = {
-            name,
-            surname,
-            phone: countrycode + phone ,
+            name: name + surname,
             email,
-            password
+            password,
+            country,
+            phone: phone ,
+                       
         }
         console.log(result);
+        setNewUser(result);
         navigate('/');
 
     }
+
+    const setNewUser = async(formData) => {
+        try {
+          const response = await axios.post('http://localhost:7154/api/register', formData);
+          console.log('Registration successful!');
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response.data);
+          } else {
+            console.log('An error occurred. Please try again.');
+          }
+        }
+    } 
 
 
     return (
@@ -67,8 +87,8 @@ const SignInForm = () => {
                         phone: Yup.string().required('This field is required!'),
                         // .matches(/^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}/, 'Invalid phone number'),
                         email: Yup.string().email("Invalid email address").required('This field is required!').min(2, "Must contain minimum 6 symbols"),
-                        password: Yup.string().required('This field is required!').min(2, "Must contain minimum 6 symbols"),
-                        confirmation: Yup.string().required('This field is required!').min(2, "Must contain minimum 6 symbols"),
+                        password: Yup.string().required('This field is required!').min(8, "Must contain minimum 6 symbols"),
+                        confirmation: Yup.string().required('This field is required!').min(8, "Must contain minimum 6 symbols"),
                     })}
                     onSubmit={value => handleSubmit(value)}
                     >
@@ -98,24 +118,13 @@ const SignInForm = () => {
 
                             <div className="input__wrapper">
                                 <PhoneNumber 
+                                    getCountry={getCountry}
                                     className="form__input"
                                     name="phone"
                                     type="tel"
                                     placeholder="Number"/>
                                 <ErrorMessage component='div' className='form__error' name='phone'/>
-                                {/* <label htmlFor="phone" className="form__label">Phone number</label>
-                                <div className="form__input phone__input">
-                                    <CountryCode
-                                        name="countrycode"
-                                        className="form__input-code"
-                                    />
-                                    <Field
-                                        name="phone"
-                                        type="tel"
-                                        placeholder="Number"
-                                        className="form__input-phone"/>
-                                    <ErrorMessage component='div' className='form__error' name='phone'/>
-                                </div>  */}
+                             
                             </div>
                             <button type='button' className="button__long" onClick={() => setPage(2)}>Next step</button>
                         </div>  
