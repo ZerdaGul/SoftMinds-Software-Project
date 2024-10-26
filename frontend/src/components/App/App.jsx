@@ -2,6 +2,7 @@ import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
 import './App.css';
 import Navbar from '../navbar/Navbar';
 import SignInForm from '../forms/SignInForm';
+import UserProfilePage from '../../pages/UserProfilePage';
 
 function App() {
 	return (
@@ -16,7 +17,7 @@ function App() {
 					<Route path='/solutions'></Route>
 					<Route path='/consultancy'></Route>
 					<Route path='/contactUs'></Route>
-					<Route path='/profile'></Route>  
+					<Route path='/profile/*' element={<UserProfilePage/>}></Route>  
 					<Route path='/registration' element={<SignInForm/>}></Route>
 					
 				</Routes>

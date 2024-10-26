@@ -16,25 +16,25 @@ const Navbar = () => {
             </div>
             <ul className="navbar-links">
                 <li>
-                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : 'inherit'})}
+                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : '#571846'})}
                         to="/aboutUs">About Us</NavLink></li>
                 <li>
-                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : 'inherit'})}
+                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : '#571846'})}
                         to="/products">Products</NavLink></li>
                 <li>
-                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : 'inherit'})}
+                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : '#571846'})}
                         to="/sectors">Sectors</NavLink></li>
                 <li>
-                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : 'inherit'})}
+                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : '#571846'})}
                         to="/solutions">Solutions</NavLink></li>
                 <li>
-                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : 'inherit'})}
+                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : '#571846'})}
                         to="/consultancy">Consultancy</NavLink></li>
                 <li>
-                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : 'inherit'})}
+                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : '#571846'})}
                         to="/contactUs">Contact Us</NavLink></li>
                 <li>
-                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : 'inherit'})}
+                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : '#571846'})}
                         to="/"> <img src={earth} alt='languages' style={{height:"20px", width: "auto"}}/> </NavLink></li>
                 <li>
                     <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : 'inherit'})}
@@ -44,7 +44,7 @@ const Navbar = () => {
                     then show correct link. maybe?????? */}
                 {/* <li><Link to="/login">Log In</Link></li> */}
                 <li>
-                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : 'inherit'})}
+                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : '#571846'})}
                         to="/registration"> Log In </NavLink></li>
             </ul>
             <div className="navbar-toggle">

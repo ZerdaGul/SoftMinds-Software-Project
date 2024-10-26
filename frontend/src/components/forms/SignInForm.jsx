@@ -57,7 +57,7 @@ const SignInForm = () => {
 
     const setNewUser = async(formData) => {
         try {
-          const response = await axios.post('http://localhost:7154/api/register', formData);
+          const response = await axios.post('http://localhost:5115/api/register', formData);
           console.log('Registration successful!');
         } catch (error) {
           if (error.response) {
@@ -75,7 +75,6 @@ const SignInForm = () => {
             <p className="form__pages">Page {page} of 2</p>
             <Formik initialValues={{name: userInfo.name,
                                     surname: userInfo.surname,
-                                    // countrycode: userInfo.countrycode,
                                     phone: userInfo.phone,
                                     email: userInfo.email,
                                     password: userInfo.password,
@@ -83,9 +82,7 @@ const SignInForm = () => {
                     validationSchema={Yup.object({
                         name: Yup.string().required('This field is required!').min(2, "Must contain minimum 2 letters"),
                         surname: Yup.string().required('This field is required!').min(2, "Must contain minimum 2 letters"),
-                        // countrycode: Yup.string().required('Select your country code!'),
                         phone: Yup.string().required('This field is required!'),
-                        // .matches(/^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}/, 'Invalid phone number'),
                         email: Yup.string().email("Invalid email address").required('This field is required!').min(2, "Must contain minimum 6 symbols"),
                         password: Yup.string().required('This field is required!').min(8, "Must contain minimum 6 symbols"),
                         confirmation: Yup.string().required('This field is required!').min(8, "Must contain minimum 6 symbols"),
