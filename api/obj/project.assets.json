@@ -3067,19 +3067,19 @@
     ]
   },
   "packageFolders": {
-    "/Users/zerdagul/.nuget/packages/": {}
+    "/Users/semihsarikoca/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/zerdagul/Desktop/GitSoftMinds/api/api.csproj",
+      "projectUniqueName": "/Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/api.csproj",
       "projectName": "api",
-      "projectPath": "/Users/zerdagul/Desktop/GitSoftMinds/api/api.csproj",
-      "packagesPath": "/Users/zerdagul/.nuget/packages/",
-      "outputPath": "/Users/zerdagul/Desktop/GitSoftMinds/api/obj/",
+      "projectPath": "/Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/api.csproj",
+      "packagesPath": "/Users/semihsarikoca/.nuget/packages/",
+      "outputPath": "/Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/zerdagul/.nuget/NuGet/NuGet.Config"
+        "/Users/semihsarikoca/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -3158,7 +3158,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.403/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.402/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
