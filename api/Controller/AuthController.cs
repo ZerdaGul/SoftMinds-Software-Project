@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace api.Controllers
 {
@@ -41,7 +42,7 @@ namespace api.Controllers
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
             if (user == null)
             {
-                return Unauthorized("Geçersiz email veya şifre.");
+                return Unauthorized("Geçersiz email");
             }
 
             // Hesap kilitli mi kontrol et
@@ -50,7 +51,16 @@ namespace api.Controllers
                 return Unauthorized($"Hesabınız {user.Lockout_End.Value.Subtract(DateTime.UtcNow).Minutes} dakika boyunca kilitli.");
             }
 
-            if (user.Password != model.Password)
+            // Kullanıcının tuzunu kullanarak şifreyi hash'le
+            string hashed_Password = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: model.Password,
+                salt: Convert.FromBase64String(user.Password_Salt),
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 100000,
+                numBytesRequested: 256 / 8));
+
+            // Hash'lenmiş şifre ile karşılaştır
+            if (hashed_Password != user.Password_Hash)
             {
                 user.Failed_Login_Attempts++;
                 if (user.Failed_Login_Attempts >= MaxFailedAccessAttempts)
@@ -59,7 +69,7 @@ namespace api.Controllers
                     user.Failed_Login_Attempts = 0; // Başarısız giriş denemelerini sıfırla
                 }
                 await _context.SaveChangesAsync();
-                return Unauthorized("Geçersiz email veya şifre.");
+                return Unauthorized("Geçersiz şifre.");
             }
 
             // Başarılı giriş, başarısız giriş denemelerini sıfırla
@@ -73,14 +83,15 @@ namespace api.Controllers
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var keyString = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT key is missing.");
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyString));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(30),  // Token süresi 30 dakika bu silinebilir
+                expires: DateTime.Now.AddMinutes(30),  // Token süresi 30 dakika
                 signingCredentials: creds);
 
             return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token), message = "Giriş başarılı." });
