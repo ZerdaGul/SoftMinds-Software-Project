@@ -1,14 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using api.DTO;
 using api.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
-using System.Collections.Generic;
-using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
@@ -83,8 +78,7 @@ namespace api.Controllers
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             };
 
-            var keyString = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT key is missing.");
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyString));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
@@ -94,7 +88,18 @@ namespace api.Controllers
                 expires: DateTime.Now.AddMinutes(30),  // Token süresi 30 dakika
                 signingCredentials: creds);
 
-            return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token), message = "Giriş başarılı." });
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            // Token'ı HTTP-only cookie olarak ayarla
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true, // HTTPS kullanıyorsanız true yapın
+                Expires = token.ValidTo
+            };
+            Response.Cookies.Append("AuthToken", tokenString, cookieOptions);
+
+            return Ok(new { message = "Giriş başarılı." });
         }
 
         // POST /api/auth/logout
@@ -102,6 +107,7 @@ namespace api.Controllers
         public IActionResult Logout()
         {
             // JWT ile logout işlemi istemci tarafında yapılır. Sunucu tarafında bir işlem yapılmaz.
+            Response.Cookies.Delete("AuthToken");
             return Ok(new { message = "Çıkış başarılı." });
         }
     }
