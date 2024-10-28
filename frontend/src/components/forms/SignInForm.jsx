@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 
 import "./form.scss";
@@ -11,13 +12,7 @@ import PhoneNumber from './PhoneNumber';
 const SignInForm = () => {
     const [page, setPage] = useState(1);
     const [password, setPassword] = useState('');
-    const [userInfo, setUserInfo] = useState({name: '',
-                                                surname: '',
-                                                countrycode: '',
-                                                phone: '',
-                                                email: '',
-                                                password: '',
-                                                confirmation: ''});
+    const [country, setCountry] = useState('');
     
     const validateConfirmation = (value) => {
         let error;
@@ -28,47 +23,66 @@ const SignInForm = () => {
     }
     const navigate = useNavigate();
 
+    const getCountry = useCallback((country => setCountry(country)));
+
     const handleSubmit = (value) => {
         const {name,
         surname,
-        countrycode,
         phone,
         email,
         password}  = value;
+
         
         const result = {
-            name,
-            surname,
-            phone: countrycode + phone ,
+            name: name + ' '+ surname,
             email,
-            password
+            password,
+            phone: phone.slice(1) ,
+            country,
+            
+                       
         }
         console.log(result);
+        setNewUser(result);
         navigate('/');
 
     }
+
+    const setNewUser = async(formData) => {
+        try {
+          const response = await axios.post('http://localhost:5115/api/account/register', formData,{
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          console.log('Registration successful!');
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response);
+          } else {
+            console.log('An error occurred. Please try again.');
+          }
+        }
+    } 
 
 
     return (
         <div className="form">
             <div className="title-fz28">Sign In</div>
             <p className="form__pages">Page {page} of 2</p>
-            <Formik initialValues={{name: userInfo.name,
-                                    surname: userInfo.surname,
-                                    // countrycode: userInfo.countrycode,
-                                    phone: userInfo.phone,
-                                    email: userInfo.email,
-                                    password: userInfo.password,
-                                    confirmation: userInfo.confirmation}}
+            <Formik initialValues={{name: '',
+                                    surname: '',
+                                    phone: '',
+                                    email: '',
+                                    password: '',
+                                    confirmation: ''}}
                     validationSchema={Yup.object({
                         name: Yup.string().required('This field is required!').min(2, "Must contain minimum 2 letters"),
                         surname: Yup.string().required('This field is required!').min(2, "Must contain minimum 2 letters"),
-                        // countrycode: Yup.string().required('Select your country code!'),
                         phone: Yup.string().required('This field is required!'),
-                        // .matches(/^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}/, 'Invalid phone number'),
                         email: Yup.string().email("Invalid email address").required('This field is required!').min(2, "Must contain minimum 6 symbols"),
-                        password: Yup.string().required('This field is required!').min(2, "Must contain minimum 6 symbols"),
-                        confirmation: Yup.string().required('This field is required!').min(2, "Must contain minimum 6 symbols"),
+                        password: Yup.string().required('This field is required!').min(8, "Must contain minimum 6 symbols"),
+                        confirmation: Yup.string().required('This field is required!').min(8, "Must contain minimum 6 symbols"),
                     })}
                     onSubmit={value => handleSubmit(value)}
                     >
@@ -98,26 +112,15 @@ const SignInForm = () => {
 
                             <div className="input__wrapper">
                                 <PhoneNumber 
+                                    getCountry={getCountry}
                                     className="form__input"
                                     name="phone"
                                     type="tel"
                                     placeholder="Number"/>
                                 <ErrorMessage component='div' className='form__error' name='phone'/>
-                                {/* <label htmlFor="phone" className="form__label">Phone number</label>
-                                <div className="form__input phone__input">
-                                    <CountryCode
-                                        name="countrycode"
-                                        className="form__input-code"
-                                    />
-                                    <Field
-                                        name="phone"
-                                        type="tel"
-                                        placeholder="Number"
-                                        className="form__input-phone"/>
-                                    <ErrorMessage component='div' className='form__error' name='phone'/>
-                                </div>  */}
+                             
                             </div>
-                            <button type='button' className="button__long" onClick={() => setPage(2)}>Next step</button>
+                            <button type='button' className="button button__long" onClick={() => setPage(2)}>Next step</button>
                         </div>  
                         :
 
@@ -156,7 +159,7 @@ const SignInForm = () => {
                                     validate={validateConfirmation}/>
                                 <ErrorMessage component='div' className='form__error' name='confirmation'/>
                             </div>
-                            <button className="button__long" type="submit">Create Account</button>
+                            <button className="button button__long" type="submit">Create Account</button>
                         </div>}
                     </Form>
             </Formik>

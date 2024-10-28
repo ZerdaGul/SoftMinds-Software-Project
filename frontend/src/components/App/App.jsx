@@ -1,7 +1,9 @@
 import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
 import './App.css';
 import Navbar from '../navbar/Navbar';
-import SignInForm from '../forms/SignInForm';
+import SignInPage from '../../pages/SignInPage';
+import UserProfilePage from '../../pages/UserProfilePage';
+// import LogInForm from '../forms/LogInForm'
 
 function App() {
 	return (
@@ -16,8 +18,8 @@ function App() {
 					<Route path='/solutions'></Route>
 					<Route path='/consultancy'></Route>
 					<Route path='/contactUs'></Route>
-					<Route path='/profile'></Route>  
-					<Route path='/registration' element={<SignInForm/>}></Route>
+					<Route path='/profile/*' element={<UserProfilePage/>}></Route>  
+					<Route path='/registration' element={<SignInPage/>}></Route>
 					
 				</Routes>
 			</main>

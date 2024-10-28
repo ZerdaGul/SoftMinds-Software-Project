@@ -4,30 +4,33 @@ import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
 import "./form.scss";
 
-const PhoneNumber = ({ label, ...props }) => {
+const PhoneNumber = ({ label,getCountry, ...props  }) => {
 const [field, meta, helpers] = useField(props);
 
+	const handleChange = (phone, {country}) => {
+		getCountry(country.name)
+		helpers.setValue(phone)
+	}
 	return (
 		<>
 		<label>
 			{label}
 			<PhoneInput
-			className="form__input"
-			// style={{padding: 0}}
-			inputStyle={{border: 'none',
-						borderRadius: '24px',
-						height: '100%',
-						width: '260px',
-						fontSize: '16px'}}
-			countrySelectorStyleProps={{buttonStyle: {
-				border: 'none',
-				height: '100%',
-				borderRadius: '24px',
-			}}}
-			{...field}
-			defaultCountry="ua"
-			value={field.value}
-			onChange={(phone) => helpers.setValue(phone)}
+				className="form__input"
+				inputStyle={{border: 'none',
+							borderRadius: '24px',
+							height: '100%',
+							width: '260px',
+							fontSize: '16px'}}
+				countrySelectorStyleProps={{buttonStyle: {
+					border: 'none',
+					height: '100%',
+					borderRadius: '24px',
+				}}}
+				{...field}
+				defaultCountry="tr"
+				value={field.value}
+				onChange={handleChange}
 			/>
 		</label>
 		{meta.touched && meta.error ? (
