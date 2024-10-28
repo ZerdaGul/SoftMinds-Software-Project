@@ -9,6 +9,18 @@ builder.Services.AddDbContext<AppDBContext>(options =>
         new MySqlServerVersion(new Version(8,0,39)))); // MySQL sürümüne dikkat edin
 
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
+
 // Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -24,8 +36,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 app.UseAuthentication();  // Identity için gerekli
+app.UseRouting();
+app.UseCors();
 app.UseAuthorization();
 app.MapControllers();
 

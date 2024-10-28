@@ -1,25 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "/Users/zerdagul/Desktop/GitSoftMinds/api/api.csproj": {}
+    "D:\\GTU 3\\Software Eng\\SoftMinds-Software-Project\\api\\api.csproj": {}
   },
   "projects": {
-    "/Users/zerdagul/Desktop/GitSoftMinds/api/api.csproj": {
+    "D:\\GTU 3\\Software Eng\\SoftMinds-Software-Project\\api\\api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/zerdagul/Desktop/GitSoftMinds/api/api.csproj",
+        "projectUniqueName": "D:\\GTU 3\\Software Eng\\SoftMinds-Software-Project\\api\\api.csproj",
         "projectName": "api",
-        "projectPath": "/Users/zerdagul/Desktop/GitSoftMinds/api/api.csproj",
-        "packagesPath": "/Users/zerdagul/.nuget/packages/",
-        "outputPath": "/Users/zerdagul/Desktop/GitSoftMinds/api/obj/",
+        "projectPath": "D:\\GTU 3\\Software Eng\\SoftMinds-Software-Project\\api\\api.csproj",
+        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+        "outputPath": "D:\\GTU 3\\Software Eng\\SoftMinds-Software-Project\\api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/zerdagul/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -46,6 +49,10 @@
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[8.0.10, )"
+            },
+            "Microsoft.AspNetCore.Cors": {
+              "target": "Package",
+              "version": "[2.2.0, )"
             },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
@@ -93,7 +100,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.403/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.402/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

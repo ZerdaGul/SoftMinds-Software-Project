@@ -47,7 +47,7 @@ namespace api.Controllers
             }
 
             // Telefon numarası doğrulaması: Sadece rakamlar ve 10-11 karakter uzunluğunda olmalı
-            var phonePattern = @"^\d{10,11}$";
+            var phonePattern = @"^\d{11,12}$";
             if (!Regex.IsMatch(model.Phone, phonePattern))
             {
                 return BadRequest("Geçersiz telefon numarası. Numara sadece rakamlardan oluşmalı ve 10-11 haneli olmalıdır.");
