@@ -13,13 +13,6 @@ const SignInForm = () => {
     const [page, setPage] = useState(1);
     const [password, setPassword] = useState('');
     const [country, setCountry] = useState('');
-    const [userInfo, setUserInfo] = useState({name: '',
-                                                surname: '',
-                                                country: '',
-                                                phone: '',
-                                                email: '',
-                                                password: '',
-                                                confirmation: ''});
     
     const validateConfirmation = (value) => {
         let error;
@@ -40,13 +33,13 @@ const SignInForm = () => {
         password}  = value;
 
         
-        
         const result = {
-            name: name + surname,
+            name: name + ' '+ surname,
             email,
             password,
+            phone: phone.slice(1) ,
             country,
-            phone: phone ,
+            
                        
         }
         console.log(result);
@@ -57,11 +50,15 @@ const SignInForm = () => {
 
     const setNewUser = async(formData) => {
         try {
-          const response = await axios.post('http://localhost:5115/api/register', formData);
+          const response = await axios.post('http://localhost:5115/api/account/register', formData,{
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
           console.log('Registration successful!');
         } catch (error) {
           if (error.response) {
-            console.log(error.response.data);
+            console.log(error.response);
           } else {
             console.log('An error occurred. Please try again.');
           }
@@ -73,12 +70,12 @@ const SignInForm = () => {
         <div className="form">
             <div className="title-fz28">Sign In</div>
             <p className="form__pages">Page {page} of 2</p>
-            <Formik initialValues={{name: userInfo.name,
-                                    surname: userInfo.surname,
-                                    phone: userInfo.phone,
-                                    email: userInfo.email,
-                                    password: userInfo.password,
-                                    confirmation: userInfo.confirmation}}
+            <Formik initialValues={{name: '',
+                                    surname: '',
+                                    phone: '',
+                                    email: '',
+                                    password: '',
+                                    confirmation: ''}}
                     validationSchema={Yup.object({
                         name: Yup.string().required('This field is required!').min(2, "Must contain minimum 2 letters"),
                         surname: Yup.string().required('This field is required!').min(2, "Must contain minimum 2 letters"),
@@ -123,7 +120,7 @@ const SignInForm = () => {
                                 <ErrorMessage component='div' className='form__error' name='phone'/>
                              
                             </div>
-                            <button type='button' className="button__long" onClick={() => setPage(2)}>Next step</button>
+                            <button type='button' className="button button__long" onClick={() => setPage(2)}>Next step</button>
                         </div>  
                         :
 
@@ -162,7 +159,7 @@ const SignInForm = () => {
                                     validate={validateConfirmation}/>
                                 <ErrorMessage component='div' className='form__error' name='confirmation'/>
                             </div>
-                            <button className="button__long" type="submit">Create Account</button>
+                            <button className="button button__long" type="submit">Create Account</button>
                         </div>}
                     </Form>
             </Formik>
