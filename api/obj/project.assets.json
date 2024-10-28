@@ -3321,20 +3321,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\user\\.nuget\\packages\\": {}
+    "/Users/zerdagul/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\GTU 3\\Software Eng\\SoftMinds-Software-Project\\api\\api.csproj",
+      "projectUniqueName": "/Users/zerdagul/Desktop/GitSoftMinds/api/api.csproj",
       "projectName": "api",
-      "projectPath": "D:\\GTU 3\\Software Eng\\SoftMinds-Software-Project\\api\\api.csproj",
-      "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "D:\\GTU 3\\Software Eng\\SoftMinds-Software-Project\\api\\obj\\",
+      "projectPath": "/Users/zerdagul/Desktop/GitSoftMinds/api/api.csproj",
+      "packagesPath": "/Users/zerdagul/.nuget/packages/",
+      "outputPath": "/Users/zerdagul/Desktop/GitSoftMinds/api/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/zerdagul/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -3419,7 +3418,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.402/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.403/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
