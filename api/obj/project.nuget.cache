@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "g5t6St1vQHk=",
+  "dgSpecHash": "DCvdZpFSSrc=",
   "success": true,
-  "projectFilePath": "/Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/api.csproj",
+  "projectFilePath": "/Users/semihsarikoca/Desktop/SoftMinds-Software-Project1/api/api.csproj",
   "expectedPackageFiles": [
     "/Users/semihsarikoca/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/semihsarikoca/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/8.0.10/microsoft.aspnetcore.authentication.jwtbearer.8.0.10.nupkg.sha512",

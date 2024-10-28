@@ -99,7 +99,7 @@ namespace api.Controllers
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Secure = true, // HTTPS kullanıyorsanız true yapın
+                Secure = false, // HTTPS kullanıyorsanız true yapın
                 Expires = token.ValidTo
             };
             Response.Cookies.Append("AuthToken", tokenString, cookieOptions);
@@ -114,6 +114,65 @@ namespace api.Controllers
             // JWT ile logout işlemi istemci tarafında yapılır. Sunucu tarafında bir işlem yapılmaz.
             Response.Cookies.Delete("AuthToken");
             return Ok(new { message = "Çıkış başarılı." });
+        }
+
+        // GET /api/auth/active-session
+        [HttpGet("active-session")]
+        public async Task<IActionResult> GetActiveSession()
+        {
+            if (Request.Cookies.TryGetValue("AuthToken", out var token))
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var jwtKey = _configuration["Jwt:Key"];
+                if (string.IsNullOrEmpty(jwtKey))
+                {
+                    return StatusCode(500, "JWT key is not configured.");
+                }
+                var key = Encoding.UTF8.GetBytes(jwtKey);
+
+                try
+                {
+                    tokenHandler.ValidateToken(token, new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ClockSkew = TimeSpan.Zero
+                    }, out SecurityToken validatedToken);
+
+                    var jwtToken = (JwtSecurityToken)validatedToken;
+                    var userId = jwtToken.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+
+                    var user = await _context.Users.FindAsync(int.Parse(userId));
+                    if (user == null)
+                    {
+                        return NotFound("Kullanıcı bulunamadı.");
+                    }
+
+                    return Ok(new
+                    {
+                        message = "Aktif oturum bulundu.",
+                        user = new
+                        {
+                            // Diğer gerekli kullanıcı bilgileri
+                            user.Id,
+                            user.Email,
+                            user.Name,
+                            user.Country,
+                            user.Phone,
+                            user.Created_At,
+                            user.isadmin
+                        }
+                    });
+                }
+                catch
+                {
+                    return Unauthorized("Geçersiz token.");
+                }
+            }
+
+            return NotFound("Aktif oturum bulunamadı.");
         }
     }
 }
