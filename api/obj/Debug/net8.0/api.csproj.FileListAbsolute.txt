@@ -123,7 +123,6 @@
 /Users/zerdagul/Desktop/GitSoftMinds/api/bin/Debug/net8.0/tr/Microsoft.CodeAnalysis.Workspaces.resources.dll
 /Users/zerdagul/Desktop/GitSoftMinds/api/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.resources.dll
 /Users/zerdagul/Desktop/GitSoftMinds/api/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.resources.dll
-<<<<<<< HEAD
 d:\GTU 3\Software Eng\SoftMinds-Software-Project\api\bin\Debug\net8.0\appsettings.Development.json
 d:\GTU 3\Software Eng\SoftMinds-Software-Project\api\bin\Debug\net8.0\appsettings.json
 d:\GTU 3\Software Eng\SoftMinds-Software-Project\api\bin\Debug\net8.0\api.exe
@@ -249,7 +248,6 @@ d:\GTU 3\Software Eng\SoftMinds-Software-Project\api\obj\Debug\net8.0\refint\api
 d:\GTU 3\Software Eng\SoftMinds-Software-Project\api\obj\Debug\net8.0\api.pdb
 d:\GTU 3\Software Eng\SoftMinds-Software-Project\api\obj\Debug\net8.0\api.genruntimeconfig.cache
 d:\GTU 3\Software Eng\SoftMinds-Software-Project\api\obj\Debug\net8.0\ref\api.dll
-=======
 /Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.csproj.AssemblyReference.cache
 /Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.GeneratedMSBuildEditorConfig.editorconfig
 /Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.AssemblyInfoInputs.cache
@@ -500,4 +498,3 @@ d:\GTU 3\Software Eng\SoftMinds-Software-Project\api\obj\Debug\net8.0\ref\api.dl
 /Users/semihsarikoca/Desktop/SoftMinds-Software-Project1/api/obj/Debug/net8.0/api.pdb
 /Users/semihsarikoca/Desktop/SoftMinds-Software-Project1/api/obj/Debug/net8.0/api.genruntimeconfig.cache
 /Users/semihsarikoca/Desktop/SoftMinds-Software-Project1/api/obj/Debug/net8.0/ref/api.dll
->>>>>>> 224c8165e4ad321d58c9b3c9b5a62828f16e4f0a

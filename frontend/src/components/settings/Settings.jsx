@@ -1,17 +1,36 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 
 import ConfirmModal from '../modals/ConfirmModal';
 import './settings.scss';
+import { GetActiveUser, DeleteUser } from '../../services/AuthService';
 
 
 const Settings = () => {
+  const [activeUser, setActiveUser] = useState({});
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    loadUser();
+  }, [])
+
+  const loadUser = () => {
+    GetActiveUser()
+      .then(data => setActiveUser(data.user))
+      .catch((error) => console.log(error.message));
+  }
   const handleAccountDelete =() => {
-    //delete API
+    const id = activeUser.id;
+    deleteAccount(id);
     navigate('/');
+  }
+
+  const deleteAccount=(id)=> {
+    DeleteUser(id)
+      .then(() => console.log('Success'))
+      .catch((error) => console.log(error.message));
   }
 
   return (

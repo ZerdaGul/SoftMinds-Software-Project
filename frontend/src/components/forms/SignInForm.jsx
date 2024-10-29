@@ -8,6 +8,7 @@ import axios from 'axios';
 import "./form.scss";
 import back from '../../assets/icons/arrow-back.svg'
 import PhoneNumber from './PhoneNumber';
+import { RegisterUser } from '../../services/AuthService';
 
 const SignInForm = () => {
     const [page, setPage] = useState(1);
@@ -34,7 +35,7 @@ const SignInForm = () => {
 
         
         const result = {
-            name: name + ' '+ surname,
+            name: name.trim() + ' '+ surname.trim(),
             email,
             password,
             phone: phone.slice(1) ,
@@ -48,22 +49,11 @@ const SignInForm = () => {
 
     }
 
-    const setNewUser = async(formData) => {
-        try {
-          const response = await axios.post('http://localhost:5115/api/account/register', formData,{
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
-          console.log('Registration successful!');
-        } catch (error) {
-          if (error.response) {
-            console.log(error.response);
-          } else {
-            console.log('An error occurred. Please try again.');
-          }
-        }
-    } 
+    const setNewUser = async (formData) => {
+        RegisterUser(formData)
+            .then(() => console.log('Success'))
+            .catch((error) => console.log(error.message));
+    };
 
 
     return (

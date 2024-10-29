@@ -6,10 +6,12 @@ using api.Data;
 using System.Text.RegularExpressions;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace api.Controllers
 {
-    [Route("api/account")]
+    [Route("api/")]
     [ApiController]
     public class AccountController : ControllerBase
     {
@@ -20,7 +22,6 @@ namespace api.Controllers
             _context = context;
         }
 
-        // POST /api/register
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
@@ -32,6 +33,12 @@ namespace api.Controllers
                 return BadRequest("Tüm alanlar gereklidir.");
             }
 
+            // İsim kontrolü: Sadece harf ve boşluk karakteri
+            if (!System.Text.RegularExpressions.Regex.IsMatch(model.Name, @"^[a-zA-Z\s]+$"))
+            {
+                return BadRequest("İsim yalnızca harflerden ve boşluk karakterlerinden oluşmalıdır.");
+            }
+
             // Email doğrulaması
             var emailValidator = new EmailAddressAttribute();
             if (!emailValidator.IsValid(model.Email))
@@ -39,15 +46,15 @@ namespace api.Controllers
                 return BadRequest("Geçersiz email adresi.");
             }
 
-            // Şifre doğrulaması: en az bir büyük harf, bir küçük harf ve bir sayı içermeli
-            var passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"; // En az 8 karakter
+            // Şifre doğrulaması
+            var passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"; 
             if (!Regex.IsMatch(model.Password, passwordPattern))
             {
-                return BadRequest("Şifre enaz 8 karakterden oluşmalı, en az bir büyük harf, bir küçük harf ve bir sayı içermelidir.");
+                return BadRequest("Şifre en az 8 karakterden oluşmalı, en az bir büyük harf, bir küçük harf ve bir sayı içermelidir.");
             }
 
-            // Telefon numarası doğrulaması: Sadece rakamlar ve 10-11 karakter uzunluğunda olmalı
-            var phonePattern = @"^\d{11,12}$";
+            // Telefon numarası doğrulaması
+            var phonePattern = @"^\d{10,11}$";
             if (!Regex.IsMatch(model.Phone, phonePattern))
             {
                 return BadRequest("Geçersiz telefon numarası. Numara sadece rakamlardan oluşmalı ve 10-11 haneli olmalıdır.");
@@ -60,14 +67,27 @@ namespace api.Controllers
                 return BadRequest("Bu e-posta adresi ile kayıtlı bir kullanıcı zaten var.");
             }
 
+            // Tuz oluştur
+            byte[] salt = RandomNumberGenerator.GetBytes(128 / 8); // 128 bit tuz
+
+            // Şifreyi hash'le
+            string hashed_Password = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: model.Password,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 100000,
+                numBytesRequested: 256 / 8));
+
+
             // Kullanıcıyı veritabanına ekle
             var user = new Users 
             { 
                 Name = model.Name, 
                 Email = model.Email, 
-                Password = model.Password, 
-                Country = model.Country,
                 Phone = model.Phone,
+                Country = model.Country,
+                Password_Hash = hashed_Password,
+                Password_Salt = Convert.ToBase64String(salt),
                 Created_At = DateTime.UtcNow // Oluşturulma tarihini ayarlayın
             };
 
@@ -78,14 +98,12 @@ namespace api.Controllers
             }
             catch
             {
-                // Eğer başka bir veritabanı hatası oluşursa genel bir hata mesajı döndürebiliriz.
                 return StatusCode(500, "Kullanıcı kaydı sırasında bir hata oluştu. Lütfen tekrar deneyin.");
             }
             return CreatedAtAction(nameof(Register), new { id = user.Id }, user);
         }
 
-        // DELETE /api/account/delete/{id}
-        [HttpDelete("delete/{id}")]
+        [HttpDelete("account/delete/{id}")]
         public async Task<IActionResult> DeleteAccount(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -97,6 +115,8 @@ namespace api.Controllers
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
 
+            // Aktif oturum cookie'sini sil
+            Response.Cookies.Delete("AuthToken");
             return Ok(new { message = "Hesap başarıyla silindi." });
         }
     }

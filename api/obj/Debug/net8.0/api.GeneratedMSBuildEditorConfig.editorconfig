@@ -9,19 +9,11 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = api
 build_property.RootNamespace = api
-<<<<<<< HEAD
 build_property.ProjectDir = D:\GTU 3\Software Eng\SoftMinds-Software-Project\api\
-=======
-build_property.ProjectDir = /Users/semihsarikoca/Desktop/SoftMinds-Software-Project1/api/
->>>>>>> 224c8165e4ad321d58c9b3c9b5a62828f16e4f0a
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-<<<<<<< HEAD
 build_property.MSBuildProjectDirectory = D:\GTU 3\Software Eng\SoftMinds-Software-Project\api
-=======
-build_property.MSBuildProjectDirectory = /Users/semihsarikoca/Desktop/SoftMinds-Software-Project1/api
->>>>>>> 224c8165e4ad321d58c9b3c9b5a62828f16e4f0a
 build_property._RazorSourceGeneratorDebug = 
