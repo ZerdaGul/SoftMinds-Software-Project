@@ -16,7 +16,6 @@ const ConfirmModal = ({title, subtitle, buttonText, onClose, onConfirm}) => {
           </div>
     </div>
   )
-  
 }
 
 export default ConfirmModal
