@@ -4,6 +4,11 @@ import Navbar from '../navbar/Navbar';
 import SignInPage from '../../pages/SignInPage';
 import UserProfilePage from '../../pages/UserProfilePage';
 // import LogInForm from '../forms/LogInForm'
+import SignInForm from '../forms/SignInForm';
+import LogInForm from '../forms/LogInForm';
+import ForgotPassword from "../forms/ForgotPassword";
+import ProfileForm from "../forms/ProfileForm";
+import UpdateProfile from "../forms/UpdateProfile";
 
 function App() {
 	return (
@@ -27,4 +32,4 @@ function App() {
 	);
 }
 
-	export default App;
+export default App;
