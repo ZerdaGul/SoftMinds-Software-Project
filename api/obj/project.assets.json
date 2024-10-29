@@ -3321,11 +3321,16 @@
     ]
   },
   "packageFolders": {
+<<<<<<< HEAD
     "C:\\Users\\user\\.nuget\\packages\\": {}
+=======
+    "/Users/mehmetemir/.nuget/packages/": {}
+>>>>>>> 189f512c73487b6f2b415d12490b999801dc4943
   },
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD
       "projectUniqueName": "D:\\GTU 3\\Software Eng\\SoftMinds-Software-Project\\api\\api.csproj",
       "projectName": "api",
       "projectPath": "D:\\GTU 3\\Software Eng\\SoftMinds-Software-Project\\api\\api.csproj",
@@ -3335,6 +3340,16 @@
       "configFilePaths": [
         "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+=======
+      "projectUniqueName": "/Users/mehmetemir/Documents/Software Project/api/api.csproj",
+      "projectName": "api",
+      "projectPath": "/Users/mehmetemir/Documents/Software Project/api/api.csproj",
+      "packagesPath": "/Users/mehmetemir/.nuget/packages/",
+      "outputPath": "/Users/mehmetemir/Documents/Software Project/api/obj/",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "/Users/mehmetemir/.nuget/NuGet/NuGet.Config"
+>>>>>>> 189f512c73487b6f2b415d12490b999801dc4943
       ],
       "originalTargetFrameworks": [
         "net8.0"

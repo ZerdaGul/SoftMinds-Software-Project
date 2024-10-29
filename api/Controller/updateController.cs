@@ -97,12 +97,16 @@ public class UpdateController : ControllerBase
         {
             existingUser.Country = model.Country;
         }
+<<<<<<< HEAD
         
 
         // if (!string.IsNullOrEmpty(model.CompanyName))
         // {
         //     existingUser.CompanyName = model.CompanyName;
         // }
+=======
+
+>>>>>>> 189f512c73487b6f2b415d12490b999801dc4943
 
         _context.Users.Update(existingUser);
         await _context.SaveChangesAsync();
