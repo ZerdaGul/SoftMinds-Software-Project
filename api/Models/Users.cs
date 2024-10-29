@@ -13,6 +13,7 @@ public class Users
 
     public required string Country { get; set; } = null!; 
     public required string Phone{get;set;}= null!;
+    // public required string CompanyName { get; set; }=null!; // Şirket adı
 
     public int Failed_Login_Attempts { get; set; } = 0; // Başarısız giriş denemeleri
     public DateTime? Lockout_End { get; set; } // Hesap kilitlenme süresi

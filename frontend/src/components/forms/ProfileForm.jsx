@@ -39,7 +39,7 @@ const ProfileForm = () => {
     }, []); // Sadece bir kez çalıştırmak için boş bir bağımlılık dizisi
 
     const handleEditClick = () => {
-        navigate('/update-profile'); // Update Profile sayfasına yönlendir
+        navigate('/profile/update-profile'); // Update Profile sayfasına yönlendir
     };
 
     return (

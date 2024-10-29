@@ -1,15 +1,24 @@
-import React from 'react'
+import React,{useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { createPortal } from 'react-dom';
 
 import "./form.scss";
-import forward from '../../assets/icons/arrow-forward.svg'
 import { GetActiveUser } from '../../services/AuthService';
+import InfoModal from '../modals/InfoModal';
+import { ResetPassword } from '../../services/AuthService';
 
 const ResetPasswordForm = () => {
-    const[validEmail, setValidEmail] = useState(false);
     const [activeUser, setActiveUser] = useState({});
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [loaded, setLoaded] = useState(false);
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const navigate = useNavigate();
+
     useEffect(() => {
         loadUser();
       }, [])
@@ -20,41 +29,83 @@ const ResetPasswordForm = () => {
             .catch((error) => console.log(error.message));
     }
 
-    //two forms for email and reset
-    //if email is correct and sucha user exist, show reset form
-    //add state modals
+    
+
+    const validateConfirmation = (value) => {
+        let error;
+        if (value!== password) {
+            error = "Mismatch with your password"
+        }
+        return error;
+    }
+
+    const handleSubmit = (value) => {
+        const formData = {
+            email: activeUser.email,
+            password: value.password
+        }
+        resetPassword(formData)
+    }
+
+    const onLoaded =() => {
+        setLoading(false);
+        setLoaded(true);
+        setShowModal(true)
+        
+    }
+
+    const onError = (error) => {
+        setLoading(false);
+        setError(true);  
+        setShowModal(true)
+        setErrorMessage(error.message)      
+    }
+
+    const resetPassword = async (formData) => {
+        setLoading(true);
+        try {
+            await ResetPassword(formData);
+            onLoaded(); // Call onLoaded if successful
+        } catch (error) {
+            onError(error); // Handle error
+        }
+    };
+    const modal = <div>
+                        {loaded && createPortal(
+                            <InfoModal 
+                            title={"Success"}
+                            onClose={() => {    
+                                setShowModal(false)
+                                navigate('/');}}/>,
+                            document.body
+                        )}
+                        {error && createPortal(
+                            <InfoModal 
+                            title={"Error"}
+                            subtitle={errorMessage}
+                            onClose={() => {    
+                                setShowModal(false)
+                                navigate('/');}}/>,
+                            document.body
+                        )}
+                        {loading && <img src='../../assets/loading-animation.gif'></img>}
+                        <div className='overlay'></div>
+                    </div>
+    
   return (
     <div className="form">
-            <div className="title-fz28">Update Password</div>
-            <Formik initialValues={{email: '',
-                                    password: '',
+        {showModal && modal}
+            <div className="title-fz28">Reset Password</div>
+            <Formik initialValues={{ password: '',
                                     confirmation: ''}}
                     validationSchema={Yup.object({
-                        email: Yup.string().email("Invalid email address").required('This field is required!').min(2, "Must contain minimum 6 symbols"),
                         password: Yup.string().required('This field is required!').min(8, "Must contain minimum 6 symbols"),
                         confirmation: Yup.string().required('This field is required!').min(8, "Must contain minimum 6 symbols"),
                     })}
-                    onSubmit={value => handleSubmit(value)}
+                    onSubmit={handleSubmit}
                     >
                     <Form>
                         <div className="form__wrapper">
-                            <div className="input__wrapper">
-                                <label htmlFor="email" className="form__label">Email</label>
-                                <Field
-                                    name="email"
-                                    type="email"
-                                    placeholder="Enter email address"
-                                    className="form__input"/>
-                                <ErrorMessage component='div' className='form__error' name='email'/>
-                            </div>
-
-                            <button type='button' className="button button__long" onClick={() => setPage(2)}>Next step</button>
-                        </div>  
-                  
-
-                        <div className="form__wrapper">
-                            
-                            
                             <div className="input__wrapper">
                                 <label htmlFor="password" className="form__label">Password</label>
                                 <Field
@@ -76,7 +127,7 @@ const ResetPasswordForm = () => {
                                     validate={validateConfirmation}/>
                                 <ErrorMessage component='div' className='form__error' name='confirmation'/>
                             </div>
-                            <button className="button button__long" type="submit">Create Account</button>
+                            <button className="button button__long" type="submit">Save New Password</button>
                         </div>
                     </Form>
             </Formik>

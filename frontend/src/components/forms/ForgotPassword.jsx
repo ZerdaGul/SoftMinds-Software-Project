@@ -44,7 +44,7 @@ const ForgotPassword = () => {
                         className="form__input"
                     />
                 </div>
-                <button type="submit" className="button__long">Send Reset Link</button>
+                <button type="submit" className="button button__long">Send Reset Link</button>
             </form>
             {message && <p className="form__error">{message}</p>}
         </div>

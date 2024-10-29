@@ -1,44 +1,63 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import "./form.scss";
-import './ForgotPassword';
-import SignInForm from "./SignInForm";
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
 
+import "./form.scss";
+import { LogIn } from '../../services/AuthService';
+import InfoModal from '../modals/InfoModal';
 const LogInForm = () => {
+    const [loading, setLoading] = useState(false);
+    const [loaded, setLoaded] = useState(false);
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
-    const handleSubmit = async (values, { setSubmitting }) => {
+
+    const onLoaded =() => {
+        setLoading(false);
+        setLoaded(true);
+        setShowModal(true)
+        
+    }
+
+    const onError = (error) => {
+        setLoading(false);
+        setError(true);  
+        setShowModal(true)
+        setErrorMessage(error.message)      
+    }
+    const handleSubmit = async (value) => {
+        setLoading(true);
         try {
-            // API isteği
-            const response = await fetch("http://localhost:5000/api/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(values)
-            });
-
-            const data = await response.json(); // Backend'den dönen yanıtı al
-
-            if (response.ok) {
-                // Giriş başarılı, token'ı sakla ve ana sayfaya yönlendir
-                localStorage.setItem('authToken', data.token); // Backend'in döndüğü token
-                navigate('/'); // Ana sayfaya yönlendir
-            } else {
-                // Giriş başarısız, mesaj göster
-                alert(data.message || "Invalid email or password. Please try again.");
-            }
+            await LogIn(value);
+            localStorage.setItem('authToken', value.email)
+            onLoaded(); // Call onLoaded if successful
         } catch (error) {
-            console.error("Login error:", error);
-            alert("An error occurred. Please try again later.");
+            onError(error); // Handle error
         }
-
-        setSubmitting(false); // İşlem bitti, butonu tekrar aktif hale getir
     };
+
+    const modal = <div>
+                        {loaded && navigate('/')}
+                        {error && createPortal(
+                            <InfoModal 
+                            title={"Error"}
+                            subtitle={errorMessage}
+                            onClose={() => {    
+                                setShowModal(false)
+                                navigate('/');}}/>,
+                            document.body
+                        )}
+                        {loading && <img src='../../assets/loading-animation.gif'></img>}
+                        <div className='overlay'></div>
+                    </div>
 
     return (
         <div className="form">
+            {showModal && modal}
             <h2 className="title-fz28">Login</h2>
             <Formik
                 initialValues={{ email: '', password: '' }}
@@ -48,37 +67,35 @@ const LogInForm = () => {
                 })}
                 onSubmit={handleSubmit}
             >
-                {({ isSubmitting }) => (
-                    <Form className="form__wrapper">
-                        <div className="input__wrapper">
-                            <label htmlFor="email" className="form__label">Email</label>
-                            <Field
-                                name="email"
-                                type="email"
-                                placeholder="Enter your email address"
-                                className="form__input"
-                            />
-                            <ErrorMessage component='div' className='form__error' name='email' />
-                        </div>
-                        <div className="input__wrapper">
-                            <label htmlFor="password" className="form__label">Password</label>
-                            <Field
-                                name="password"
-                                type="password"
-                                placeholder="Enter your password"
-                                className="form__input"
-                            />
-                            <ErrorMessage component='div' className='form__error' name='password' />
-                        </div>
-                        <div className="form__footer">
-                            <p><a href="/forgot-password">Forgot Password?</a></p>
-                            <button className="button__long" type="submit" disabled={isSubmitting}>
-                                {isSubmitting ? 'Logging in...' : 'Login'}
-                            </button>
-                            <p>Don't have an account? <a href="/registration">Sign up here</a></p>
-                        </div>
-                    </Form>
-                )}
+               
+                <Form className="form__wrapper">
+                    <div className="input__wrapper">
+                        <label htmlFor="email" className="form__label">Email</label>
+                        <Field
+                            name="email"
+                            type="email"
+                            placeholder="Enter your email address"
+                            className="form__input"
+                        />
+                        <ErrorMessage component='div' className='form__error' name='email' />
+                    </div>
+                    <div className="input__wrapper">
+                        <label htmlFor="password" className="form__label">Password</label>
+                        <Field
+                            name="password"
+                            type="password"
+                            placeholder="Enter your password"
+                            className="form__input"
+                        />
+                        <ErrorMessage component='div' className='form__error' name='password' />
+                    </div>
+                    <div className="form__footer">
+                        <p><Link to="/profile/forgot-password" className='form__pages'>Forgot Password?</Link></p>
+                        <button className="button button__long" type="submit" disabled={loading}>Log In </button>
+                        <p>Don't have an account? <Link to="/registration">Sign up here</Link></p>
+                    </div>
+                </Form>
+                
             </Formik>
         </div>
     );

@@ -14,7 +14,9 @@ const ConfirmModal = ({title, subtitle, buttonText, onClose, onConfirm}) => {
               <button onClick={onClose} className="button button__small button__light">Cancel</button>
               <button onClick={onConfirm} className="button button__small">{buttonText}</button>
           </div>
+          
     </div>
+    
   )
 }
 

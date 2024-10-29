@@ -23,7 +23,7 @@
     }
     &__wrapper{
         width: 335px;
-        min-height: 375px;
+        height: fit-content;
         display: flex;
         flex-direction: column;
         .input__wrapper{
@@ -31,7 +31,6 @@
             min-height: 70px;
             display: flex;
             flex-direction: column;
-            // justify-content: space-between;
             align-items: start;
         }
     }
@@ -52,7 +51,6 @@
             padding: 0 10px 0 0;
             font-size: 16px;
             color: $dark;
-            // min-width: 45px;
             max-width: 90px;
             height: 100%;
             border: none;

@@ -2,19 +2,24 @@ import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useCallback, useState } from 'react';
 import * as Yup from 'yup';
-import axios from 'axios';
-
+import { createPortal } from 'react-dom';
 
 import "./form.scss";
 import back from '../../assets/icons/arrow-back.svg'
 import PhoneNumber from './PhoneNumber';
 import { RegisterUser } from '../../services/AuthService';
+import InfoModal from '../modals/InfoModal';
 
 const SignInForm = () => {
     const [page, setPage] = useState(1);
     const [password, setPassword] = useState('');
     const [country, setCountry] = useState('');
-    
+    const [loading, setLoading] = useState(false);
+    const [loaded, setLoaded] = useState(false);
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const navigate = useNavigate();
     const validateConfirmation = (value) => {
         let error;
         if (value!== password) {
@@ -22,42 +27,79 @@ const SignInForm = () => {
         }
         return error;
     }
-    const navigate = useNavigate();
+    
 
     const getCountry = useCallback((country => setCountry(country)));
 
-    const handleSubmit = (value) => {
-        const {name,
+    const handleSubmit = ({name,
         surname,
         phone,
         email,
-        password}  = value;
-
-        
+        password}) => {
+                
         const result = {
             name: name.trim() + ' '+ surname.trim(),
             email,
             password,
             phone: phone.slice(1) ,
-            country,
-            
-                       
+            country,             
         }
-        console.log(result);
         setNewUser(result);
-        navigate('/');
+        
+        // Only navigate if showModal is false after user registration
+        
 
     }
 
+    const onLoaded =() => {
+        setLoading(false);
+        setLoaded(true);
+        setShowModal(true)
+        
+    }
+
+    const onError = (error) => {
+        setLoading(false);
+        setError(true);  
+        setShowModal(true)
+        setErrorMessage(error.message)      
+    }
+
     const setNewUser = async (formData) => {
-        RegisterUser(formData)
-            .then(() => console.log('Success'))
-            .catch((error) => console.log(error.message));
+        setLoading(true);
+        try {
+            await RegisterUser(formData);
+            onLoaded(); // Call onLoaded if successful
+        } catch (error) {
+            onError(error); // Handle error
+        }
     };
 
+    const modal = <div>
+                        {loaded && createPortal(
+                            <InfoModal 
+                            title={"Success"}
+                            onClose={() => {    
+                                setShowModal(false)
+                                navigate('/');}}/>,
+                            document.body
+                        )}
+                        {error && createPortal(
+                            <InfoModal 
+                            title={"Error"}
+                            subtitle={errorMessage}
+                            onClose={() => {    
+                                setShowModal(false)
+                                navigate('/');}}/>,
+                            document.body
+                        )}
+                        {loading && <img src='../../assets/loading-animation.gif'></img>}
+                        <div className='overlay'></div>
+                    </div>
 
     return (
         <div className="form">
+            {showModal && modal}
             <div className="title-fz28">Sign In</div>
             <p className="form__pages">Page {page} of 2</p>
             <Formik initialValues={{name: '',

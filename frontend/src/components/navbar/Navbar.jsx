@@ -9,12 +9,12 @@ import './Navbar.scss';
 const Navbar = () => {
     const navigate = useNavigate();
 
-    const isLoggedIn = !!localStorage.getItem('authToken'); // Kullanıcının giriş yapıp yapmadığını kontrol et
+    const isLoggedIn = localStorage.getItem('authToken'); // Kullanıcının giriş yapıp yapmadığını kontrol et
 
     const handleLogout = () => {
         // Oturum kapatma işlemi (örneğin, token'ı temizleme)
         localStorage.removeItem('authToken');
-        navigate('/login'); // Çıkış yaptıktan sonra giriş sayfasına yönlendir
+        navigate('/');
     };
 
     return (
@@ -26,47 +26,47 @@ const Navbar = () => {
             </div>
             <ul className="navbar-links">
                 <li>
-                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : 'inherit' })}
+                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
                              to="/aboutUs">About Us</NavLink>
                 </li>
                 <li>
-                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : 'inherit' })}
+                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
                              to="/products">Products</NavLink>
                 </li>
                 <li>
-                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : 'inherit' })}
+                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
                              to="/sectors">Sectors</NavLink>
                 </li>
                 <li>
-                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : 'inherit' })}
+                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
                              to="/solutions">Solutions</NavLink>
                 </li>
                 <li>
-                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : 'inherit' })}
+                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
                              to="/consultancy">Consultancy</NavLink>
                 </li>
                 <li>
-                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : 'inherit' })}
+                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
                              to="/contactUs">Contact Us</NavLink>
                 </li>
                 <li>
-                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : 'inherit' })}
+                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
                              to="/"> <img src={earth} alt="languages" style={{ height: "20px", width: "auto" }} /> </NavLink>
                 </li>
                 <li>
-                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : 'inherit' })}
+                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
                              to="/profile"> <img src={user} alt="user" style={{ height: "40px", width: "auto" }} /> </NavLink>
                 </li>
                 <li>
                     {
-                        isLoggedIn ? (
-                            <button onClick={handleLogout} className="logout-button">
+                        isLoggedIn ? 
+                            <Link to='/' onClick={handleLogout} className="logout-button">
                                 Log Out
-                            </button>
-                        ) : (
-                            <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : 'inherit' })}
+                            </Link>
+                        : 
+                            <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
                                      to="/login"> Log In </NavLink>
-                        )
+                        
                     }
                 </li>
             </ul>
