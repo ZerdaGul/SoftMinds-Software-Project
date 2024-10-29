@@ -8,11 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
-using System;
-using System.Text;
-using System.Net.Mail;
-using System.Net;
-using Microsoft.Extensions.Options;
+
 
 namespace api.Controllers;
 [Route("api/update")]
@@ -46,7 +42,7 @@ public class UpdateController : ControllerBase
         var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.CurrentEmail);
         if (existingUser == null)
         {
-            return BadRequest("Bu e-posta adresi ile kayıtlı bir kullanıcı bulunamadı.");
+            return BadRequest("Bu e-posta adresi ile kayıtlı bir kullanıcı bulunamadı");
         }
 
         if(existingUser.Email != model.CurrentEmail)
@@ -103,6 +99,7 @@ public class UpdateController : ControllerBase
         await _context.SaveChangesAsync();
 
         return Ok("Kullanıcı başarıyla güncellendi.");
+
     }
 
     // POST /api/update/reset-password
@@ -131,6 +128,9 @@ public class UpdateController : ControllerBase
         if(existingUser.Email != model.CurrentEmail)
         {
             return BadRequest("E-posta adresi doğrulanamadı.");
+
+
+
         }
 
         // Validate the current password
