@@ -27,12 +27,11 @@ const SignInForm = () => {
 
     const handleSubmit = (value) => {
         const {name,
-        surname,
-        phone,
-        email,
-        password}  = value;
+                surname,
+                phone,
+                email,
+                password}  = value;
 
-        
         const result = {
             name: name + ' '+ surname,
             email,

@@ -3072,11 +3072,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/semihsarikoca/Desktop/SoftMinds-Software-Project1/api/api.csproj",
+      "projectUniqueName": "/Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/api.csproj",
       "projectName": "api",
-      "projectPath": "/Users/semihsarikoca/Desktop/SoftMinds-Software-Project1/api/api.csproj",
+      "projectPath": "/Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/api.csproj",
       "packagesPath": "/Users/semihsarikoca/.nuget/packages/",
-      "outputPath": "/Users/semihsarikoca/Desktop/SoftMinds-Software-Project1/api/obj/",
+      "outputPath": "/Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/semihsarikoca/.nuget/NuGet/NuGet.Config"
