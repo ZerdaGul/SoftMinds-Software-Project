@@ -2,11 +2,14 @@
 
 .settings{
     width:920px;
+    display: flex;
+    align-items:center;
     
     &__action {
         font-weight: 700;
         color: $dark;
         font-size: 18px;
+        margin-top: 20px;
         &-delete {
             color: $red;
         }
@@ -16,7 +19,7 @@
     }
     &__descr {
         font-size: 14px;
-        margin-top: 15px;
+        margin-top: 10px;
         color: $dark;
     }
 }
