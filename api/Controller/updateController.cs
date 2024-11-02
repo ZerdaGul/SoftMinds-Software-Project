@@ -79,13 +79,14 @@ public class UpdateController : ControllerBase
         }
 
         if (!string.IsNullOrEmpty(model.Phone))
-        {
-            var phonePattern = @"^(\+90[\s]?)?[0-9]{3}[\s]?[0-9]{3}[\s]?[0-9]{2}[\s]?[0-9]{2}$";
-            if (!Regex.IsMatch(model.Phone, phonePattern))
-            {
-                return BadRequest("Geçersiz telefon numarası.");
-            }
-            existingUser.Phone = model.Phone;
+                {
+                    // Telefon numarası doğrulaması
+                    var phonePattern = @"^\d{11,12}$";
+                    if (!Regex.IsMatch(model.Phone, phonePattern))
+                    {
+                        return BadRequest("Geçersiz telefon numarası.");
+                    }
+                    existingUser.Phone = model.Phone;
         }
 
         if (!string.IsNullOrEmpty(model.Name))
