@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/zerdagul/Desktop/SoftMinds-Software-Project/api/api.csproj": {}
+    "/Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/api.csproj": {}
   },
   "projects": {
-    "/Users/zerdagul/Desktop/SoftMinds-Software-Project/api/api.csproj": {
+    "/Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/zerdagul/Desktop/SoftMinds-Software-Project/api/api.csproj",
+        "projectUniqueName": "/Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/api.csproj",
         "projectName": "api",
-        "projectPath": "/Users/zerdagul/Desktop/SoftMinds-Software-Project/api/api.csproj",
-        "packagesPath": "/Users/zerdagul/.nuget/packages/",
-        "outputPath": "/Users/zerdagul/Desktop/SoftMinds-Software-Project/api/obj/",
+        "projectPath": "/Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/api.csproj",
+        "packagesPath": "/Users/semihsarikoca/.nuget/packages/",
+        "outputPath": "/Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/zerdagul/.nuget/NuGet/NuGet.Config"
+          "/Users/semihsarikoca/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -43,6 +43,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "MailKit": {
+              "target": "Package",
+              "version": "[4.8.0, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[8.0.10, )"
@@ -93,7 +97,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.403/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.402/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

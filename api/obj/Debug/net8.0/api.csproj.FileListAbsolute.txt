@@ -498,3 +498,6 @@
 /Users/zerdagul/Desktop/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.pdb
 /Users/zerdagul/Desktop/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.genruntimeconfig.cache
 /Users/zerdagul/Desktop/SoftMinds-Software-Project/api/obj/Debug/net8.0/ref/api.dll
+/Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/bin/Debug/net8.0/BouncyCastle.Cryptography.dll
+/Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/bin/Debug/net8.0/MailKit.dll
+/Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/bin/Debug/net8.0/MimeKit.dll
