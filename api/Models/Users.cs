@@ -18,6 +18,8 @@ public class Users
     public DateTime? Lockout_End { get; set; } // Hesap kilitlenme süresi
 
     public bool Is_Email_Verified { get; set; } = false; // E-posta doğrulama durumu
+    public string? ResetToken { get; set; }
+    public DateTime? ResetTokenExpires { get; set; }
     public bool isadmin { get; set; } = false; // Admin mi değil mi
     // Relationships
     public List<Orders> Orders { get; set; } = []; // Orders listesi, boş olabilir

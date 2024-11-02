@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using MailKit.Net.Smtp;
 using MimeKit;
 using MailKit.Security;
+using Microsoft.Extensions.Options;
 
 namespace api.Controllers
 {
@@ -20,10 +21,12 @@ namespace api.Controllers
     public class AccountController : ControllerBase
     {
         private readonly AppDBContext _context;
+        private readonly IOptions<EmailSettings> _emailSettings;
 
-        public AccountController(AppDBContext context)
+        public AccountController(AppDBContext context, IOptions<EmailSettings> emailSettings)
         {
             _context = context;
+            _emailSettings = emailSettings;
         }
 
         [HttpPost("register")]
@@ -151,7 +154,7 @@ namespace api.Controllers
         private async Task SendVerificationEmail(Users user)
         {
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("ekoinovation", "hello@demomailtrap.com"));
+            message.From.Add(new MailboxAddress(_emailSettings.Value.SenderName, _emailSettings.Value.SenderEmail));
             message.To.Add(new MailboxAddress(user.Name, user.Email));
             message.Subject = "Email Verification";
 
@@ -163,8 +166,8 @@ namespace api.Controllers
 
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync("live.smtp.mailtrap.io", 587, SecureSocketOptions.StartTls);
-                await client.AuthenticateAsync("api", "d659ca88c7690c2ec8f0f6775dae6415");
+                await client.ConnectAsync(_emailSettings.Value.SmtpServer, _emailSettings.Value.SmtpPort, SecureSocketOptions.StartTls);
+                await client.AuthenticateAsync(_emailSettings.Value.SmtpUsername, _emailSettings.Value.SmtpPassword);
                 await client.SendAsync(message);
                 await client.DisconnectAsync(true);
             }
