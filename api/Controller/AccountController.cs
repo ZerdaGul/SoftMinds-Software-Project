@@ -54,10 +54,10 @@ namespace api.Controllers
             }
 
             // Telefon numarası doğrulaması
-            var phonePattern = @"^\d{10,11}$";
+            var phonePattern = @"^\d{11,12}$";
             if (!Regex.IsMatch(model.Phone, phonePattern))
             {
-                return BadRequest("Geçersiz telefon numarası. Numara sadece rakamlardan oluşmalı ve 10-11 haneli olmalıdır.");
+                return BadRequest("Geçersiz telefon numarası. Numara sadece rakamlardan oluşmalı ve 11-12 haneli olmalıdır.");
             }
 
             // Aynı email ile kayıtlı kullanıcı olup olmadığını kontrol et
