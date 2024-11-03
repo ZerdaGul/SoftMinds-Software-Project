@@ -105,7 +105,7 @@ namespace api.Controllers
             user.ResetTokenExpires = null;
             await _context.SaveChangesAsync();
 
-            return Ok("Şifreniz başarıyla sıfırlandı. Yeni şifreniz: " + model.NewPassword + "Hashed Password: " + hashed_Password);
+            return Ok("Şifreniz başarıyla sıfırlandı. Yeni şifrenizle giriş yapabilirsiniz.");
         }
 
         private string GenerateResetToken()

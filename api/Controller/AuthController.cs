@@ -64,7 +64,7 @@ namespace api.Controllers
                     user.Failed_Login_Attempts = 0; // Başarısız giriş denemelerini sıfırla
                 }
                 await _context.SaveChangesAsync();
-                return Unauthorized("Geçersiz şifre. Hashed Password: " + hashed_Password + "User Password: " + user.Password_Hash + "User Salt: " + user.Password_Salt);
+                return Unauthorized("Geçersiz şifre.");
             }
 
             // Başarılı giriş, başarısız giriş denemelerini sıfırla

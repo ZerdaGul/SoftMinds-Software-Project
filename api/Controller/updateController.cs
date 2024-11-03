@@ -8,11 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
-using System;
-using System.Text;
-using System.Net.Mail;
-using System.Net;
-using Microsoft.Extensions.Options;
+
 
 namespace api.Controllers;
 [Route("api/update")]
