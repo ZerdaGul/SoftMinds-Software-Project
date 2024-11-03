@@ -40,15 +40,13 @@ const ResetPasswordForm = ({initialValues}) => {
         return error;
     }
 
-    const handleSubmit = (value) => {
+    const handleSubmit = async(value) => {
         const formData = {
             email: initialValues.email,
-            password: value.password
+            currnetPassword: value.currnetPassword,
+            password: value.password,
+            confirmPassword: value.confirmation
         }
-        resetPassword(formData);
-    }
-
-    const resetPassword = async(formData) => {
         try{
             await ResetPassword(formData);
             onLoaded(); // Call onLoaded if successful
@@ -56,6 +54,8 @@ const ResetPasswordForm = ({initialValues}) => {
             onError(error); // Handle error
         }
     }
+
+    
     const modal = <div>
                         {loaded && createPortal(
                             <InfoModal 
@@ -82,7 +82,8 @@ const ResetPasswordForm = ({initialValues}) => {
     <div className="form">
         {showModal && modal}
             <div className="title-fz28">Update Password</div>
-            <Formik initialValues={{ password: '',
+            <Formik initialValues={{ currentPassword: "",
+                                    password: '',
                                     confirmation: ''}}
                     validationSchema={Yup.object({
                         password: Yup.string().required('This field is required!').min(8, "Must contain minimum 6 symbols"),
@@ -92,6 +93,15 @@ const ResetPasswordForm = ({initialValues}) => {
                     >
                     <Form>
                         <div className="form__wrapper">
+                            <div className="input__wrapper">
+                                <label htmlFor="currnetPassword" className="form__label">Current password</label>
+                                <Field
+                                    name="currnetPassword"
+                                    type="password"
+                                    placeholder="Enter your current password"
+                                    className="form__input"/>
+                                <ErrorMessage component='div' className='form__error' name='currnetPassword'/>
+                            </div>
                             <div className="input__wrapper">
                                 <label htmlFor="password" className="form__label">Password</label>
                                 <Field

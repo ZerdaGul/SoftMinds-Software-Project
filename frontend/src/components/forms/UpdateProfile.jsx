@@ -9,15 +9,17 @@ import InfoModal from '../modals/InfoModal';
 import profile_pic from '../../assets/img/profile-pic-default.png';
 import './ProfileForm.scss'
 import './form.scss'
+import back from '../../assets/icons/arrow-back.svg'
 
 const UpdateProfile = ({ initialValues,  }) => {
+    const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const [loaded, setLoaded] = useState(false);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [showModal, setShowModal] = useState(false);
-    const [imageFile, setImageFile] = useState(null); 
-    const [previewUrl, setPreviewUrl] = useState(profile_pic);  // Updated: Separate preview URL
+    const [imageFile, setImageFile] = useState( null);
+    const [previewUrl, setPreviewUrl] = useState( profile_pic); // Updated: Separate preview URL
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -43,9 +45,18 @@ const UpdateProfile = ({ initialValues,  }) => {
         setErrorMessage(error.message)      
     }
     const handleSubmit = async (value) => {
+        const data = {
+            name: value.name,
+            currentEmail: initialValues.email,
+            email: value.email,
+            companyName: value.companyName??initialValues.companyName,
+            currentPassword: value.password,
+            phone: value.phone??initialValues.phone,
+            country: value.country??initialValues.country,
+        }
         setLoading(true);
         try {
-            await UpdateUser(value);
+            await UpdateUser(data);
             onLoaded(); // Call onLoaded if successful
         } catch (error) {
             onError(error); // Handle error
@@ -82,6 +93,7 @@ const UpdateProfile = ({ initialValues,  }) => {
         companyName: Yup.string().required('Company name is required'),
         country: Yup.string().required('Country is required'),
         image: Yup.mixed(),
+        password: Yup.string().required('This field is required!').min(8, "Must contain minimum 8 symbols"),
     });
 
     
@@ -91,85 +103,113 @@ const UpdateProfile = ({ initialValues,  }) => {
             {showModal && modal}
             <div className="title-fz28">Update Profile</div>
             <Formik
-                initialValues={{image: null, ...initialValues}}
+                initialValues={{
+                    password: '', 
+                    image: null,
+                    name: initialValues.name || '',
+                    email: initialValues.email || '',
+                    phone: initialValues.phone || '',
+                    companyName: initialValues.companyName || '',
+                    country: initialValues.country || '',
+                }}
                 validationSchema={validationSchema}
                 onSubmit={handleSubmit}
             >
 
-                <Form className="form__wrapper">
-                    <div className="profile-header"  style={{justifyContent: "center"}}>
-                        <div className="profile-picture-wrapper">
-                            <img
-                                src={previewUrl}
-                                alt="Profile"
-                                className="profile-picture"
-                            />
-                            
+                <Form>
+                    {(page===1) ? 
+                    <div className="form__wrapper">
+                        <div className="profile-header"  style={{justifyContent: "center"}}>
+                            <div className="profile-picture-wrapper">
+                                <img
+                                    src={previewUrl}
+                                    alt="Profile"
+                                    className="profile-picture"
+                                />
+                                
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="input__wrapper">
-                        <label className="form__label" htmlFor="name">Full Name</label>
-                        <Field
-                            name="name"
-                            type="text"
-                            className="form__input"
-                        />
-                        <ErrorMessage component="div" className="form__error" name="name" />
-                    </div>
+                        <div className="input__wrapper">
+                            <label className="form__label" htmlFor="name">Full Name</label>
+                            <Field
+                                name="name"
+                                type="text"
+                                className="form__input"
+                            />
+                            <ErrorMessage component="div" className="form__error" name="name" />
+                        </div>
 
-                    <div className="input__wrapper">
-                        <label className="form__label" htmlFor="email">Email Address</label>
-                        <Field
-                            name="email"
-                            type="email"
-                            className="form__input"
-                        />
-                        <ErrorMessage component="div" className="form__error" name="email" />
-                    </div>
+                        <div className="input__wrapper">
+                            <label className="form__label" htmlFor="email">Email Address</label>
+                            <Field
+                                name="email"
+                                type="email"
+                                className="form__input"
+                            />
+                            <ErrorMessage component="div" className="form__error" name="email" />
+                        </div>
 
-                    <div className="input__wrapper">
-                        <label className="form__label" htmlFor="phone">Phone Number</label>
-                        <Field
-                            name="phone"
-                            type="text"
-                            className="form__input"
-                        />
-                        <ErrorMessage component="div" className="form__error" name="phone" />
-                    </div>
+                        <div className="input__wrapper">
+                            <label className="form__label" htmlFor="phone">Phone Number</label>
+                            <Field
+                                name="phone"
+                                type="text"
+                                className="form__input"
+                            />
+                            <ErrorMessage component="div" className="form__error" name="phone" />
+                        </div>
 
-                    <div className="input__wrapper">
-                        <label className="form__label" htmlFor="companyName">Company Name</label>
-                        <Field
-                            name="companyName"
-                            type="text"
-                            className="form__input"
-                        />
-                        <ErrorMessage component="div" className="form__error" name="companyName" />
-                    </div>
+                        <div className="input__wrapper">
+                            <label className="form__label" htmlFor="companyName">Company Name</label>
+                            <Field
+                                name="companyName"
+                                type="text"
+                                className="form__input"
+                            />
+                            <ErrorMessage component="div" className="form__error" name="companyName" />
+                        </div>
 
-                    <div className="input__wrapper">
-                        <label className="form__label" htmlFor="country">Country</label>
-                        <Field
-                            name="country"
-                            type="text"
-                            className="form__input"
-                        />
-                        <ErrorMessage component="div" className="form__error" name="country" />
-                    </div>
+                        <div className="input__wrapper">
+                            <label className="form__label" htmlFor="country">Country</label>
+                            <Field
+                                name="country"
+                                type="text"
+                                className="form__input"
+                            />
+                            <ErrorMessage component="div" className="form__error" name="country" />
+                        </div>
 
-                    <div className="input__wrapper">
-                        <label className="form__label" htmlFor="image">Profile Picture</label>
-                        <Field
-                            name="image"
-                            component={ImageUploadField}
-                            setImageFile={setImageFile}  
-                        />
-                    </div>
+                        <div className="input__wrapper">
+                            <label className="form__label" htmlFor="image">Profile Picture</label>
+                            <Field
+                                name="image"
+                                component={ImageUploadField}
+                                setImageFile={setImageFile}  
+                            />
+                        </div>
 
-                    <button type="submit" className="button button__long" disabled={loading}>
-                        Update Profile
-                    </button>
+                        <button type="button" onClick={() => setPage(2)} className="button button__long" disabled={loading}>
+                            Update Profile
+                        </button>
+                    </div> 
+                    :
+                    <div className="form__wrapper">
+                        <a href='#' className="form__pages back" onClick={() => setPage(1)}>
+                            <img src={back} alt="arrow-back" />
+                            Back to updates
+                        </a>
+                        <div className="input__wrapper">
+                            <label htmlFor="password" className="form__label">Verification</label>
+                            <Field
+                                name="password"
+                                type="password"
+                                placeholder="Enter your password"
+                                className="form__input"/>
+                            <ErrorMessage component='div' className='form__error' name='password'/>
+                        </div>
+                        <button className="button button__long" disabled={loading} type="submit">Confirm</button>
+                    </div>}
                 </Form>
             </Formik>
         </div>
@@ -183,33 +223,32 @@ export default UpdateProfile;
 const ImageUploadField = ({ name, setImageFile }) => {
     const { setFieldValue } = useFormikContext();
     const [preview, setPreview] = useState(null);
-  
+
     const handleImageChange = (event) => {
-      const file = event.currentTarget.files[0];
-      if (file) {
-        setFieldValue(name, file);
-        setImageFile(file);  // Update the external image state
-        setPreview(URL.createObjectURL(file));  // Display a preview
-      }
+        const file = event.currentTarget.files[0];
+        if (file) {
+            setFieldValue(name, file || ''); // Set a fallback to avoid undefined
+            setImageFile(file);
+            setPreview(URL.createObjectURL(file)); // Display preview
+        }
     };
-  
+
     return (
-      <div className='form__input form__input-image-wrapper'>
-        <input
-            
-          id={name}
-          name={name}
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-        />
-        {preview && (
-          <img
-            src={preview}
-            alt="preview"
-            className='image'
-          />
-        )}
-      </div>
+        <div className='form__input form__input-image-wrapper'>
+            <input
+                id={name}
+                name={name}
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+            />
+            {preview && (
+                <img
+                    src={preview}
+                    alt="preview"
+                    className='image'
+                />
+            )}
+        </div>
     );
-  };
+};

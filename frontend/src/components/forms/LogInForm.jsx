@@ -89,7 +89,7 @@ const LogInForm = () => {
                             <ErrorMessage component='div' className='form__error' name='password' />
                         </div>
                         <div className="form__footer">
-                            <p><Link to="/profile/forgot-password" className='form__pages'>Forgot Password?</Link></p>
+                            <p><Link to="/forgot-password-request" className='form__pages'>Forgot Password?</Link></p>
                             <button className="button button__long" type="submit" disabled={isSubmitting}>
                                 {isSubmitting ? 'Logging in...' : 'Login'}
                             </button>

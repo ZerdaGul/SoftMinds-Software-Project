@@ -5,12 +5,12 @@ import Navbar from '../navbar/Navbar';
 import SignInPage from '../../pages/SignInPage';
 import UserProfilePage from '../../pages/UserProfilePage';
 import LogInForm from '../forms/LogInForm';
-import ForgotPassword from '../forms/ForgotPassword'
 import ProfileForm from '../forms/ProfileForm';
 import Settings from '../settings/Settings';
 import ResetPasswordForm from '../forms/ResetPasswordForm';
 import UpdateProfile from '../forms/UpdateProfile';
 import { GetActiveUser } from '../../services/AuthService';
+import ForgotPasswordRequest from '../forms/ForgotPasswordRequest';
 
 const App = () => {
 
@@ -44,6 +44,7 @@ const App = () => {
 				<Route path='/solutions'></Route>
 				<Route path='/consultancy'></Route>
 				<Route path='/contactUs'></Route>
+				<Route path='forgot-password-request' element={<ForgotPasswordRequest />}></Route>
 				<Route path='/profile/*' element={<UserProfilePage />}>
 					<Route path='dashboard'></Route>
 					<Route path='orders'></Route>
@@ -54,7 +55,7 @@ const App = () => {
 					</Route>
 					
 					<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
-					<Route path='forgot-password' element={<ForgotPassword />}></Route>
+					
 				</Route>
 				<Route path='/registration' element={<SignInPage />}></Route>
 				<Route path='/login' element={<LogInForm />}></Route>

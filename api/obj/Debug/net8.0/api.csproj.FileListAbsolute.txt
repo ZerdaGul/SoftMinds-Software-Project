@@ -629,3 +629,6 @@ d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\ref\api.dll
 /Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/bin/Debug/net8.0/MailKit.dll
 /Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/bin/Debug/net8.0/MimeKit.dll
 >>>>>>> e12900b374eddd1a7d192bbdc762454c6078c781
+D:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+D:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\MailKit.dll
+D:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\MimeKit.dll

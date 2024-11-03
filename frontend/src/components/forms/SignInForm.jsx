@@ -47,7 +47,7 @@ const SignInForm = () => {
 
     const getCountry = (country => setCountry(country));
 
-    const handleSubmit = (value) => {
+    const handleSubmit = async(value) => {
         const {name,
                 surname,
                 phone,
@@ -63,19 +63,15 @@ const SignInForm = () => {
             
                        
         }
-        console.log(result);
-        setNewUser(result);
-
-    }
-
-    const setNewUser = async(formData) => {
         try {
-            await RegisterUser(formData);
+            await RegisterUser(result);
             onLoaded();
         } catch (error) {
             onError(error); // Handle error
         }
-    } 
+
+    }
+
 
     
 
@@ -110,8 +106,8 @@ const SignInForm = () => {
                         name: Yup.string().required('This field is required!').min(2, "Must contain minimum 2 letters"),
                         surname: Yup.string().required('This field is required!').min(2, "Must contain minimum 2 letters"),
                         phone: Yup.string().required('This field is required!'),
-                        email: Yup.string().email("Invalid email address").required('This field is required!').min(2, "Must contain minimum 6 symbols"),
-                        password: Yup.string().required('This field is required!').min(8, "Must contain minimum 6 symbols"),
+                        email: Yup.string().email("Invalid email address").required('This field is required!').min(2, "Must contain minimum 8 symbols"),
+                        password: Yup.string().required('This field is required!').min(8, "Must contain minimum 8 symbols"),
                         confirmation: Yup.string().required('This field is required!').min(8, "Must contain minimum 6 symbols"),
                     })}
                     onSubmit={value => handleSubmit(value)}
