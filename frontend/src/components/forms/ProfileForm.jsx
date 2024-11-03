@@ -1,19 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './ProfileForm.scss';
-import { FaEdit } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 import profile_pic from '../../assets/img/profile-pic-default.png';
 
 const ProfileForm = ({initialValues}) => {
     const navigate = useNavigate();
-
-
-    // name: 'John Doe',
-    // email: 'johndoe@example.com',
-    // phone: '123-456-7890',
-    // companyName: 'Doe Inc.',
-    // // country:
 
     const handleEditClick = () => {
         navigate('/profile/update-profile'); // Update Profile sayfasına yönlendir
@@ -28,15 +20,13 @@ const ProfileForm = ({initialValues}) => {
                         alt="Profile"
                         className="profile-picture"
                     />
-                    <FaEdit
-                        className="edit-icon"
-                        onClick={handleEditClick}
-                    />
                 </div>
                 <div className="profile-info">
-                    <h2>{initialValues.companyName || "Company Name"}</h2>
+                    <h2>{initialValues.name || "Your Name"}</h2>
                     <p>{initialValues.email || "user@example.com"}</p>
                 </div>
+                <button className="button button__small"
+                        onClick={handleEditClick}>Edit</button>
             </div>
 
             <form className="form__wrapper">

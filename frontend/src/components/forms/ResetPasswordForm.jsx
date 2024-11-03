@@ -45,12 +45,12 @@ const ResetPasswordForm = ({initialValues}) => {
             email: initialValues.email,
             password: value.password
         }
-
+        resetPassword(formData);
     }
 
-    const ResetPassword = async(formData) => {
+    const resetPassword = async(formData) => {
         try{
-            await ResetPassword(formData)
+            await ResetPassword(formData);
             onLoaded(); // Call onLoaded if successful
         } catch (error) {
             onError(error); // Handle error
@@ -60,7 +60,7 @@ const ResetPasswordForm = ({initialValues}) => {
                         {loaded && createPortal(
                             <InfoModal 
                             title={"Success"}
-                            subtitle={"Password is reseted"}
+                            subtitle={"Password is updated"}
                             onClose={() => {    
                                 setShowModal(false)
                                 navigate('/');}}/>,

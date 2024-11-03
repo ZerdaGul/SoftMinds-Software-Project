@@ -29,8 +29,11 @@ export const DeleteUser = async (id) => {
         }); 
         return response;
     } catch (error) {
-      if (error.response) {
-        throw new Error(error.response.data); // Ensure error.response.data exists
+      
+     
+      if (error.errors && error.errors.id) {
+        
+        throw new Error(error.errors.id[0]); // Ensure error.response.data exists
       } else {
           throw new Error("An unknown error occurred."); // Catch other errors
       }
