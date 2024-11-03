@@ -9,6 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
+using MailKit.Net.Smtp;
+using MimeKit;
+using MailKit.Security;
+using Microsoft.Extensions.Options;
+
 namespace api.Controllers
 {
     [Route("api/")]
@@ -16,10 +21,12 @@ namespace api.Controllers
     public class AccountController : ControllerBase
     {
         private readonly AppDBContext _context;
+        private readonly IOptions<EmailSettings> _emailSettings;
 
-        public AccountController(AppDBContext context)
+        public AccountController(AppDBContext context, IOptions<EmailSettings> emailSettings)
         {
             _context = context;
+            _emailSettings = emailSettings;
         }
 
         [HttpPost("register")]
@@ -54,10 +61,10 @@ namespace api.Controllers
             }
 
             // Telefon numarası doğrulaması
-            var phonePattern = @"^\d{10,11}$";
+            var phonePattern = @"^\d{11,12}$";
             if (!Regex.IsMatch(model.Phone, phonePattern))
             {
-                return BadRequest("Geçersiz telefon numarası. Numara sadece rakamlardan oluşmalı ve 10-11 haneli olmalıdır.");
+                return BadRequest("Geçersiz telefon numarası. Numara sadece rakamlardan oluşmalı ve 11-12 haneli olmalıdır.");
             }
 
             // Aynı email ile kayıtlı kullanıcı olup olmadığını kontrol et
@@ -95,10 +102,13 @@ namespace api.Controllers
             {
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
+
+                // Kullanıcı kaydedildikten sonra doğrulama e-postası gönder
+                await SendVerificationEmail(user);
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, "Kullanıcı kaydı sırasında bir hata oluştu. Lütfen tekrar deneyin.");
+                return StatusCode(500, "Kullanıcı kaydı sırasında bir hata oluştu. Lütfen tekrar deneyin. Hata: " + ex.Message);
             }
             return CreatedAtAction(nameof(Register), new { id = user.Id }, user);
         }
@@ -118,6 +128,49 @@ namespace api.Controllers
             // Aktif oturum cookie'sini sil
             Response.Cookies.Delete("AuthToken");
             return Ok(new { message = "Hesap başarıyla silindi." });
+        }
+        [HttpGet("verify")]
+        public async Task<IActionResult> VerifyEmail(string email, string token)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (user == null)
+            {
+                return NotFound("Kullanıcı bulunamadı.");
+            }
+
+            // Token doğrulaması (basit bir karşılaştırma, daha güvenli bir yöntem kullanabilirsiniz)
+            if (user.Password_Hash != token)
+            {
+                return BadRequest("Geçersiz doğrulama token'ı.");
+            }
+
+            // Kullanıcıyı doğrula
+            user.Is_Email_Verified = true;
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return Ok("Doğrulama tamamlandı.");
+        }
+        private async Task SendVerificationEmail(Users user)
+        {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress(_emailSettings.Value.SenderName, _emailSettings.Value.SenderEmail));
+            message.To.Add(new MailboxAddress(user.Name, user.Email));
+            message.Subject = "Email Verification";
+
+            var verificationLink = $"http://localhost:5115/api/verify?email={user.Email}&token={user.Password_Hash}";
+            message.Body = new TextPart("plain")
+            {
+                Text = $"Please verify your email by clicking on the following link: {verificationLink}"
+            };
+
+            using (var client = new SmtpClient())
+            {
+                await client.ConnectAsync(_emailSettings.Value.SmtpServer, _emailSettings.Value.SmtpPort, SecureSocketOptions.StartTls);
+                await client.AuthenticateAsync(_emailSettings.Value.SmtpUsername, _emailSettings.Value.SmtpPassword);
+                await client.SendAsync(message);
+                await client.DisconnectAsync(true);
+            }
         }
     }
 }
