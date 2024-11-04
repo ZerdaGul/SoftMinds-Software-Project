@@ -1,5 +1,15 @@
 node_modules
 # Ignore build output directories
-/bin/
-/obj//bin/
-/obj/
+api/obj/
+api/bin/
+
+# Log files
+*.log
+
+# User-specific files
+*.swp
+*.swo
+.DS_Store
+
+# Configuration files
+config.json
