@@ -11,6 +11,7 @@ import ResetPasswordForm from '../forms/ResetPasswordForm';
 import UpdateProfile from '../forms/UpdateProfile';
 import { GetActiveUser } from '../../services/AuthService';
 import ForgotPasswordRequest from '../forms/ForgotPasswordRequest';
+import ProductsPage from '../../pages/ProductsPage';
 
 const App = () => {
 
@@ -39,7 +40,7 @@ const App = () => {
 			<Routes>
 				<Route path='/'></Route>
 				<Route path='/aboutUs'></Route>
-				<Route path='/products'></Route>
+				<Route path='/products' element={<ProductsPage/>}></Route>
 				<Route path='/sectors'></Route>
 				<Route path='/solutions'></Route>
 				<Route path='/consultancy'></Route>

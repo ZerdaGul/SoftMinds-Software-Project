@@ -1,0 +1,30 @@
+@import '../../style/style.scss';
+
+.sectors{
+    &__menu{
+        height: 435px;
+        width: 284px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: fixed;
+        top: 210px;
+    }
+    &__item{
+        height: 53px;
+        width: 225px;
+        box-shadow: 4px 4px 4px $dark-op-30;
+        color: $dark;
+        font-size: 16px;
+        background-color: #fff;
+        border-top-right-radius: 16px;
+        border-bottom-right-radius: 16px;
+        padding: 18px 5px 18px 20px;
+        &.active{
+            width: 100%;
+            background-color: $orange;
+            color:#fff;
+        }
+    }
+    
+}
