@@ -6,7 +6,7 @@ public class Orders
     public int UserId { get; set; }
     public decimal Total_Price { get; set; }
     public DateTime Order_Date { get; set; }
-    public required string State { get; set; }= null!;
+    public required string State { get; set; } = null!;
 
     // Relationships
     public required Users User { get; set; } = null!;
