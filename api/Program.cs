@@ -18,6 +18,8 @@ builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Emai
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor(); // Bu satırı ekleyin
+
 
 // JWT Authentication ekle
 var jwtKey = builder.Configuration["Jwt:Key"];

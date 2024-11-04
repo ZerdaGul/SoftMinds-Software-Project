@@ -10,7 +10,6 @@ public class Products
     public required string Sector { get; set; } = null!;
 
     // Relationships
-    public List<OrderItems> Order_Items { get; set; } = [];//can be empty.
     public List<Comments> Comments { get; set; } = []; //can be empty.
     public List<Reviews> Reviews { get; set; } = []; // can be empty
 
