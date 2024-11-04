@@ -180,7 +180,6 @@ namespace api.Controllers
                     p.Availability
                 })
             };
-
             return Ok(response);
         }
     }
