@@ -6,6 +6,9 @@ api/bin/
 # Log files
 *.log
 
+# Visual Studio Code settings
+.vscode/
+
 # User-specific files
 *.swp
 *.swo
