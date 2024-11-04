@@ -1,3 +1,18 @@
 node_modules
-api/bin/
+# Ignore build output directories
 api/obj/
+api/bin/
+
+# Log files
+*.log
+
+# Visual Studio Code settings
+.vscode/
+
+# User-specific files
+*.swp
+*.swo
+.DS_Store
+
+# Configuration files
+config.json
