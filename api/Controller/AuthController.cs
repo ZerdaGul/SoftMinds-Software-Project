@@ -162,7 +162,6 @@ namespace api.Controllers
                             user.Country,
                             user.Phone,
                             user.Created_At,
-                            user.isadmin
                         }
                     });
                 }
