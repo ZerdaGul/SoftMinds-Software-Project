@@ -46,16 +46,6 @@ namespace api.Data
             modelBuilder.Entity<Products>()
                 .HasIndex(p => p.Name)
                 .HasDatabaseName("IX_Products_Name");
-
-            modelBuilder.Entity<OrderItems>()
-                .HasOne(oi => oi.Order)
-                .WithMany(o => o.Order_Items)
-                .HasForeignKey(oi => oi.Orders_Id);
-
-            modelBuilder.Entity<OrderItems>()
-                .HasOne(oi => oi.Product)
-                .WithMany(p => p.Order_Items)
-                .HasForeignKey(oi => oi.Product_Id);
         }
     }
 }

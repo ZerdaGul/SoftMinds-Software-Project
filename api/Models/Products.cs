@@ -12,6 +12,6 @@ public class Products
     // Relationships
     public List<OrderItems> Order_Items { get; set; } = [];//can be empty.
     public List<Comments> Comments { get; set; } = []; //can be empty.
-    public List<Reviews> Reviews { get; set; } = new List<Reviews>(); // can be empty
+    public List<Reviews> Reviews { get; set; } = []; // can be empty
 
 }
