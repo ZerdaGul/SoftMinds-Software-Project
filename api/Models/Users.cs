@@ -20,7 +20,7 @@ public class Users
     public bool Is_Email_Verified { get; set; } = false; // E-posta doğrulama durumu
     public string? ResetToken { get; set; }
     public DateTime? ResetTokenExpires { get; set; }
-    public required string Role { get; set; } 
+    public string? Role { get; set; } 
     // Relationships
     public List<Orders> Orders { get; set; } = []; // Orders listesi, boş olabilir
     public List<Comments> Comments { get; set; } = [];// boş olabilir
