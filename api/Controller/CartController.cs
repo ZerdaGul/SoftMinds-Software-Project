@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using api.Models;
-using api.Data;
-using api.DTO;
+
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
@@ -9,6 +8,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using api.Data;
+using api.DTO;
 
 namespace api.Controllers
 {
@@ -19,12 +21,14 @@ namespace api.Controllers
         private readonly AppDBContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<CartController> _logger;
 
-        public CartController(AppDBContext context, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
+        public CartController(AppDBContext context, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, ILogger<CartController> logger)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
+            _logger = logger;
         }
 
         // POST: api/cart
@@ -33,6 +37,7 @@ namespace api.Controllers
         {
             if (cartDto == null)
             {
+                _logger.LogWarning("Invalid cart data.");
                 return BadRequest("Invalid cart data.");
             }
 
@@ -40,12 +45,14 @@ namespace api.Controllers
             var userId = GetCurrentUserId();
             if (userId == null)
             {
+                _logger.LogWarning("User is not authenticated.");
                 return Unauthorized("User is not authenticated.");
             }
 
             var product = _context.Products.Find(cartDto.ProductId);
             if (product == null)
             {
+                _logger.LogWarning($"Product with ID {cartDto.ProductId} not found.");
                 return NotFound($"Product with ID {cartDto.ProductId} not found.");
             }
 
@@ -57,18 +64,21 @@ namespace api.Controllers
                 // Ürün zaten sepette, miktarını güncelle
                 if (orderItem.Quantity + cartDto.Quantity > product.Stock)
                 {
+                    _logger.LogWarning("Insufficient stock for the requested quantity.");
                     return BadRequest("Insufficient stock for the requested quantity.");
                 }
 
                 orderItem.Quantity += cartDto.Quantity;
                 orderItem.Total_Price = CalculateTotalPrice(orderItem.ProductId, orderItem.Quantity);
                 _context.OrderItems.Update(orderItem);
+                _logger.LogInformation($"Updated quantity of product ID {cartDto.ProductId} in cart for user ID {userId.Value}.");
             }
             else
             {
                 // Ürün sepette değil, yeni ürün ekle
                 if (cartDto.Quantity > product.Stock)
                 {
+                    _logger.LogWarning("Insufficient stock for the requested quantity.");
                     return BadRequest("Insufficient stock for the requested quantity.");
                 }
 
@@ -80,6 +90,7 @@ namespace api.Controllers
                     Total_Price = CalculateTotalPrice(cartDto.ProductId, cartDto.Quantity)
                 };
                 _context.OrderItems.Add(orderItem);
+                _logger.LogInformation($"Added product ID {cartDto.ProductId} to cart for user ID {userId.Value}.");
             }
 
             _context.SaveChanges();
@@ -96,6 +107,7 @@ namespace api.Controllers
             var orderItem = _context.OrderItems.Find(id);
             if (orderItem == null)
             {
+                _logger.LogWarning($"Order item with ID {id} not found.");
                 return NotFound($"Order item with ID {id} not found.");
             }
 
@@ -105,6 +117,8 @@ namespace api.Controllers
             _context.SaveChanges();
 
             UpdateOrderTotalPrice(orderId);
+            var userId = orderItem.Order?.UserId;
+            _logger.LogInformation($"Removed product ID {orderItem.ProductId} from cart for user ID {userId}.");
 
             return NoContent();
         }
@@ -116,6 +130,7 @@ namespace api.Controllers
             var userId = GetCurrentUserId();
             if (userId == null)
             {
+                _logger.LogWarning("User is not authenticated.");
                 return Unauthorized("User is not authenticated.");
             }
 
@@ -125,6 +140,7 @@ namespace api.Controllers
 
             if (order == null)
             {
+                _logger.LogWarning("No pending order found for the user.");
                 return NotFound("No pending order found for the user.");
             }
 
@@ -132,6 +148,8 @@ namespace api.Controllers
             _context.SaveChanges();
 
             UpdateOrderTotalPrice(order.Id);
+
+            _logger.LogInformation($"Cleared cart for user ID {userId.Value}.");
 
             return NoContent();
         }
@@ -147,6 +165,7 @@ namespace api.Controllers
 
             if (orderItem == null)
             {
+                _logger.LogWarning($"Order item with ID {id} not found.");
                 return NotFound($"Order item with ID {id} not found.");
             }
 
@@ -160,6 +179,7 @@ namespace api.Controllers
             var userId = GetCurrentUserId();
             if (userId == null)
             {
+                _logger.LogWarning("User is not authenticated.");
                 return Unauthorized("User is not authenticated.");
             }
 
@@ -170,6 +190,7 @@ namespace api.Controllers
 
             if (order == null)
             {
+                _logger.LogWarning("No pending order found for the user.");
                 return NotFound("No pending order found for the user.");
             }
 
@@ -183,6 +204,7 @@ namespace api.Controllers
             var userId = GetCurrentUserId();
             if (userId == null)
             {
+                _logger.LogWarning("User is not authenticated.");
                 return Unauthorized("User is not authenticated.");
             }
 
@@ -192,6 +214,7 @@ namespace api.Controllers
 
             if (order == null)
             {
+                _logger.LogWarning("No pending order found for the user.");
                 return NotFound("No pending order found for the user.");
             }
 
@@ -211,28 +234,33 @@ namespace api.Controllers
             var orderItem = _context.OrderItems.Find(id);
             if (orderItem == null)
             {
+                _logger.LogWarning($"Order item with ID {id} not found.");
                 return NotFound($"Order item with ID {id} not found.");
             }
-        
+
             var product = _context.Products.Find(orderItem.ProductId);
             if (product == null)
             {
+                _logger.LogWarning($"Product with ID {orderItem.ProductId} not found.");
                 return NotFound($"Product with ID {orderItem.ProductId} not found.");
             }
-        
+
             if (quantity > product.Stock)
             {
+                _logger.LogWarning("Insufficient stock for the requested quantity.");
                 return BadRequest("Insufficient stock for the requested quantity.");
             }
-        
+
             orderItem.Quantity = quantity;
             orderItem.Total_Price = CalculateTotalPrice(orderItem.ProductId, quantity);
-        
+
             _context.OrderItems.Update(orderItem);
             _context.SaveChanges();
-        
+
             UpdateOrderTotalPrice(orderItem.OrderId);
-        
+            var userId = orderItem.Order?.UserId;
+            _logger.LogInformation($"Updated quantity of product ID {orderItem.ProductId} in cart for user ID {userId}.");
+
             return NoContent();
         }
 
@@ -243,6 +271,7 @@ namespace api.Controllers
             var userId = GetCurrentUserId();
             if (userId == null)
             {
+                _logger.LogWarning("User is not authenticated.");
                 return Unauthorized("User is not authenticated.");
             }
 
@@ -252,6 +281,7 @@ namespace api.Controllers
 
             if (order == null)
             {
+                _logger.LogWarning("No pending order found for the user.");
                 return NotFound("No pending order found for the user.");
             }
 
@@ -259,6 +289,8 @@ namespace api.Controllers
             order.State = "Requested";
             _context.Orders.Update(order);
             _context.SaveChanges();
+
+            _logger.LogInformation($"User ID {userId.Value} checked out their cart.");
 
             return Ok(order);
         }
