@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using api.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace api.Controllers
 {
@@ -108,5 +109,79 @@ namespace api.Controllers
             return Ok(response);
         }
 
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchProducts([FromQuery] string keyword, [FromQuery] int pageNumber = 1, [FromQuery] int itemsPerPage = 20)
+        {
+            if (string.IsNullOrWhiteSpace(keyword))
+            {
+                return BadRequest("Keyword parameter is required.");
+            }
+            // Validate keyword input
+            if (keyword.Length > 100)
+            {
+                return BadRequest("Keyword parameter is too long.");
+            }
+            // Remove special characters from keyword
+            keyword = Regex.Replace(keyword, @"[^\w\s]", "");
+
+            var stopwatch = Stopwatch.StartNew();
+
+            _logger.LogInformation("Search query received: {Keyword}", keyword);
+
+            var query = _context.Products
+                .Where(p => p.Name.Contains(keyword) || 
+                            p.Description.Contains(keyword) || 
+                            p.Sector.Contains(keyword))
+                .Select(p => new
+                {
+                    p.Id,
+                    p.Name,
+                    p.Price,
+                    p.Description,
+                    p.Stock,
+                    p.Sector,
+                    Availability = p.Stock > 0 ? "In Stock" : "Out of Stock",
+                    Relevance = (p.Name.Contains(keyword) ? 3 : 0) +
+                                (p.Description.Contains(keyword) ? 2 : 0) +
+                                (p.Sector.Contains(keyword) ? 1 : 0)
+                });
+
+            var totalItems = await query.CountAsync();
+            var totalPages = (int) Math.Ceiling(totalItems / (double) itemsPerPage);
+
+            var products = await query
+                .OrderByDescending(p => p.Relevance)
+                .Skip((pageNumber - 1) * itemsPerPage)
+                .Take(itemsPerPage)
+                .ToListAsync();
+            
+            stopwatch.Stop();
+            _logger.LogInformation("Search query for keyword: {Keyword} completed in {ElapsedMilliseconds} ms", keyword, stopwatch.ElapsedMilliseconds);
+
+            if (products == null || products.Count == 0)
+            {
+                return NotFound("No products found matching the keyword.");
+            }
+
+            var response = new
+            {
+                TotalItems = totalItems,
+                TotalPages = totalPages,
+                CurrentPage = pageNumber,
+                ItemsPerPage = itemsPerPage,
+                Products = products.Select(p => new
+                {
+                    p.Id,
+                    p.Name,
+                    p.Price,
+                    p.Description,
+                    p.Stock,
+                    p.Sector,
+                    p.Availability
+                })
+            };
+
+            return Ok(response);
+        }
     }
 }
