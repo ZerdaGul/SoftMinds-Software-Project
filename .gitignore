@@ -1,4 +1,5 @@
 node_modules
 # Ignore build output directories
 /bin/
+/obj//bin/
 /obj/
