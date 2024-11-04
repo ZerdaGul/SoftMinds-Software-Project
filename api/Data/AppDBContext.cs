@@ -29,6 +29,33 @@ namespace api.Data
 
             // Ek olarak, her tabloya özel ilişkiler veya yapılandırmalar ekle
             // Örnek: modelBuilder.Entity<Product>().Property(p => p.Name).HasMaxLength(100);
+
+            // Add indexes
+            modelBuilder.Entity<Products>()
+                .HasIndex(p => p.Sector)
+                .HasDatabaseName("IX_Products_Sector");
+
+            modelBuilder.Entity<Products>()
+                .HasIndex(p => p.Price)
+                .HasDatabaseName("IX_Products_Price");
+
+            modelBuilder.Entity<Products>()
+                .HasIndex(p => p.Stock)
+                .HasDatabaseName("IX_Products_Stock");
+
+            modelBuilder.Entity<Products>()
+                .HasIndex(p => p.Name)
+                .HasDatabaseName("IX_Products_Name");
+
+            modelBuilder.Entity<OrderItems>()
+                .HasOne(oi => oi.Order)
+                .WithMany(o => o.Order_Items)
+                .HasForeignKey(oi => oi.Orders_Id);
+
+            modelBuilder.Entity<OrderItems>()
+                .HasOne(oi => oi.Product)
+                .WithMany(p => p.Order_Items)
+                .HasForeignKey(oi => oi.Product_Id);
         }
     }
 }
