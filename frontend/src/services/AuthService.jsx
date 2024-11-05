@@ -124,7 +124,24 @@ export const ForgotPasswordSendRequest = async (data) => {
     })
     return response.data;
 } catch (error) {
-  console.log(error)
+  if (error.response) {
+    
+    throw new Error(error.response.data); // Ensure error.response.data exists
+  } else {
+      throw new Error("An unknown error occurred."); // Catch other errors
+  }
+}
+}
+
+export const CreatePassword = async (data) => {
+  try {
+    const response = await axios.post( `${api}forgotpassword/reset`, data, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+    })
+    return response.data;
+} catch (error) {
   if (error.response) {
     
     throw new Error(error.response.data); // Ensure error.response.data exists

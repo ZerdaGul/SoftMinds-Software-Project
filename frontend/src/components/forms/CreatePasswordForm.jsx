@@ -4,10 +4,10 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { createPortal } from 'react-dom';
 import "./form.scss";
-import { ResetPassword } from '../../services/AuthService';
+import { CreatePassword } from '../../services/AuthService';
 import InfoModal from '../modals/InfoModal';
 
-const ResetPasswordForm = ({initialValues}) => {
+const CreatePasswordForm = () => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [loaded, setLoaded] = useState(false);
@@ -40,15 +40,10 @@ const ResetPasswordForm = ({initialValues}) => {
         return error;
     }
 
-    const handleSubmit = async(value) => {
-        const formData = {
-            email: initialValues.email,
-            currentPassword: value.currentPassword,
-            password: value.password,
-            confirmPassword: value.confirmation
-        }
+    const handleSubmit = async({token, password}) => {
+        
         try{
-            await ResetPassword(formData);
+            await CreatePassword({token, password});
             onLoaded(); // Call onLoaded if successful
         } catch (error) {
             onError(error); // Handle error
@@ -63,7 +58,7 @@ const ResetPasswordForm = ({initialValues}) => {
                             subtitle={"Password is updated"}
                             onClose={() => {    
                                 setShowModal(false)
-                                navigate('/');}}/>,
+                                navigate('/login');}}/>,
                             document.body
                         )}
                         {error && createPortal(
@@ -82,10 +77,11 @@ const ResetPasswordForm = ({initialValues}) => {
     <div className="form">
         {showModal && modal}
             <div className="title-fz28">Update Password</div>
-            <Formik initialValues={{ currentPassword: "",
+            <Formik initialValues={{ token: "",
                                     password: '',
                                     confirmation: ''}}
                     validationSchema={Yup.object({
+                        token: Yup.string().required('This field is required!'),
                         password: Yup.string().required('This field is required!').min(8, "Must contain minimum 6 symbols"),
                         confirmation: Yup.string().required('This field is required!').min(8, "Must contain minimum 6 symbols"),
                     })}
@@ -94,13 +90,13 @@ const ResetPasswordForm = ({initialValues}) => {
                     <Form>
                         <div className="form__wrapper">
                             <div className="input__wrapper">
-                                <label htmlFor="currentPassword" className="form__label">Current password</label>
+                                <label htmlFor="token" className="form__label">Token</label>
                                 <Field
-                                    name="currentPassword"
-                                    type="password"
-                                    placeholder="Enter your current password"
+                                    name="token"
+                                    type="text"
+                                    placeholder="Enter token"
                                     className="form__input"/>
-                                <ErrorMessage component='div' className='form__error' name='currentPassword'/>
+                                <ErrorMessage component='div' className='form__error' name='token'/>
                             </div>
                             <div className="input__wrapper">
                                 <label htmlFor="password" className="form__label">Password</label>
@@ -131,4 +127,4 @@ const ResetPasswordForm = ({initialValues}) => {
   )
 }
 
-export default ResetPasswordForm;
+export default CreatePasswordForm;

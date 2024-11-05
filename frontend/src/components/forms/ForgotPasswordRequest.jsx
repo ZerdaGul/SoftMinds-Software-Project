@@ -42,11 +42,10 @@ const ForgotPasswordRequest = () => {
     const modal = <div>
                         {loaded &&  createPortal(
                             <InfoModal 
-                            title={"Success"}
-                            subtitle={errorMessage}
+                            title={"Check your email!"}
                             onClose={() => {    
                                 setShowModal(false)
-                                navigate('/')}}/>,
+                                navigate('/create-password')}}/>,
                             document.body
                         )}
                         {error && createPortal(

@@ -16,10 +16,12 @@
         min-width: 110px;
         font-size: 16px;
         font-weight: 700; 
+        text-align: center;
         &-white{
             color: $red;
             background-color:#fff;
-            border-color: $red;
+            border: 1px solid $red;
+            text-align: center;
         }
         
     }

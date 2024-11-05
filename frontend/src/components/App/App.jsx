@@ -11,6 +11,7 @@ import ResetPasswordForm from '../forms/ResetPasswordForm';
 import UpdateProfile from '../forms/UpdateProfile';
 import { GetActiveUser } from '../../services/AuthService';
 import ForgotPasswordRequest from '../forms/ForgotPasswordRequest';
+import CreatePasswordForm from '../forms/CreatePasswordForm';
 import ProductsPage from '../../pages/ProductsPage';
 
 const App = () => {
@@ -45,7 +46,8 @@ const App = () => {
 				<Route path='/solutions'></Route>
 				<Route path='/consultancy'></Route>
 				<Route path='/contactUs'></Route>
-				<Route path='forgot-password-request' element={<ForgotPasswordRequest />}></Route>
+				<Route path='/forgot-password-request' element={<ForgotPasswordRequest />}></Route>
+				<Route path='/create-password' element={<CreatePasswordForm/>}></Route>
 				<Route path='/profile/*' element={<UserProfilePage />}>
 					<Route path='dashboard'></Route>
 					<Route path='orders'></Route>

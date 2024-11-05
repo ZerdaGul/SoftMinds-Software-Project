@@ -9,21 +9,26 @@
     color: $dark;
 
     &__image{
-        object-fit: contain;
+        object-fit: cover;
         min-height: 215px;
         width: 100%;
+        
+        border-top-right-radius: 24px;
+        border-top-left-radius: 24px;
 
     }
     &__wrapper {
-        padding: 25px;
+        padding: 25px 25px 0 25px;
         display: grid;
         grid-template-columns: repeat(2, 100px);
-        grid-template-rows: repeat(2, minmax(35px, auto));
+        grid-template-rows: 70px 35px;
         gap: 5px;
+        align-items: center;
     }
     &__title {
-        font-size: 24px;
+        font-size: 20px;
         font-weight: 400;
+        grid-column-start: 1;
         grid-column-end: 3;
     } 
     &__price{
