@@ -13,8 +13,9 @@ namespace api.Data
         public DbSet<Products> Products { get; set; }
         public DbSet<Users> Users { get; set; }
         public DbSet<Orders> Orders { get; set; }
-        public DbSet<OrderItems> Order_Items { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Comments> Comments { get; set; }
+        public DbSet<Reviews> Reviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,8 +25,9 @@ namespace api.Data
             modelBuilder.Entity<Products>().ToTable("products");
             modelBuilder.Entity<Users>().ToTable("users");
             modelBuilder.Entity<Orders>().ToTable("orders");
-            modelBuilder.Entity<OrderItems>().ToTable("order_items");
+            modelBuilder.Entity<OrderItem>().ToTable("orderitems");
             modelBuilder.Entity<Comments>().ToTable("comments");
+            modelBuilder.Entity<Reviews>().ToTable("reviews");
 
             // Ek olarak, her tabloya özel ilişkiler veya yapılandırmalar ekle
             // Örnek: modelBuilder.Entity<Product>().Property(p => p.Name).HasMaxLength(100);
