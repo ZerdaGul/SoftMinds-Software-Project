@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using api.Models;
-
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
@@ -9,6 +7,7 @@ using System.Text;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using api.Models;
 using api.Data;
 using api.DTO;
 
@@ -100,25 +99,40 @@ namespace api.Controllers
             return CreatedAtAction(nameof(GetCartItem), new { id = orderItem.Id }, orderItem);
         }
 
-        // DELETE: api/cart/{id}
-        [HttpDelete("{id}")]
-        public IActionResult RemoveFromCart(int id)
+        // DELETE: api/cart/remove-item
+        [HttpDelete("remove-item")]
+        public IActionResult RemoveItemFromCart([FromQuery] int productId)
         {
-            var orderItem = _context.OrderItems.Find(id);
-            if (orderItem == null)
+            var userId = GetCurrentUserId();
+            if (userId == null)
             {
-                _logger.LogWarning($"Order item with ID {id} not found.");
-                return NotFound($"Order item with ID {id} not found.");
+                _logger.LogWarning("User is not authenticated.");
+                return Unauthorized("User is not authenticated.");
             }
 
-            var orderId = orderItem.OrderId;
+            var order = _context.Orders
+                .Include(o => o.OrderItems)
+                .FirstOrDefault(o => o.UserId == userId && o.State == "Pending");
+
+            if (order == null)
+            {
+                _logger.LogWarning("No pending order found for the user.");
+                return NotFound("No pending order found for the user.");
+            }
+
+            var orderItem = order.OrderItems.FirstOrDefault(oi => oi.ProductId == productId);
+            if (orderItem == null)
+            {
+                _logger.LogWarning($"Order item with product ID {productId} not found in the user's cart.");
+                return NotFound($"Order item with product ID {productId} not found in the user's cart.");
+            }
 
             _context.OrderItems.Remove(orderItem);
             _context.SaveChanges();
 
-            UpdateOrderTotalPrice(orderId);
-            var userId = orderItem.Order?.UserId;
-            _logger.LogInformation($"Removed product ID {orderItem.ProductId} from cart for user ID {userId}.");
+            UpdateOrderTotalPrice(order.Id);
+
+            _logger.LogInformation($"Removed product ID {productId} from cart for user ID {userId}.");
 
             return NoContent();
         }
@@ -227,15 +241,32 @@ namespace api.Controllers
             return Ok(summary);
         }
 
-        // PATCH: api/cart/{id}/quantity
-        [HttpPatch("{id}/quantity")]
-        public IActionResult UpdateCartItemQuantity(int id, [FromBody] int quantity)
+        // PATCH: api/cart/update-quantity
+        [HttpPatch("update-quantity")]
+        public IActionResult UpdateCartItemQuantity([FromBody] CartDTO updateQuantityDto)
         {
-            var orderItem = _context.OrderItems.Find(id);
+            var userId = GetCurrentUserId();
+            if (userId == null)
+            {
+                _logger.LogWarning("User is not authenticated.");
+                return Unauthorized("User is not authenticated.");
+            }
+
+            var order = _context.Orders
+                .Include(o => o.OrderItems)
+                .FirstOrDefault(o => o.UserId == userId && o.State == "Pending");
+
+            if (order == null)
+            {
+                _logger.LogWarning("No pending order found for the user.");
+                return NotFound("No pending order found for the user.");
+            }
+
+            var orderItem = order.OrderItems.FirstOrDefault(oi => oi.ProductId == updateQuantityDto.ProductId);
             if (orderItem == null)
             {
-                _logger.LogWarning($"Order item with ID {id} not found.");
-                return NotFound($"Order item with ID {id} not found.");
+                _logger.LogWarning($"Order item with product ID {updateQuantityDto.ProductId} not found in the user's cart.");
+                return NotFound($"Order item with product ID {updateQuantityDto.ProductId} not found in the user's cart.");
             }
 
             var product = _context.Products.Find(orderItem.ProductId);
@@ -245,21 +276,22 @@ namespace api.Controllers
                 return NotFound($"Product with ID {orderItem.ProductId} not found.");
             }
 
-            if (quantity > product.Stock)
+            if (updateQuantityDto.Quantity > product.Stock)
             {
                 _logger.LogWarning("Insufficient stock for the requested quantity.");
                 return BadRequest("Insufficient stock for the requested quantity.");
             }
 
-            orderItem.Quantity = quantity;
-            orderItem.Total_Price = CalculateTotalPrice(orderItem.ProductId, quantity);
+            var previousQuantity = orderItem.Quantity;
+            orderItem.Quantity = updateQuantityDto.Quantity;
+            orderItem.Total_Price = CalculateTotalPrice(orderItem.ProductId, updateQuantityDto.Quantity);
 
             _context.OrderItems.Update(orderItem);
             _context.SaveChanges();
 
             UpdateOrderTotalPrice(orderItem.OrderId);
-            var userId = orderItem.Order?.UserId;
-            _logger.LogInformation($"Updated quantity of product ID {orderItem.ProductId} in cart for user ID {userId}.");
+
+            _logger.LogInformation($"Updated quantity of product ID {orderItem.ProductId} in cart for user ID {userId}. Previous quantity: {previousQuantity}, New quantity: {updateQuantityDto.Quantity}, Timestamp: {DateTime.UtcNow}");
 
             return NoContent();
         }
