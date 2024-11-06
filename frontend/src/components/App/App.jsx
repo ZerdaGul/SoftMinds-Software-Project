@@ -31,8 +31,6 @@ const App = () => {
 		localStorage.setItem('current-user', JSON.stringify(activeUser));
 	}
 
-
-
 	return (
 		<Router>
 			<Navbar />
