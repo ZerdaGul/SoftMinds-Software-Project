@@ -26,7 +26,7 @@ namespace api.Controllers
         // GET /api/products
         [HttpGet]
         public async Task<IActionResult> GetProducts(
-            [FromQuery] string sector,
+            [FromQuery] string sector = "all",
             [FromQuery] string sortOrder = "asc",
             [FromQuery] string sortBy = "name",
             [FromQuery] int pageNumber = 1,
@@ -34,7 +34,7 @@ namespace api.Controllers
         {
             var query = _context.Products.AsQueryable();
 
-            if (!string.IsNullOrEmpty(sector))
+            if (!string.IsNullOrEmpty(sector) && sector.ToLower() != "all")
             {
                 query = query.Where(p => p.Sector == sector);
             }
@@ -129,8 +129,8 @@ namespace api.Controllers
             _logger.LogInformation("Search query received: {Keyword}", keyword);
 
             var query = _context.Products
-                .Where(p => p.Name.Contains(keyword) || 
-                            p.Description.Contains(keyword) || 
+                .Where(p => p.Name.Contains(keyword) ||
+                            p.Description.Contains(keyword) ||
                             p.Sector.Contains(keyword))
                 .Select(p => new
                 {
@@ -147,14 +147,14 @@ namespace api.Controllers
                 });
 
             var totalItems = await query.CountAsync();
-            var totalPages = (int) Math.Ceiling(totalItems / (double) itemsPerPage);
+            var totalPages = (int)Math.Ceiling(totalItems / (double)itemsPerPage);
 
             var products = await query
                 .OrderByDescending(p => p.Relevance)
                 .Skip((pageNumber - 1) * itemsPerPage)
                 .Take(itemsPerPage)
                 .ToListAsync();
-            
+
             stopwatch.Stop();
             _logger.LogInformation("Search query for keyword: {Keyword} completed in {ElapsedMilliseconds} ms", keyword, stopwatch.ElapsedMilliseconds);
 
