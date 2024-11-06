@@ -11,7 +11,7 @@ const ProductCard = ({product}) => {
         <div className="productCard__wrapper">
             <div className="productCard__title">{product.name}</div>
             <div className="productCard__price">${product.price}</div>
-            <div className="button button__small button__small-white">Buy</div>
+            <button className="button button__small button__small-white">Buy</button>
         </div>
     </div>
   )

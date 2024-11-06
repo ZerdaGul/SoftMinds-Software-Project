@@ -71,6 +71,8 @@ const products = [
 
 const ProductsPage = () => {
 	const [filter, setFilter] = useState('All');
+    const [showModal, setShowModal] = useState(false);
+
 
 	return (
 		<>
@@ -81,7 +83,7 @@ const ProductsPage = () => {
 				<div className="products__sorting"></div>
 				<div className="products__list">
 					{products.map(product => (
-						<ProductCard product={product}/>
+						<ProductCard onClick={()=>showModal(true)}product={product}/>
 					))}
 				</div>
 			</section>
