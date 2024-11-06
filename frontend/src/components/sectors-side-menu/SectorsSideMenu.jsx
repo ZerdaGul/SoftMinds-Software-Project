@@ -16,7 +16,7 @@ const SectorsSideMenu = ({onFilter, filter}) => {
   }, [])
   const getSectors= async() => {
     const sectorsList=await LoadSectors();
-    setSectors(sectorsList);
+    setSectors([{name: 'All'}, ...sectorsList]);
   }
 
   return (

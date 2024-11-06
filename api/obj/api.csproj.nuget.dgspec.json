@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "d:\\GTU 3\\SoftMinds-Software-Project\\api\\api.csproj": {}
+    "D:\\GTU 3\\SoftMinds-Software-Project\\api\\api.csproj": {}
   },
   "projects": {
-    "d:\\GTU 3\\SoftMinds-Software-Project\\api\\api.csproj": {
+    "D:\\GTU 3\\SoftMinds-Software-Project\\api\\api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\GTU 3\\SoftMinds-Software-Project\\api\\api.csproj",
+        "projectUniqueName": "D:\\GTU 3\\SoftMinds-Software-Project\\api\\api.csproj",
         "projectName": "api",
-        "projectPath": "d:\\GTU 3\\SoftMinds-Software-Project\\api\\api.csproj",
+        "projectPath": "D:\\GTU 3\\SoftMinds-Software-Project\\api\\api.csproj",
         "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "d:\\GTU 3\\SoftMinds-Software-Project\\api\\obj\\",
+        "outputPath": "D:\\GTU 3\\SoftMinds-Software-Project\\api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",

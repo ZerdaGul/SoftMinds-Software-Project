@@ -13,7 +13,7 @@ import InfoModal from '../components/modals/InfoModal';
 
 
 const ProductsPage = () => {
-	const [filter, setFilter] = useState();
+	const [filter, setFilter] = useState('All');
 	const [productToBuy, setProductToBuy] = useState(0);
     const [showModal, setShowModal] = useState(false);
 	const [loading, setLoading] = useState(false);
