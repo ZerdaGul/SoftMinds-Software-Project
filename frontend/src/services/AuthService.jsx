@@ -67,7 +67,6 @@ export const LogIn = async (data) => {
       })
       return response.data;
   } catch (error) {
-    console.log(error)
     if (error.response) {
       
       throw new Error(error.response.data); // Ensure error.response.data exists

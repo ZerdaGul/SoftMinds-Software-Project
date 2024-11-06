@@ -4,10 +4,12 @@ import * as Yup from 'yup';
 import { createPortal } from 'react-dom';
 
 import './modal.scss';
+import '../forms/form.scss'
 import close from '../../assets/icons/close-dark.svg';
 import InfoModal from '../modals/InfoModal';
+import { AddToCart } from '../../services/ProductService';
 
-const SetQuantityModal = ({ product_id, onAddToCart, onClose }) => {
+const SetQuantityModal = ({ product_id, onClose }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -16,7 +18,7 @@ const SetQuantityModal = ({ product_id, onAddToCart, onClose }) => {
     const handleAddToCart = async (values) => {
         setLoading(true);
         try {
-            await onAddToCart(product_id, values.quantity);
+            await AddToCart({productId: product_id, quantity: values.quantity});
             setLoading(false);
             setShowModal(false);
             onClose();
@@ -24,7 +26,7 @@ const SetQuantityModal = ({ product_id, onAddToCart, onClose }) => {
             setLoading(false);
             setError(true);
             setShowModal(true);
-            setErrorMessage("Failed to add product to the cart. Please try again.");
+            setErrorMessage(error.message);
         }
     };
 
@@ -64,15 +66,14 @@ const SetQuantityModal = ({ product_id, onAddToCart, onClose }) => {
                     onSubmit={handleAddToCart}
                 >
                     {() => (
-                        <Form className="modal__form">
-                            <div className="modal__field">
-                                <label htmlFor="quantity" className="modal__label">Quantity</label>
-                                <Field name="quantity" type="number" className="modal__input" min="1" />
-                                <ErrorMessage name="quantity" component="div" className="modal__error" />
+                        <Form className="form__wrapper">
+                            <div className="input__wrapper">
+                                <Field name="quantity" type="number" className="form__input" min="1" />
+                                <ErrorMessage name="quantity" component="div" className="form__error" />
                             </div>
                             <div className="button__wrapper">
                                 <button type="button" onClick={onClose} className="button button__small button__light">
-                                    Back to Shopping
+                                    Go Back
                                 </button>
                                 <button type="submit" className="button button__small" disabled={loading}>
                                     {loading ? 'Adding...' : 'Add to Cart'}
