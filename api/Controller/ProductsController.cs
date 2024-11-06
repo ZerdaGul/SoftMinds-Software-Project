@@ -30,7 +30,7 @@ namespace api.Controllers
             [FromQuery] string sortOrder = "asc",
             [FromQuery] string sortBy = "name",
             [FromQuery] int pageNumber = 1,
-            [FromQuery] int itemsPerPage = 10)
+            [FromQuery] int itemsPerPage = 21)
         {
             var query = _context.Products.AsQueryable();
 
@@ -110,7 +110,7 @@ namespace api.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<IActionResult> SearchProducts([FromQuery] string keyword, [FromQuery] int pageNumber = 1, [FromQuery] int itemsPerPage = 20)
+        public async Task<IActionResult> SearchProducts([FromQuery] string keyword, [FromQuery] int pageNumber = 1, [FromQuery] int itemsPerPage = 21)
         {
             if (string.IsNullOrWhiteSpace(keyword))
             {
