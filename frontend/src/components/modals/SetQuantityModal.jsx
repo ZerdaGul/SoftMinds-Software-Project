@@ -6,7 +6,7 @@ import { createPortal } from 'react-dom';
 import './modal.scss';
 import '../forms/form.scss'
 import close from '../../assets/icons/close-dark.svg';
-import InfoModal from '../modals/InfoModal';
+import InfoModal from './InfoModal';
 import { AddToCart } from '../../services/ProductService';
 
 const SetQuantityModal = ({ product_id, onClose }) => {

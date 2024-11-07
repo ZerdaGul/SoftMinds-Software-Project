@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 import earth from '../../assets/icons/earth.svg'
@@ -7,16 +7,15 @@ import user from '../../assets/icons/user.svg'
 import logo from '../../assets/icons/logo.png'
 import './Navbar.scss';
 
-const Navbar = () => {
+const Navbar = ({ activeUser, onLogout }) => {
     const navigate = useNavigate();
-
-    const isLoggedIn = !!localStorage.getItem('current-user'); // Kullanıcının giriş yapıp yapmadığını kontrol et
+    const isLoggedIn = !!activeUser && Object.keys(activeUser).length > 0;
 
     const handleLogout = () => {
-        // Oturum kapatma işlemi (örneğin, token'ı temizleme)
-        localStorage.removeItem('current-user');
-        navigate('/login'); // Çıkış yaptıktan sonra giriş sayfasına yönlendir
+        onLogout();
+        navigate('/login');
     };
+
 
     return (
         <nav className="navbar">
@@ -61,12 +60,9 @@ const Navbar = () => {
                 <li>
                     {
                         isLoggedIn ? (
-                            <Link onClick={handleLogout} >
-                                Log Out
-                            </Link>
+                            <Link onClick={handleLogout} style={{ cursor: "pointer" }}>Log Out</Link>
                         ) : (
-                            <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                                     to="/login"> Log In </NavLink>
+                            <NavLink to="/login"> Log In </NavLink>
                         )
                     }
                 </li>

@@ -7,7 +7,7 @@ import { createPortal } from 'react-dom';
 import "./form.scss";
 import { LogIn } from '../../services/AuthService';
 import InfoModal from '../modals/InfoModal';
-const LogInForm = () => {
+const LogInForm = ({ onLogin }) => {
     const [loading, setLoading] = useState(false);
     const [loaded, setLoaded] = useState(false);
     const [error, setError] = useState(false);
@@ -16,26 +16,28 @@ const LogInForm = () => {
     const navigate = useNavigate();
 
 
-    const onLoaded =() => {
+    const onLoaded = (user) => {
         setLoading(false);
         setLoaded(true);
-        setShowModal(true)
-        
-    }
+        setShowModal(true);
+        onLogin(user); // Giriş yapan kullanıcıyı güncelle
+    };
 
     const onError = (error) => {
         setLoading(false);
-        setError(true);  
-        setShowModal(true)
-        setErrorMessage(error.message)      
-    }
+        setError(true);
+        setShowModal(true);
+        setErrorMessage(error.message);
+    };
+
     const handleSubmit = async (value) => {
         setLoading(true);
         try {
-            await LogIn(value);
+            const userData = await LogIn(value);
+            onLogin(userData.user); // Kullanıcı bilgilerini güncelle
             onLoaded();
         } catch (error) {
-            onError(error); // Handle error
+            onError(error); // Hata ile başa çık
         }
     };
 
