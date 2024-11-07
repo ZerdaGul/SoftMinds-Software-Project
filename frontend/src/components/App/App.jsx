@@ -11,6 +11,7 @@ import Settings from '../settings/Settings';
 import ResetPasswordForm from '../forms/ResetPasswordForm';
 import UpdateProfile from '../forms/UpdateProfile';
 import { GetActiveUser } from '../../services/AuthService';
+import CartForm from "../forms/CartForm";
 
 const App = () => {
 
@@ -58,6 +59,7 @@ const App = () => {
 				<Route path='/registration' element={<SignInPage />}></Route>
 				<Route path='/login' element={<LogInForm />}></Route>
 			</Routes>
+				<CartForm />
 			</main>
 		</Router>
 	);
