@@ -29,8 +29,11 @@ export const DeleteUser = async (id) => {
         }); 
         return response;
     } catch (error) {
-      if (error.response) {
-        throw new Error(error.response.data); // Ensure error.response.data exists
+      
+     
+      if (error.errors && error.errors.id) {
+        
+        throw new Error(error.errors.id[0]); // Ensure error.response.data exists
       } else {
           throw new Error("An unknown error occurred."); // Catch other errors
       }
@@ -64,7 +67,6 @@ export const LogIn = async (data) => {
       })
       return response.data;
   } catch (error) {
-    console.log(error)
     if (error.response) {
       
       throw new Error(error.response.data); // Ensure error.response.data exists
@@ -110,4 +112,40 @@ export const ResetPassword = async (data) => {
         throw new Error("An unknown error occurred."); // Catch other errors
     }
   }
+}
+
+export const ForgotPasswordSendRequest = async (data) => {
+  try {
+    const response = await axios.post( `${api}forgotpassword/request`, data, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+    })
+    return response.data;
+} catch (error) {
+  if (error.response) {
+    
+    throw new Error(error.response.data); // Ensure error.response.data exists
+  } else {
+      throw new Error("An unknown error occurred."); // Catch other errors
+  }
+}
+}
+
+export const CreatePassword = async (data) => {
+  try {
+    const response = await axios.post( `${api}forgotpassword/reset`, data, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+    })
+    return response.data;
+} catch (error) {
+  if (error.response) {
+    
+    throw new Error(error.response.data); // Ensure error.response.data exists
+  } else {
+      throw new Error("An unknown error occurred."); // Catch other errors
+  }
+}
 }

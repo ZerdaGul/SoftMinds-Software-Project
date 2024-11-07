@@ -6,6 +6,7 @@
     border-radius: 24px;
     border: 1px solid $dark-op-30;
     width:fit-content;
+    height: fit-content;
     &__pages{
         font-size: 16px;
         color: $dark;
@@ -62,6 +63,15 @@
             width:200px;
             height: 100%;
             border: none;
+        }
+        &-image-wrapper{
+            height: 130px;
+        }
+        .image{
+            width: 80px;
+            height: 80px;
+            margin-top: 10px;
+            object-fit: cover;
         }
     }
     &__error{

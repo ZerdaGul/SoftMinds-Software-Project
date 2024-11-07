@@ -40,27 +40,27 @@ const ResetPasswordForm = ({initialValues}) => {
         return error;
     }
 
-    const handleSubmit = (value) => {
+    const handleSubmit = async(value) => {
         const formData = {
             email: initialValues.email,
-            password: value.password
+            currentPassword: value.currentPassword,
+            password: value.password,
+            confirmPassword: value.confirmation
         }
-
-    }
-
-    const ResetPassword = async(formData) => {
         try{
-            await ResetPassword(formData)
+            await ResetPassword(formData);
             onLoaded(); // Call onLoaded if successful
         } catch (error) {
             onError(error); // Handle error
         }
     }
+
+    
     const modal = <div>
                         {loaded && createPortal(
                             <InfoModal 
                             title={"Success"}
-                            subtitle={"Password is reseted"}
+                            subtitle={"Password is updated"}
                             onClose={() => {    
                                 setShowModal(false)
                                 navigate('/');}}/>,
@@ -82,7 +82,8 @@ const ResetPasswordForm = ({initialValues}) => {
     <div className="form">
         {showModal && modal}
             <div className="title-fz28">Update Password</div>
-            <Formik initialValues={{ password: '',
+            <Formik initialValues={{ currentPassword: "",
+                                    password: '',
                                     confirmation: ''}}
                     validationSchema={Yup.object({
                         password: Yup.string().required('This field is required!').min(8, "Must contain minimum 6 symbols"),
@@ -92,6 +93,15 @@ const ResetPasswordForm = ({initialValues}) => {
                     >
                     <Form>
                         <div className="form__wrapper">
+                            <div className="input__wrapper">
+                                <label htmlFor="currentPassword" className="form__label">Current password</label>
+                                <Field
+                                    name="currentPassword"
+                                    type="password"
+                                    placeholder="Enter your current password"
+                                    className="form__input"/>
+                                <ErrorMessage component='div' className='form__error' name='currentPassword'/>
+                            </div>
                             <div className="input__wrapper">
                                 <label htmlFor="password" className="form__label">Password</label>
                                 <Field

@@ -34,7 +34,7 @@ const Settings = ({ initialValues }) => {
   const handleAccountDelete = async () => {
     setLoading(true);
     try {
-      await DeleteUser(initialValues.id);
+      await DeleteUser({id: initialValues.id});
       onLoaded();
     } catch (error) {
       onError(error);
