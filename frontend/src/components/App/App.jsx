@@ -15,28 +15,21 @@ import CreatePasswordForm from '../forms/CreatePasswordForm';
 import ProductsPage from '../../pages/ProductsPage';
 
 const App = () => {
+	const [activeUser, setActiveUser] = useState(null);
 
-	//get a active user fron sessin info
-    const [activeUser, setActiveUser] = useState({});
-    useEffect(() => {
+	useEffect(() => {
 		loadUser();
-	}, [])
-    
-    const loadUser = () => {
-        GetActiveUser()
-            .then(data => setActiveUser(data.user))
-            .catch((error) => console.log(error.message));
-    }
-	const isEmpty = (obj) => obj && typeof obj === 'object' && Object.keys(obj).length === 0;
+	}, []);
 
-	if (!isEmpty(activeUser)) {
-		localStorage.setItem('current-user', JSON.stringify(activeUser));
-	}
-
+	const loadUser = () => {
+		GetActiveUser()
+			.then(data => setActiveUser(data.user))
+			.catch((error) => console.log(error.message));
+	};
 
 	return (
 		<Router>
-			<Navbar />
+			<Navbar activeUser={activeUser} setActiveUser={setActiveUser} />
 			<main>
 			<Routes>
 				<Route path='/'></Route>
@@ -61,7 +54,7 @@ const App = () => {
 					
 				</Route>
 				<Route path='/registration' element={<SignInPage />}></Route>
-				<Route path='/login' element={<LogInForm />}></Route>
+				<Route path='/login' element={<LogInForm setActiveUser={setActiveUser} />}></Route>
 			</Routes>
 			</main>
 		</Router>

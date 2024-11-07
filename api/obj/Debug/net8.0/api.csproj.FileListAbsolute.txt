@@ -374,131 +374,131 @@
 /Users/semihsarikoca/Desktop/SoftMinds-Software-Project1/api/obj/Debug/net8.0/api.genruntimeconfig.cache
 /Users/semihsarikoca/Desktop/SoftMinds-Software-Project1/api/obj/Debug/net8.0/ref/api.dll
 <<<<<<< HEAD
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\appsettings.Development.json
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\appsettings.json
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\api.exe
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\api.deps.json
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\api.runtimeconfig.json
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\api.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\api.pdb
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Humanizer.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Microsoft.OpenApi.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Mono.TextTemplating.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\MySqlConnector.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\System.CodeDom.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\System.Composition.AttributedModel.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\System.Composition.Convention.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\System.Composition.Hosting.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\System.Composition.Runtime.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\System.Composition.TypedParts.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\api.csproj.AssemblyReference.cache
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\api.GeneratedMSBuildEditorConfig.editorconfig
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\api.AssemblyInfoInputs.cache
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\api.AssemblyInfo.cs
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\api.csproj.CoreCompileInputs.cache
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\api.MvcApplicationPartsAssemblyInfo.cs
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\api.MvcApplicationPartsAssemblyInfo.cache
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\api.sourcelink.json
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\staticwebassets.build.json
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\staticwebassets.development.json
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\staticwebassets\msbuild.api.Microsoft.AspNetCore.StaticWebAssets.props
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\staticwebassets\msbuild.build.api.props
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.api.props
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.api.props
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\staticwebassets.pack.json
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\scopedcss\bundle\api.styles.css
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\api.csproj.Up2Date
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\api.dll
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\refint\api.dll
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\api.pdb
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\api.genruntimeconfig.cache
-d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\ref\api.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/appsettings.Development.json
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/appsettings.json
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/api.exe
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/api.deps.json
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/api.runtimeconfig.json
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/api.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/api.pdb
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Humanizer.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.Internal.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.AspNetCore.OpenApi.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.Bcl.AsyncInterfaces.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.CodeAnalysis.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.CodeAnalysis.CSharp.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.CodeAnalysis.Workspaces.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Design.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Relational.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.Extensions.Caching.Memory.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.Extensions.DependencyInjection.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.Extensions.DependencyModel.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.Extensions.Identity.Core.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.Extensions.Identity.Stores.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.Extensions.Logging.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.Extensions.Logging.Abstractions.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.Extensions.Options.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.IdentityModel.Abstractions.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.IdentityModel.Logging.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.IdentityModel.Tokens.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.OpenApi.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Mono.TextTemplating.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/MySqlConnector.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Pomelo.EntityFrameworkCore.MySql.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Swashbuckle.AspNetCore.Swagger.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/System.CodeDom.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/System.Composition.AttributedModel.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/System.Composition.Convention.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/System.Composition.Hosting.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/System.Composition.Runtime.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/System.Composition.TypedParts.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/System.IdentityModel.Tokens.Jwt.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/cs/Microsoft.CodeAnalysis.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/de/Microsoft.CodeAnalysis.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/es/Microsoft.CodeAnalysis.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/fr/Microsoft.CodeAnalysis.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/it/Microsoft.CodeAnalysis.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/ja/Microsoft.CodeAnalysis.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/ko/Microsoft.CodeAnalysis.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/pl/Microsoft.CodeAnalysis.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/pt-BR/Microsoft.CodeAnalysis.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/ru/Microsoft.CodeAnalysis.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/tr/Microsoft.CodeAnalysis.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/cs/Microsoft.CodeAnalysis.CSharp.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/de/Microsoft.CodeAnalysis.CSharp.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/es/Microsoft.CodeAnalysis.CSharp.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/fr/Microsoft.CodeAnalysis.CSharp.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/it/Microsoft.CodeAnalysis.CSharp.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/ja/Microsoft.CodeAnalysis.CSharp.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/ko/Microsoft.CodeAnalysis.CSharp.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/pl/Microsoft.CodeAnalysis.CSharp.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/pt-BR/Microsoft.CodeAnalysis.CSharp.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/ru/Microsoft.CodeAnalysis.CSharp.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/tr/Microsoft.CodeAnalysis.CSharp.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.CSharp.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.CSharp.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/cs/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/de/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/es/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/fr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/it/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/ja/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/ko/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/pl/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/pt-BR/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/ru/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/tr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/cs/Microsoft.CodeAnalysis.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/de/Microsoft.CodeAnalysis.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/es/Microsoft.CodeAnalysis.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/fr/Microsoft.CodeAnalysis.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/it/Microsoft.CodeAnalysis.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/ja/Microsoft.CodeAnalysis.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/ko/Microsoft.CodeAnalysis.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/pl/Microsoft.CodeAnalysis.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/pt-BR/Microsoft.CodeAnalysis.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/ru/Microsoft.CodeAnalysis.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/tr/Microsoft.CodeAnalysis.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.resources.dll
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.csproj.AssemblyReference.cache
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.GeneratedMSBuildEditorConfig.editorconfig
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.AssemblyInfoInputs.cache
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.AssemblyInfo.cs
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.csproj.CoreCompileInputs.cache
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.MvcApplicationPartsAssemblyInfo.cs
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.MvcApplicationPartsAssemblyInfo.cache
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.sourcelink.json
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/staticwebassets.build.json
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/staticwebassets.development.json
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/staticwebassets/msbuild.api.Microsoft.AspNetCore.StaticWebAssets.props
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/staticwebassets/msbuild.build.api.props
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.api.props
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.api.props
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/staticwebassets.pack.json
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/scopedcss/bundle/api.styles.css
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.csproj.Up2Date
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.dll
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/refint/api.dll
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.pdb
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.genruntimeconfig.cache
+d:/GTU 3/SoftMinds-Software-Project/api/obj/Debug/net8.0/ref/api.dll
 =======
 /Users/zerdagul/Desktop/SoftMinds-Software-Project/api/bin/Debug/net8.0/appsettings.Development.json
 /Users/zerdagul/Desktop/SoftMinds-Software-Project/api/bin/Debug/net8.0/appsettings.json
@@ -629,6 +629,134 @@ d:\GTU 3\SoftMinds-Software-Project\api\obj\Debug\net8.0\ref\api.dll
 /Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/bin/Debug/net8.0/MailKit.dll
 /Users/semihsarikoca/Desktop/SoftMinds-Software-Project/api/bin/Debug/net8.0/MimeKit.dll
 >>>>>>> e12900b374eddd1a7d192bbdc762454c6078c781
-D:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
-D:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\MailKit.dll
-D:\GTU 3\SoftMinds-Software-Project\api\bin\Debug\net8.0\MimeKit.dll
+D:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/BouncyCastle.Cryptography.dll
+D:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/MailKit.dll
+D:/GTU 3/SoftMinds-Software-Project/api/bin/Debug/net8.0/MimeKit.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/appsettings.Development.json
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/appsettings.json
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/api
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/api.deps.json
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/api.runtimeconfig.json
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/api.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/api.pdb
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/BouncyCastle.Cryptography.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Humanizer.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/MailKit.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.Internal.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.AspNetCore.OpenApi.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.Bcl.AsyncInterfaces.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.CodeAnalysis.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.CodeAnalysis.CSharp.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.CodeAnalysis.Workspaces.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Design.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Relational.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.Extensions.Caching.Memory.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.Extensions.DependencyInjection.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.Extensions.DependencyModel.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.Extensions.Identity.Core.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.Extensions.Identity.Stores.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.Extensions.Logging.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.Extensions.Logging.Abstractions.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.Extensions.Options.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.IdentityModel.Abstractions.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.IdentityModel.Logging.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.IdentityModel.Tokens.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Microsoft.OpenApi.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/MimeKit.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Mono.TextTemplating.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/MySqlConnector.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Pomelo.EntityFrameworkCore.MySql.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Swashbuckle.AspNetCore.Swagger.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/System.CodeDom.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/System.Composition.AttributedModel.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/System.Composition.Convention.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/System.Composition.Hosting.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/System.Composition.Runtime.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/System.Composition.TypedParts.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/System.IdentityModel.Tokens.Jwt.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/cs/Microsoft.CodeAnalysis.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/de/Microsoft.CodeAnalysis.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/es/Microsoft.CodeAnalysis.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/fr/Microsoft.CodeAnalysis.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/it/Microsoft.CodeAnalysis.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/ja/Microsoft.CodeAnalysis.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/ko/Microsoft.CodeAnalysis.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/pl/Microsoft.CodeAnalysis.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/pt-BR/Microsoft.CodeAnalysis.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/ru/Microsoft.CodeAnalysis.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/tr/Microsoft.CodeAnalysis.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/cs/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/de/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/es/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/fr/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/it/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/ja/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/ko/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/pl/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/pt-BR/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/ru/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/tr/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/cs/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/de/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/es/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/fr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/it/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/ja/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/ko/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/pl/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/pt-BR/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/ru/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/tr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/cs/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/de/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/es/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/fr/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/it/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/ja/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/ko/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/pl/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/pt-BR/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/ru/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/tr/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.csproj.AssemblyReference.cache
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.GeneratedMSBuildEditorConfig.editorconfig
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.AssemblyInfoInputs.cache
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.AssemblyInfo.cs
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.csproj.CoreCompileInputs.cache
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.MvcApplicationPartsAssemblyInfo.cs
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.MvcApplicationPartsAssemblyInfo.cache
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.sourcelink.json
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/staticwebassets.build.json
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/staticwebassets.development.json
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/staticwebassets/msbuild.api.Microsoft.AspNetCore.StaticWebAssets.props
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/staticwebassets/msbuild.build.api.props
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.api.props
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.api.props
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/staticwebassets.pack.json
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/scopedcss/bundle/api.styles.css
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.csproj.Up2Date
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/refint/api.dll
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.pdb
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/api.genruntimeconfig.cache
+/Users/diclesaracoban/Desktop/dicleBranch/SoftMinds-Software-Project/api/obj/Debug/net8.0/ref/api.dll
