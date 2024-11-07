@@ -8,7 +8,7 @@ import './productsPage.scss';
 import { LoadProducts } from '../services/ProductService';
 import SetQuantityModal from '../components/modals/SetQuantityModal';
 import InfoModal from '../components/modals/InfoModal';
-
+import SortProducts from '../components/sortProducts/SortProducts';
 
 
 
@@ -20,6 +20,8 @@ const ProductsPage = () => {
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 	const [products, setProducts] = useState([]);
+	const [sortBy, setSortBy] = useState('name');
+	const [sortOrder, setSortOrder] = useState('asc');
 
 	useEffect(() => {
 		updateProducts();
@@ -39,7 +41,7 @@ const ProductsPage = () => {
     const updateProducts = async () => {
         setLoading(true);
         try {
-            const data = await LoadProducts({sector: filter});
+            const data = await LoadProducts({sector: filter, sortOrder, sortBy});
             onLoaded(data);
         } catch (error) {
             onError(error); // Handle error
@@ -88,7 +90,13 @@ const ProductsPage = () => {
 				onFilter={setFilter}/>
 			<section className='products__page'>
 				
-				<div className="products__sorting"></div>
+				{/* <div className="products__sorting"></div> */}
+				<SortProducts
+					sortBy={sortBy}
+					setSortBy={setSortBy}
+					sortOrder={sortOrder}
+					setSortOrder={setSortOrder}
+					/>
 				<div className="products__list">
 					{products.map(product => (
 						<ProductCard 

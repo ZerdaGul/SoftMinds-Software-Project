@@ -89,11 +89,11 @@ const LogInForm = () => {
                             <ErrorMessage component='div' className='form__error' name='password' />
                         </div>
                         <div className="form__footer">
-                            <p><Link to="/forgot-password-request" className='form__pages'>Forgot Password?</Link></p>
+                            <Link to="/forgot-password-request" className='form__pages'>Forgot Password?</Link>
                             <button className="button button__long" type="submit" disabled={isSubmitting}>
                                 {isSubmitting ? 'Logging in...' : 'Login'}
                             </button>
-                            <p>Don't have an account? <Link to="/registration">Sign up here</Link></p>
+                            <p className='form__pages'>Don't have an account? <Link to="/registration" style={{textDecoration: 'underline'}}>Sign up here</Link></p>
                         </div>
                     </Form>
                 )}
