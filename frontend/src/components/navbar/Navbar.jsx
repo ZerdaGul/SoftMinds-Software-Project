@@ -7,16 +7,19 @@ import user from '../../assets/icons/user.svg'
 import logo from '../../assets/icons/logo.png'
 import './Navbar.scss';
 import { LogOut } from '../../services/AuthService';
+import { useState } from 'react';
 
 const Navbar = () => {
     const navigate = useNavigate();
 
-    const isLoggedIn = !localStorage.getItem('current-user'); // Kullanıcının giriş yapıp yapmadığını kontrol et
-
+    // const isLoggedIn = !localStorage.getItem('current-user'); // Kullanıcının giriş yapıp yapmadığını kontrol et
+    // const [logedIn, setLogedIn] = useState(false);
     const handleLogout = async() => {
         // Oturum kapatma işlemi (örneğin, token'ı temizleme)
         localStorage.removeItem('current-user');
         await LogOut();
+        // setLogedIn(false);
+        localStorage.setItem('logedIn', false)
         navigate('/login'); // Çıkış yaptıktan sonra giriş sayfasına yönlendir
     };
 
@@ -62,12 +65,12 @@ const Navbar = () => {
                 </li>
                 <li>
                     {
-                        isLoggedIn ? (
+                        localStorage.getItem('logedIn') ? (
                             <Link onClick={handleLogout} >
                                 Log Out
                             </Link>
                         ) : (
-                            <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
+                            <NavLink  style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
                                      to="/login"> Log In </NavLink>
                         )
                     }

@@ -38,25 +38,30 @@ const LogInForm = () => {
             onError(error); // Handle error
         }
     };
+    const handleLogIn =() => {
+        localStorage.setItem('logedIn', true);
+        navigate('/')
+    }
 
     const modal = <div>
-                        {loaded && navigate('/')}
+                        
                         {error && createPortal(
                             <InfoModal 
                             title={"Error"}
                             subtitle={errorMessage}
                             onClose={() => {    
                                 setShowModal(false)
+                                
                                 navigate('/');}}/>,
                             document.body
                         )}
-                        {loading && <img src='../../assets/loading-animation.gif'></img>}
                         <div className='overlay'></div>
                     </div>
 
     return (
         <div className="form">
             {showModal && modal}
+            {loaded && handleLogIn()}
             <h2 className="title-fz28">Login</h2>
             <Formik
                 initialValues={{ email: '', password: '' }}
