@@ -95,7 +95,7 @@ namespace api.Controllers
                 Country = model.Country,
                 Password_Hash = hashed_Password,
                 Password_Salt = Convert.ToBase64String(salt),
-                Created_At = DateTime.UtcNow // Oluşturulma tarihini ayarlayın
+                Created_At = DateTime.UtcNow, // Oluşturulma tarihini ayarlayın
             };
 
             try

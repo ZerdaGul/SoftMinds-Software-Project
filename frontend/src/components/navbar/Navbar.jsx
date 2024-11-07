@@ -6,15 +6,17 @@ import earth from '../../assets/icons/earth.svg'
 import user from '../../assets/icons/user.svg'
 import logo from '../../assets/icons/logo.png'
 import './Navbar.scss';
+import { LogOut } from '../../services/AuthService';
 
 const Navbar = () => {
     const navigate = useNavigate();
 
-    const isLoggedIn = !!localStorage.getItem('current-user'); // Kullanıcının giriş yapıp yapmadığını kontrol et
+    const isLoggedIn = !localStorage.getItem('current-user'); // Kullanıcının giriş yapıp yapmadığını kontrol et
 
-    const handleLogout = () => {
+    const handleLogout = async() => {
         // Oturum kapatma işlemi (örneğin, token'ı temizleme)
         localStorage.removeItem('current-user');
+        await LogOut();
         navigate('/login'); // Çıkış yaptıktan sonra giriş sayfasına yönlendir
     };
 
