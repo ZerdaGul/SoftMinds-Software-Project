@@ -19,7 +19,7 @@ const LogInForm = () => {
     const onLoaded =() => {
         setLoading(false);
         setLoaded(true);
-        setShowModal(true)
+        handleLogIn();
         
     }
 
@@ -61,7 +61,6 @@ const LogInForm = () => {
     return (
         <div className="form">
             {showModal && modal}
-            {loaded && handleLogIn()}
             <h2 className="title-fz28">Login</h2>
             <Formik
                 initialValues={{ email: '', password: '' }}

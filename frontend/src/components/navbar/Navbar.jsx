@@ -20,7 +20,7 @@ const Navbar = () => {
         await LogOut();
         // setLogedIn(false);
         localStorage.setItem('logedIn', false)
-        navigate('/login'); // Çıkış yaptıktan sonra giriş sayfasına yönlendir
+        navigate('/'); // Çıkış yaptıktan sonra giriş sayfasına yönlendir
     };
 
     return (
@@ -65,7 +65,7 @@ const Navbar = () => {
                 </li>
                 <li>
                     {
-                        localStorage.getItem('logedIn') ? (
+                        localStorage.getItem('logedIn')  ? (
                             <Link onClick={handleLogout} >
                                 Log Out
                             </Link>
