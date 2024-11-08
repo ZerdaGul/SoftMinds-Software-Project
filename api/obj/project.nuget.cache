@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TmK8itZ6P6g=",
+  "dgSpecHash": "Li/8yYAOy/I=",
   "success": true,
-  "projectFilePath": "d:\\GTU 3\\SoftMinds-Software-Project\\api\\api.csproj",
+  "projectFilePath": "D:\\GTU 3\\SoftMinds-Software-Project\\api\\api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\user\\.nuget\\packages\\bouncycastle.cryptography\\2.4.0\\bouncycastle.cryptography.2.4.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
@@ -68,5 +68,12 @@
     "C:\\Users\\user\\.nuget\\packages\\system.text.encoding.codepages\\6.0.0\\system.text.encoding.codepages.6.0.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\system.threading.channels\\6.0.0\\system.threading.channels.6.0.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file D:\\GTU 3\\SoftMinds-Software-Project\\api\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

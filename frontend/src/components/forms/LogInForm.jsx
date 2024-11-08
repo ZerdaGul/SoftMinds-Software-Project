@@ -7,7 +7,7 @@ import { createPortal } from 'react-dom';
 import "./form.scss";
 import { LogIn } from '../../services/AuthService';
 import InfoModal from '../modals/InfoModal';
-const LogInForm = () => {
+const LogInForm = ({ setActiveUser }) => {
     const [loading, setLoading] = useState(false);
     const [loaded, setLoaded] = useState(false);
     const [error, setError] = useState(false);
@@ -19,7 +19,7 @@ const LogInForm = () => {
     const onLoaded =() => {
         setLoading(false);
         setLoaded(true);
-        handleLogIn();
+        setShowModal(true)
         
     }
 
@@ -29,32 +29,33 @@ const LogInForm = () => {
         setShowModal(true)
         setErrorMessage(error.message)      
     }
-    const handleSubmit = async (value) => {
+
+    const handleSubmit = async (values) => {
         setLoading(true);
         try {
-            await LogIn(value);
-            onLoaded();
-        } catch (error) {
-            onError(error); // Handle error
+            const user = await LogIn(values);
+            setActiveUser(user); // Kullanıcı durumunu günceller
+            navigate('/'); // Giriş yaptıktan sonra ana sayfaya yönlendir
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
         }
     };
-    const handleLogIn =() => {
-        localStorage.setItem('logedIn', true);
-        navigate('/')
-    }
+
 
     const modal = <div>
-                        
+                        {loaded && navigate('/')}
                         {error && createPortal(
                             <InfoModal 
                             title={"Error"}
                             subtitle={errorMessage}
                             onClose={() => {    
                                 setShowModal(false)
-                                
                                 navigate('/');}}/>,
                             document.body
                         )}
+                        {loading && <img src='../../assets/loading-animation.gif'></img>}
                         <div className='overlay'></div>
                     </div>
 
