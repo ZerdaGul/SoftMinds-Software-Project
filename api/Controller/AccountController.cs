@@ -33,8 +33,8 @@ namespace api.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
             // Model null veya gerekli alanlar boş ise hata döndür
-            if (model == null || string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.Email) ||
-                string.IsNullOrEmpty(model.Password) || string.IsNullOrEmpty(model.Phone) ||
+            if (model == null || string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.Email) || 
+                string.IsNullOrEmpty(model.Password) || string.IsNullOrEmpty(model.Phone) || 
                 string.IsNullOrEmpty(model.Country))
             {
                 return BadRequest("Tüm alanlar gereklidir.");
@@ -54,7 +54,7 @@ namespace api.Controllers
             }
 
             // Şifre doğrulaması
-            var passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$";
+            var passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"; 
             if (!Regex.IsMatch(model.Password, passwordPattern))
             {
                 return BadRequest("Şifre en az 8 karakterden oluşmalı, en az bir büyük harf, bir küçük harf ve bir sayı içermelidir.");
@@ -87,10 +87,10 @@ namespace api.Controllers
 
 
             // Kullanıcıyı veritabanına ekle
-            var user = new Users
-            {
-                Name = model.Name,
-                Email = model.Email,
+            var user = new Users 
+            { 
+                Name = model.Name, 
+                Email = model.Email, 
                 Phone = model.Phone,
                 Country = model.Country,
                 Password_Hash = hashed_Password,
@@ -107,8 +107,6 @@ namespace api.Controllers
             {
                 return StatusCode(500, "Kullanıcı kaydı sırasında bir hata oluştu. Lütfen tekrar deneyin. Hata: " + ex.Message);
             }
-            // Kullanıcı kaydedildikten sonra doğrulama e-postası gönder
-            await SendVerificationEmail(user);
             return CreatedAtAction(nameof(Register), new { id = user.Id }, user);
         }
 

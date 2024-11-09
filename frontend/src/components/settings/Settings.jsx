@@ -55,7 +55,7 @@ const Settings = ({ initialValues }) => {
         document.body
       )}
       {loading && createPortal(<img src='../../assets/loading-animation.gif' alt="Loading..." />, document.body)}
-      <div className='overlay'></div>
+
     </div>
   );
 
@@ -76,7 +76,8 @@ const Settings = ({ initialValues }) => {
               <ConfirmModal
                 title={"Delete account?"}
                 subtitle={"You will not be able to undo this action"}
-                buttonText={"Delete"}
+                buttonConfirmText={"Delete"}
+                buttonCloseText={'Cancel'}
                 onClose={() => setShowModal(false)}
                 onConfirm={handleAccountDelete} />,
               document.body

@@ -24,18 +24,12 @@ const App = () => {
 	const loadUser = () => {
 		GetActiveUser()
 			.then(data => setActiveUser(data.user))
-			.catch(error => console.log(error.message));
+			.catch((error) => console.log(error.message));
 	};
-
-	const handleLogout = () => {
-		setActiveUser(null);
-		localStorage.removeItem('current-user');
-	};
-
 
 	return (
 		<Router>
-			<Navbar activeUser={activeUser} onLogout={handleLogout} />
+			<Navbar activeUser={activeUser} setActiveUser={setActiveUser} />
 			<main>
 			<Routes>
 				<Route path='/'></Route>
@@ -60,7 +54,7 @@ const App = () => {
 					
 				</Route>
 				<Route path='/registration' element={<SignInPage />}></Route>
-				<Route path="/login" element={<LogInForm onLogin={setActiveUser} />}></Route>
+				<Route path='/login' element={<LogInForm setActiveUser={setActiveUser} />}></Route>
 			</Routes>
 			</main>
 		</Router>

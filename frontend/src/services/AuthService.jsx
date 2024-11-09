@@ -75,6 +75,23 @@ export const LogIn = async (data) => {
     }
   }
 }
+export const LogOut = async () => {
+  try {
+    const response = await axios.post( `${api}auth/logout`, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+    })
+    return response.data;
+} catch (error) {
+  if (error.response) {
+    
+    throw new Error(error.response.data); // Ensure error.response.data exists
+  } else {
+      throw new Error("An unknown error occurred."); // Catch other errors
+  }
+}
+}
 
 export const UpdateUser = async (data) => {
   try {

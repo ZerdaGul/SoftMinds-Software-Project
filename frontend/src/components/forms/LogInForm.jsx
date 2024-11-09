@@ -7,7 +7,7 @@ import { createPortal } from 'react-dom';
 import "./form.scss";
 import { LogIn } from '../../services/AuthService';
 import InfoModal from '../modals/InfoModal';
-const LogInForm = ({ onLogin }) => {
+const LogInForm = ({ setActiveUser }) => {
     const [loading, setLoading] = useState(false);
     const [loaded, setLoaded] = useState(false);
     const [error, setError] = useState(false);
@@ -16,30 +16,27 @@ const LogInForm = ({ onLogin }) => {
     const navigate = useNavigate();
 
 
-    const onLoaded = (user) => {
-        setLoading(false);
-        setLoaded(true);
-        setShowModal(true);
-        onLogin(user); // Giriş yapan kullanıcıyı güncelle
-    };
-
+    
     const onError = (error) => {
         setLoading(false);
-        setError(true);
-        setShowModal(true);
-        setErrorMessage(error.message);
-    };
+        setError(true);  
+        setShowModal(true)
+        setErrorMessage(error.message)      
+    }
 
-    const handleSubmit = async (value) => {
+    const handleSubmit = async (values) => {
         setLoading(true);
         try {
-            const userData = await LogIn(value);
-            onLogin(userData.user); // Kullanıcı bilgilerini güncelle
-            onLoaded();
-        } catch (error) {
-            onError(error); // Hata ile başa çık
+            const user = await LogIn(values);
+            setActiveUser(user); // Kullanıcı durumunu günceller
+            navigate('/'); // Giriş yaptıktan sonra ana sayfaya yönlendir
+        } catch (err) {
+            onError(err.message);
+        } finally {
+            setLoading(false);
         }
     };
+
 
     const modal = <div>
                         {loaded && navigate('/')}
@@ -91,11 +88,11 @@ const LogInForm = ({ onLogin }) => {
                             <ErrorMessage component='div' className='form__error' name='password' />
                         </div>
                         <div className="form__footer">
-                            <p><Link to="/forgot-password-request" className='form__pages'>Forgot Password?</Link></p>
+                            <Link to="/forgot-password-request" className='form__pages'>Forgot Password?</Link>
                             <button className="button button__long" type="submit" disabled={isSubmitting}>
                                 {isSubmitting ? 'Logging in...' : 'Login'}
                             </button>
-                            <p>Don't have an account? <Link to="/registration">Sign up here</Link></p>
+                            <p className='form__pages'>Don't have an account? <Link to="/registration" style={{textDecoration: 'underline'}}>Sign up here</Link></p>
                         </div>
                     </Form>
                 )}

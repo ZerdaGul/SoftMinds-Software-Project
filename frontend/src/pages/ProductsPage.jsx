@@ -8,7 +8,8 @@ import './productsPage.scss';
 import { LoadProducts } from '../services/ProductService';
 import SetQuantityModal from '../components/modals/SetQuantityModal';
 import InfoModal from '../components/modals/InfoModal';
-
+import SortProducts from '../components/sortProducts/SortProducts';
+import Pagination from '../components/pagination/Pagination';
 
 
 
@@ -19,15 +20,24 @@ const ProductsPage = () => {
 	const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+
 	const [products, setProducts] = useState([]);
+	const [sortBy, setSortBy] = useState('');
+	const [sortOrder, setSortOrder] = useState('');
+	const [currentPage, setCurrentPage] = useState(1);
+	const [totalPages, setTotalPages]= useState();
 
 	useEffect(() => {
+		console.log("Requesting products for page:", currentPage);
 		updateProducts();
-	}, [filter])
+	}, [filter,sortOrder, sortBy, currentPage])
 
 	const onLoaded =(data) => {
         setLoading(false);
         setProducts(data.products)
+		setSortBy(data.sortBy);
+		setSortOrder(data.sortOrder);
+		setTotalPages(data.totalPages);
     }
 
     const onError = (error) => {
@@ -39,7 +49,7 @@ const ProductsPage = () => {
     const updateProducts = async () => {
         setLoading(true);
         try {
-            const data = await LoadProducts({sector: filter});
+            const data = await LoadProducts({sector: filter, sortOrder, sortBy, pageNumber:currentPage});
             onLoaded(data);
         } catch (error) {
             onError(error); // Handle error
@@ -49,6 +59,10 @@ const ProductsPage = () => {
 	const handleAddToCart = (id) => {
 		setProductToBuy(id);
 		setShowModal(true)
+	}
+
+	const handlePageChange = (current, direction=0) => {
+		setCurrentPage(current+direction);
 	}
 
 	const modal = (
@@ -88,7 +102,13 @@ const ProductsPage = () => {
 				onFilter={setFilter}/>
 			<section className='products__page'>
 				
-				<div className="products__sorting"></div>
+				{/* <div className="products__sorting"></div> */}
+				<SortProducts
+					sortBy={sortBy}
+					setSortBy={setSortBy}
+					sortOrder={sortOrder}
+					setSortOrder={setSortOrder}
+					/>
 				<div className="products__list">
 					{products.map(product => (
 						<ProductCard 
@@ -97,6 +117,10 @@ const ProductsPage = () => {
 							product={product}/>
 					))}
 				</div>
+				<Pagination
+					currentPage={currentPage}
+					totalPages={totalPages}
+					onPageChange={handlePageChange}/>
 			</section>
 		</div>
 	)

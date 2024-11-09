@@ -1,9 +1,9 @@
-@import '../style/style';
+@import '../style/style.scss';
 
 .products{
     &__page{
         margin-left: 310px;
-
+        margin-bottom: 60px;
     }
     &__sorting {
         height: 32px;
