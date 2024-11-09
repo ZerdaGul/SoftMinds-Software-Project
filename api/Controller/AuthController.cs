@@ -104,7 +104,19 @@ namespace api.Controllers
             };
             Response.Cookies.Append("AuthToken", tokenString, cookieOptions);
 
-            return Ok(new { message = "Giriş başarılı." });
+            return Ok(new
+            {
+                message = "Giriş başarılı.",
+                user = new
+                {
+                    user.Id,
+                    user.Email,
+                    user.Name,
+                    user.Country,
+                    user.Phone,
+                    user.Created_At,
+                }
+            });
         }
 
         // POST /api/auth/logout

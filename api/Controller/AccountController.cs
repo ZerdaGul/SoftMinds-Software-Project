@@ -102,7 +102,6 @@ namespace api.Controllers
             {
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
-
             }
             catch (Exception ex)
             {
