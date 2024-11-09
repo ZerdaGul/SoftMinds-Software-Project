@@ -16,13 +16,7 @@ const LogInForm = ({ setActiveUser }) => {
     const navigate = useNavigate();
 
 
-    const onLoaded =() => {
-        setLoading(false);
-        setLoaded(true);
-        setShowModal(true)
-        
-    }
-
+    
     const onError = (error) => {
         setLoading(false);
         setError(true);  
@@ -37,7 +31,7 @@ const LogInForm = ({ setActiveUser }) => {
             setActiveUser(user); // Kullanıcı durumunu günceller
             navigate('/'); // Giriş yaptıktan sonra ana sayfaya yönlendir
         } catch (err) {
-            setError(err.message);
+            onError(err.message);
         } finally {
             setLoading(false);
         }
