@@ -99,7 +99,6 @@ namespace api.Controllers
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Secure = false, // HTTPS kullanıyorsanız true yapın
                 Expires = token.ValidTo
             };
             Response.Cookies.Append("AuthToken", tokenString, cookieOptions);
@@ -123,7 +122,6 @@ namespace api.Controllers
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-            // JWT ile logout işlemi istemci tarafında yapılır. Sunucu tarafında bir işlem yapılmaz.
             Response.Cookies.Delete("AuthToken");
             return Ok(new { message = "Çıkış başarılı." });
         }
@@ -164,22 +162,21 @@ namespace api.Controllers
 
                     return Ok(new
                     {
-                        message = "Aktif oturum bulundu.",
                         user = new
                         {
-                            // Diğer gerekli kullanıcı bilgileri
                             user.Id,
                             user.Email,
                             user.Name,
-                            user.Country,
-                            user.Phone,
-                            user.Created_At,
                         }
                     });
                 }
-                catch
+                catch (SecurityTokenException ex)
                 {
-                    return Unauthorized("Geçersiz token.");
+                    return Unauthorized("Geçersiz token: " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, "Token doğrulama hatası: " + ex.Message);
                 }
             }
 
