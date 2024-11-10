@@ -90,7 +90,7 @@ namespace api.Controllers
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(30),  // Token süresi 30 dakika
+                expires: DateTime.Now.AddDays(1),  // Token süresi 1 gün
                 signingCredentials: creds);
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
@@ -99,31 +99,19 @@ namespace api.Controllers
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Secure = false, // HTTPS kullanıyorsanız true yapın
+                Secure = false,
+                SameSite = SameSiteMode.None,
                 Expires = token.ValidTo
             };
             Response.Cookies.Append("AuthToken", tokenString, cookieOptions);
 
-            return Ok(new
-            {
-                message = "Giriş başarılı.",
-                user = new
-                {
-                    user.Id,
-                    user.Email,
-                    user.Name,
-                    user.Country,
-                    user.Phone,
-                    user.Created_At,
-                }
-            });
+            return Ok(new { token = tokenString });
         }
 
         // POST /api/auth/logout
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-            // JWT ile logout işlemi istemci tarafında yapılır. Sunucu tarafında bir işlem yapılmaz.
             Response.Cookies.Delete("AuthToken");
             return Ok(new { message = "Çıkış başarılı." });
         }
@@ -164,22 +152,23 @@ namespace api.Controllers
 
                     return Ok(new
                     {
-                        message = "Aktif oturum bulundu.",
                         user = new
                         {
-                            // Diğer gerekli kullanıcı bilgileri
                             user.Id,
                             user.Email,
                             user.Name,
                             user.Country,
                             user.Phone,
-                            user.Created_At,
                         }
                     });
                 }
-                catch
+                catch (SecurityTokenException ex)
                 {
-                    return Unauthorized("Geçersiz token.");
+                    return Unauthorized("Geçersiz token: " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, "Token doğrulama hatası: " + ex.Message);
                 }
             }
 

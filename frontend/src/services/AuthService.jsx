@@ -46,7 +46,8 @@ export const GetActiveUser = async () => {
       const response = await axios.get( `${api}auth/active-session`,{
           headers: {
             'Content-Type': 'application/json'
-          }
+          },
+          withCredentials: true // Enable cookies 
       })
      return response.data;
   } catch (error) {
