@@ -48,9 +48,10 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(
         builder =>
         {
-            builder.AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod();
+            builder.WithOrigins("http://localhost:3000") // Frontend URL
+                   .AllowAnyHeader()     
+                   .AllowAnyMethod()
+                   .AllowCredentials();
         });
 });
 
@@ -72,8 +73,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-app.UseAuthentication();  // Identity için gerekli
 app.UseCors();
+app.UseAuthentication();  // Identity için gerekli
 app.UseAuthorization();
 app.MapControllers();
 
