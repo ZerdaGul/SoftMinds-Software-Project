@@ -64,3 +64,20 @@ main {
     margin: 0 auto;
 }
 
+.back{
+    font-size: 28px;
+    color: $red;
+    position: absolute;
+    left: 250px;
+    text-decoration: underline;
+    &::before{
+        content: '';
+        position:absolute;
+        width: 30px;
+        height: 30px;
+        left: -40px;
+        bottom: 0;
+        background-image: url('../assets/icons/arrow-back-red.svg');
+    }
+}
+

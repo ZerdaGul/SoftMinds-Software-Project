@@ -1,12 +1,54 @@
 @import '../../style/style.scss';
 @import '../forms/form.scss';
 
+
+
 .product{
     width: 825px;
     margin: 0 auto;
+    color: $dark;
+    display: grid;
+    grid-template-columns: 400px 370px;
+    grid-template-rows: minmax(460, auto) auto;
+    column-gap: 50px;
+    row-gap: 60px;
+    // &__info{
+        
+
+    // }
     &__image{
         width: 400px;
         height: 458px;
         object-fit: cover;
+    }
+    &__title{
+        font-size: 28px;
+    }
+    &__price{
+        margin-top: 20px;
+        font-size: 36px;
+        font-weight: 700;
+    }
+    &__descr{
+        margin-top: 40px;
+        
+
+        &-text{
+            width:auto;
+            margin-top: 15px;
+            font-size: 16px;
+            color: $dark-op-50;
+        }
+    }
+
+    &__comment{
+        &-wrapper{
+            columns: 1 / 3;
+        }
+        &-title{
+            color: $dark;
+            font-size: 20px;
+            font-weight: 700;
+        }
     }
 }
