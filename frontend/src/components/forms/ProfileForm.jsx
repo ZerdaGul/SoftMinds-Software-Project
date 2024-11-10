@@ -60,7 +60,7 @@ const ProfileForm = ({initialValues}) => {
                         readOnly
                     />
                 </div>
-                <div className="input__wrapper">
+                {/* <div className="input__wrapper">
                     <label className="form__label" htmlFor="companyName">Company Name</label>
                     <input
                         type="text"
@@ -69,7 +69,7 @@ const ProfileForm = ({initialValues}) => {
                         className="form__input"
                         readOnly
                     />
-                </div>
+                </div> */}
                 <div className="input__wrapper">
                     <label className="form__label" htmlFor="country">Country</label>
                     <input

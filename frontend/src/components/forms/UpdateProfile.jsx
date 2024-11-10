@@ -49,7 +49,7 @@ const UpdateProfile = ({ initialValues,  }) => {
             name: value.name,
             currentEmail: initialValues.email,
             email: value.email,
-            companyName: value.companyName??initialValues.companyName,
+            // companyName: value.companyName??initialValues.companyName,
             currentPassword: value.password,
             phone: value.phone??initialValues.phone,
             country: value.country??initialValues.country,
@@ -90,7 +90,7 @@ const UpdateProfile = ({ initialValues,  }) => {
         name: Yup.string().required('Full name is required'),
         email: Yup.string().email('Invalid email address').required('Email is required'),
         phone: Yup.string().required('Phone number is required'),
-        companyName: Yup.string().required('Company name is required'),
+        // companyName: Yup.string().required('Company name is required'),
         country: Yup.string().required('Country is required'),
         // image: Yup.mixed(),
         password: Yup.string().required('This field is required!').min(8, "Must contain minimum 8 symbols"),
@@ -109,7 +109,7 @@ const UpdateProfile = ({ initialValues,  }) => {
                     name: initialValues.name || '',
                     email: initialValues.email || '',
                     phone: initialValues.phone || '',
-                    companyName: initialValues.companyName || '',
+                    // companyName: initialValues.companyName || '',
                     country: initialValues.country || '',
                 }}
                 validationSchema={validationSchema}
@@ -160,7 +160,7 @@ const UpdateProfile = ({ initialValues,  }) => {
                             <ErrorMessage component="div" className="form__error" name="phone" />
                         </div>
 
-                        <div className="input__wrapper">
+                        {/* <div className="input__wrapper">
                             <label className="form__label" htmlFor="companyName">Company Name</label>
                             <Field
                                 name="companyName"
@@ -168,7 +168,7 @@ const UpdateProfile = ({ initialValues,  }) => {
                                 className="form__input"
                             />
                             <ErrorMessage component="div" className="form__error" name="companyName" />
-                        </div>
+                        </div> */}
 
                         <div className="input__wrapper">
                             <label className="form__label" htmlFor="country">Country</label>

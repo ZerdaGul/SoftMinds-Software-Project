@@ -18,15 +18,15 @@ import ProductDetailsPage from '../product-page/ProductDetailsPage';
 const App = () => {
 	const [activeUser, setActiveUser] = useState(null);
 
-	// useEffect(() => {
-	// 	loadUser();
-	// }, []);
+	useEffect(() => {
+		loadUser();
+	}, []);
 
-	// const loadUser = () => {
-	// 	GetActiveUser()
-	// 		.then(data => setActiveUser(data.user))
-	// 		.catch((error) => console.log(error.message));
-	// };
+	const loadUser = () => {
+		GetActiveUser()
+			.then(data => setActiveUser(data.user))
+			.catch((error) => console.log(error.message));
+	};
 
 	return (
 		<Router>
