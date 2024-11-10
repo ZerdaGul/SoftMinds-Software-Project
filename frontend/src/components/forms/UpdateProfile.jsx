@@ -92,7 +92,7 @@ const UpdateProfile = ({ initialValues,  }) => {
         phone: Yup.string().required('Phone number is required'),
         companyName: Yup.string().required('Company name is required'),
         country: Yup.string().required('Country is required'),
-        image: Yup.mixed(),
+        // image: Yup.mixed(),
         password: Yup.string().required('This field is required!').min(8, "Must contain minimum 8 symbols"),
     });
 
@@ -113,7 +113,7 @@ const UpdateProfile = ({ initialValues,  }) => {
                     country: initialValues.country || '',
                 }}
                 validationSchema={validationSchema}
-                onSubmit={handleSubmit}
+                onSubmit={value => handleSubmit(value)}
             >
 
                 <Form>
@@ -189,7 +189,7 @@ const UpdateProfile = ({ initialValues,  }) => {
                             />
                         </div>
 
-                        <button type="button" onClick={() => setPage(2)} className="button button__long" disabled={loading}>
+                        <button type="button" onClick={() => setPage(2)} className="button button__long" >
                             Update Profile
                         </button>
                     </div> 

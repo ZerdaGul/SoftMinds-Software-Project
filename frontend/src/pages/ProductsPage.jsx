@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { createPortal } from 'react-dom';
 import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import SectorsSideMenu from '../components/sectors-side-menu/SectorsSideMenu'
 import ProductCard from '../components/product-card/ProductCard';
@@ -14,40 +15,38 @@ import Pagination from '../components/pagination/Pagination';
 
 
 const ProductsPage = () => {
-	const [filter, setFilter] = useState('All');
-	const [productToBuy, setProductToBuy] = useState(0);
-    const [showModal, setShowModal] = useState(false);
-	const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
+	const navigate = useNavigate();
+  	const location = useLocation();
+
+	// Initialize state from location or set default values
+	const [filter, setFilter] = useState(location.state?.filter || 'All');
+	const [sortBy, setSortBy] = useState(location.state?.sortBy || '');
+	const [sortOrder, setSortOrder] = useState(location.state?.sortOrder || '');
+	const [currentPage, setCurrentPage] = useState(location.state?.currentPage || 1);
 
 	const [products, setProducts] = useState([]);
-	const [sortBy, setSortBy] = useState('');
-	const [sortOrder, setSortOrder] = useState('');
-	const [currentPage, setCurrentPage] = useState(1);
-	const [totalPages, setTotalPages]= useState();
+	const [totalPages, setTotalPages] = useState();
+	const [error, setError] = useState(false);
+	const [errorMessage, setErrorMessage] = useState('');
+
+	const [productToBuy, setProductToBuy] = useState(0);
+	const [showModal, setShowModal] = useState(false);
 
 	useEffect(() => {
-		console.log("Requesting products for page:", currentPage);
 		updateProducts();
 	}, [filter,sortOrder, sortBy, currentPage])
 
 	const onLoaded =(data) => {
-        setLoading(false);
-        setProducts(data.products)
-		setSortBy(data.sortBy);
-		setSortOrder(data.sortOrder);
+        setProducts(data.products);
 		setTotalPages(data.totalPages);
     }
 
     const onError = (error) => {
-        setLoading(false);
         setError(true);  
         setShowModal(true);
         setErrorMessage(error.message)      
     }
     const updateProducts = async () => {
-        setLoading(true);
         try {
             const data = await LoadProducts({sector: filter, sortOrder, sortBy, pageNumber:currentPage});
             onLoaded(data);
@@ -64,6 +63,13 @@ const ProductsPage = () => {
 	const handlePageChange = (current, direction=0) => {
 		setCurrentPage(current+direction);
 	}
+
+	const handleProductClick = (productId) => {
+		// Navigate to the single product page, preserving state
+		navigate(`/products/${productId}`, {
+			state: { filter, sortBy, sortOrder, currentPage },
+		});
+	};
 
 	const modal = (
         <div>
@@ -114,7 +120,8 @@ const ProductsPage = () => {
 						<ProductCard 
 							handleAddToCart={handleAddToCart}
 							key={product.id}
-							product={product}/>
+							product={product}
+							onClick={() => handleProductClick(product.id)}/>
 					))}
 				</div>
 				<Pagination

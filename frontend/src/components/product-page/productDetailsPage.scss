@@ -1,0 +1,12 @@
+@import '../../style/style.scss';
+@import '../forms/form.scss';
+
+.product{
+    width: 825px;
+    margin: 0 auto;
+    &__image{
+        width: 400px;
+        height: 458px;
+        object-fit: cover;
+    }
+}

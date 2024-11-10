@@ -3,10 +3,12 @@ import React from 'react'
 import './productCard.scss';
 import product_pic from '../../assets/product-pic-default.jpg'
 
-const ProductCard = ({product, handleAddToCart}) => {
+const ProductCard = ({product, onClick, handleAddToCart}) => {
   return (
-    <div className="productCard">
-        <img src={product_pic} alt="product picture" className="productCard__image"/>
+    <div 
+      onClick={onClick}
+      className="productCard">
+        <img src={product_pic} alt="product-picture" className="productCard__image"/>
        
         <div className="productCard__wrapper">
             <div className="productCard__title">{product.name}</div>

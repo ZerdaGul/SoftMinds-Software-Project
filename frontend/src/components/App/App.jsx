@@ -13,19 +13,20 @@ import { GetActiveUser } from '../../services/AuthService';
 import ForgotPasswordRequest from '../forms/ForgotPasswordRequest';
 import CreatePasswordForm from '../forms/CreatePasswordForm';
 import ProductsPage from '../../pages/ProductsPage';
+import ProductDetailsPage from '../product-page/ProductDetailsPage';
 
 const App = () => {
 	const [activeUser, setActiveUser] = useState(null);
 
-	useEffect(() => {
-		loadUser();
-	}, []);
+	// useEffect(() => {
+	// 	loadUser();
+	// }, []);
 
-	const loadUser = () => {
-		GetActiveUser()
-			.then(data => setActiveUser(data.user))
-			.catch((error) => console.log(error.message));
-	};
+	// const loadUser = () => {
+	// 	GetActiveUser()
+	// 		.then(data => setActiveUser(data.user))
+	// 		.catch((error) => console.log(error.message));
+	// };
 
 	return (
 		<Router>
@@ -35,6 +36,7 @@ const App = () => {
 				<Route path='/'></Route>
 				<Route path='/aboutUs'></Route>
 				<Route path='/products' element={<ProductsPage/>}></Route>
+				<Route path='/products/:id' element={<ProductDetailsPage/>}></Route>
 				<Route path='/sectors'></Route>
 				<Route path='/solutions'></Route>
 				<Route path='/consultancy'></Route>
