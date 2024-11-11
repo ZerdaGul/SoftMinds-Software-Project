@@ -6,7 +6,7 @@ import './pagination.scss'
 
 const Pagination = ({currentPage, totalPages, onPageChange}) => {
 	const [initialPage, setInitialPage] = useState(currentPage);
-	const [lastPage, setLastPage] = useState(initialPage+2);
+	const [lastPage, setLastPage] = useState(totalPages<3 ? totalPages : initialPage+2);
 	const [workingPages, setWorkingPages] = useState([])
 	
 

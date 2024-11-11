@@ -11,7 +11,8 @@ import SetQuantityModal from '../components/modals/SetQuantityModal';
 import InfoModal from '../components/modals/InfoModal';
 import SortProducts from '../components/sortProducts/SortProducts';
 import Pagination from '../components/pagination/Pagination';
-
+import { SearchProducts } from '../services/ProductService';
+import Search from '../components/search/Search';
 
 
 const ProductsPage = () => {
@@ -28,6 +29,8 @@ const ProductsPage = () => {
 	const [totalPages, setTotalPages] = useState();
 	const [error, setError] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
+	const [query, setQuery]=useState('');
+	const [reset, setReset] = useState(false);
 
 	const [productToBuy, setProductToBuy] = useState(0);
 	const [showModal, setShowModal] = useState(false);
@@ -71,6 +74,21 @@ const ProductsPage = () => {
 		});
 	};
 
+	const handleSearch = async (query) => {
+		setQuery(query);
+		if(query){
+			try{
+				const data = await SearchProducts({keyword: query, pageNumber: currentPage});
+				onLoaded(data);
+				setReset(true);
+			} catch (error) {
+				onError(error);
+			}
+		} else {
+			updateProducts();
+		}
+	}
+
 	const modal = (
         <div>
 			{productToBuy && 
@@ -101,35 +119,44 @@ const ProductsPage = () => {
     );
 
 	return (
-		<div>
-			{showModal && modal}
-			<SectorsSideMenu 
-				filter={filter}
-				onFilter={setFilter}/>
-			<section className='products__page'>
+		<>
+				{showModal && modal}
 				
-				{/* <div className="products__sorting"></div> */}
-				<SortProducts
-					sortBy={sortBy}
-					setSortBy={setSortBy}
-					sortOrder={sortOrder}
-					setSortOrder={setSortOrder}
-					/>
-				<div className="products__list">
-					{products.map(product => (
-						<ProductCard 
-							handleAddToCart={handleAddToCart}
-							key={product.id}
-							product={product}
-							onClick={() => handleProductClick(product.id)}/>
-					))}
-				</div>
-				<Pagination
-					currentPage={currentPage}
-					totalPages={totalPages}
-					onPageChange={handlePageChange}/>
-			</section>
-		</div>
+				{!query && <SectorsSideMenu 
+					filter={filter}
+					onFilter={setFilter}/>}
+
+				<section className='products__page'>
+					
+					<div className="products__control">
+					{!query &&<SortProducts
+						sortBy={sortBy}
+						setSortBy={setSortBy}
+						sortOrder={sortOrder}
+						setSortOrder={setSortOrder}
+						/>}
+						<Search
+							reset={reset}
+							onSearch={handleSearch}
+						/>
+					</div>
+					<div className="products__list">
+						{products.map(product => (
+							<ProductCard 
+								handleAddToCart={handleAddToCart}
+								key={product.id}
+								product={product}
+								onClick={() => handleProductClick(product.id)}/>
+						))}
+					</div>
+					<Pagination
+						currentPage={currentPage}
+						totalPages={totalPages}
+						onPageChange={handlePageChange}/>
+				</section>
+				</>
+			
+		
 	)
 }
 
