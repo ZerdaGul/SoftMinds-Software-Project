@@ -15,11 +15,9 @@ builder.Services.AddDbContext<AppDBContext>(options =>
 // EmailSettings konfigürasyonunu ekle
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
-
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor(); // Bu satırı ekleyin
-
 
 // JWT Authentication ekle
 var jwtKey = builder.Configuration["Jwt:Key"];
@@ -45,17 +43,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(
-        builder =>
-        {
-            builder.AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod();
-        });
+    options.AddPolicy("CorsPolicy", builder =>
+    {
+        builder.WithOrigins("http://localhost:3000")
+            .AllowCredentials()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
 });
-
-
-
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -72,8 +67,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-app.UseAuthentication();  // Identity için gerekli
-app.UseCors();
+app.UseCors("CorsPolicy");
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
