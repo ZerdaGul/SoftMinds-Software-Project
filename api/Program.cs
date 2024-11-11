@@ -18,7 +18,14 @@ builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Emai
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor(); // Bu satırı ekleyin
-
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(60); // Session timeout süresi
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SameSite = SameSiteMode.None;
+    options.Cookie.IsEssential = true;
+});
 // JWT Authentication ekle
 var jwtKey = builder.Configuration["Jwt:Key"];
 if (string.IsNullOrEmpty(jwtKey) || jwtKey.Length < 32)
@@ -70,6 +77,7 @@ app.UseRouting();
 app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession(); // Session middleware'i ekleyin
 app.MapControllers();
 
 app.Run();

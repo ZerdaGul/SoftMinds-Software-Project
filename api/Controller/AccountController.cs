@@ -124,8 +124,6 @@ namespace api.Controllers
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
 
-            // Aktif oturum cookie'sini sil
-            Response.Cookies.Delete("AuthToken");
             return Ok(new { message = "Hesap başarıyla silindi." });
         }
         [HttpGet("verify")]

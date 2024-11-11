@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.AspNetCore.Http;
 
 namespace api.Controllers
 {
@@ -16,13 +17,16 @@ namespace api.Controllers
     {
         private readonly AppDBContext _context;
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
         private const int MaxFailedAccessAttempts = 5; // Maksimum başarısız giriş denemesi
         private const int LockoutDuration = 5; // Kilitlenme süresi (dakika)
 
-        public AuthController(AppDBContext context, IConfiguration configuration)
+        public AuthController(AppDBContext context, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         // POST /api/auth/login
@@ -94,16 +98,7 @@ namespace api.Controllers
                 signingCredentials: creds);
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-
-            // Token'ı HTTP-only cookie olarak ayarla
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = false,
-                SameSite = SameSiteMode.None,
-                Expires = token.ValidTo
-            };
-            Response.Cookies.Append("AuthToken", tokenString, cookieOptions);
+            _httpContextAccessor.HttpContext?.Session.SetString("AuthToken", tokenString);
 
             return Ok(new { token = tokenString });
         }
@@ -112,7 +107,7 @@ namespace api.Controllers
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-            Response.Cookies.Delete("AuthToken");
+            _httpContextAccessor.HttpContext?.Session.Clear();
             return Ok(new { message = "Çıkış başarılı." });
         }
 
@@ -120,59 +115,29 @@ namespace api.Controllers
         [HttpGet("active-session")]
         public async Task<IActionResult> GetActiveSession()
         {
-            if (Request.Cookies.TryGetValue("AuthToken", out var token))
+            var token = _httpContextAccessor.HttpContext?.Session.GetString("AuthToken");
+            if (string.IsNullOrEmpty(token))
             {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var jwtKey = _configuration["Jwt:Key"];
-                if (string.IsNullOrEmpty(jwtKey))
-                {
-                    return StatusCode(500, "JWT key is not configured.");
-                }
-                var key = Encoding.UTF8.GetBytes(jwtKey);
-
-                try
-                {
-                    tokenHandler.ValidateToken(token, new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                        ClockSkew = TimeSpan.Zero
-                    }, out SecurityToken validatedToken);
-
-                    var jwtToken = (JwtSecurityToken)validatedToken;
-                    var userId = jwtToken.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
-
-                    var user = await _context.Users.FindAsync(int.Parse(userId));
-                    if (user == null)
-                    {
-                        return NotFound("Kullanıcı bulunamadı.");
-                    }
-
-                    return Ok(new
-                    {
-                        user = new
-                        {
-                            user.Id,
-                            user.Email,
-                            user.Name,
-                            user.Country,
-                            user.Phone,
-                        }
-                    });
-                }
-                catch (SecurityTokenException ex)
-                {
-                    return Unauthorized("Geçersiz token: " + ex.Message);
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, "Token doğrulama hatası: " + ex.Message);
-                }
+                return NotFound(new { message = "Oturum bulunamadı." });
             }
 
-            return NotFound("Aktif oturum bulunamadı.");
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+            var email = jsonToken?.Claims.First(claim => claim.Type == ClaimTypes.Name).Value;
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (user == null)
+            {
+                return NotFound(new { message = "Kullanıcı bulunamadı." });
+            }
+
+            return Ok(new
+            {
+                user.Id,
+                user.Email,
+                user.Name,
+                user.Country,
+                user.Phone
+            });
         }
     }
 }
