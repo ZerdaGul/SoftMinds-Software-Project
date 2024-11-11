@@ -28,7 +28,7 @@ const LogInForm = ({ setActiveUser }) => {
         setLoading(true);
         try {
             const user = await LogIn(values);
-            setActiveUser(user); // Kullanıcı durumunu günceller
+            setActiveUser(user.user); // Kullanıcı durumunu günceller
             navigate('/'); // Giriş yaptıktan sonra ana sayfaya yönlendir
         } catch (err) {
             onError(err.message);

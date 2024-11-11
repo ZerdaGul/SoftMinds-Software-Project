@@ -64,7 +64,8 @@ export const LogIn = async (data) => {
       const response = await axios.post( `${api}auth/login`, data, {
           headers: {
             'Content-Type': 'application/json'
-          }
+          },
+          // withCredentials: true
       })
       return response.data;
   } catch (error) {
@@ -81,7 +82,8 @@ export const LogOut = async () => {
     const response = await axios.post( `${api}auth/logout`, {
         headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        
     })
     return response.data;
 } catch (error) {
