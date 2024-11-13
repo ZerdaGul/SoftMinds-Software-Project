@@ -14,19 +14,25 @@ import ForgotPasswordRequest from '../forms/ForgotPasswordRequest';
 import CreatePasswordForm from '../forms/CreatePasswordForm';
 import ProductsPage from '../../pages/ProductsPage';
 import ProductDetailsPage from '../product-page/ProductDetailsPage';
+import OrderAdminPage from '../../pages/OrderAdminPage';
 
 const App = () => {
 	const [activeUser, setActiveUser] = useState(null);
-
+	// Runs when isUserUpdated becomes true
 	useEffect(() => {
-		loadUser();
-	}, []);
+		if (activeUser) {
+		  console.log("Active user updated, loading user data...");
+		  loadUser(); // Trigger loadUser when activeUser changes
+		}
+	  }, [activeUser]); 
 
 	const loadUser = () => {
 		GetActiveUser()
-			.then(data => setActiveUser(data.user))
+			.then(data => setActiveUser(data.user))  // Sets the active user
 			.catch((error) => console.log(error.message));
 	};
+
+
 
 	return (
 		<Router>
@@ -43,15 +49,27 @@ const App = () => {
 				<Route path='/contactUs'></Route>
 				<Route path='/forgot-password-request' element={<ForgotPasswordRequest />}></Route>
 				<Route path='/create-password' element={<CreatePasswordForm/>}></Route>
-				<Route path='/profile/*' element={<UserProfilePage />}>
+				{/* <Route path='/profile/*' element={<UserProfilePage />}>
 					<Route path='dashboard'></Route>
 					<Route path='orders'></Route>
+					<Route path='cart'></Route>
 					<Route path='my-profile' element={<ProfileForm initialValues={activeUser} />}></Route>
 					<Route path='contacts'></Route>
 					<Route path='settings/*' element={<Settings initialValues={activeUser}/>}>
 						<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser}/>} />
 					</Route>
+					<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
 					
+				</Route> */}
+				<Route path='/profile/*' element={<OrderAdminPage/>}>
+					<Route path='dashboard'></Route>
+					<Route path='orders-progress'></Route>
+					<Route path='requests'></Route>
+					<Route path='my-profile' element={<ProfileForm initialValues={activeUser} />}></Route>
+					<Route path='contacts'></Route>
+					<Route path='settings/*' element={<Settings initialValues={activeUser}/>}>
+						<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser}/>} />
+					</Route>
 					<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
 					
 				</Route>

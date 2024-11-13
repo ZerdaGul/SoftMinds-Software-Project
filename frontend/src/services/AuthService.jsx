@@ -65,7 +65,7 @@ export const LogIn = async (data) => {
           headers: {
             'Content-Type': 'application/json'
           },
-          // withCredentials: true
+          withCredentials: true
       })
       return response.data;
   } catch (error) {
