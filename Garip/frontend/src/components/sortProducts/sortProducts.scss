@@ -1,0 +1,22 @@
+@import '../../style/style.scss';
+
+.sort-by-dropdown {
+    width: 220px;
+    position: relative;
+    &__label{
+        display: block;
+        height: 32px;
+        
+        border-radius: 8px;
+        border: 1px solid $dark-op-30;
+        font-size: 16px;
+        padding: 0 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items:center;
+        color: $dark;
+    }
+    &__select {
+        position: absolute;
+    }
+}
