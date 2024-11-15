@@ -15,6 +15,7 @@ import CreatePasswordForm from '../forms/CreatePasswordForm';
 import ProductsPage from '../../pages/ProductsPage';
 import ProductDetailsPage from '../product-page/ProductDetailsPage';
 import OrderAdminPage from '../../pages/OrderAdminPage';
+import HomePage from "../forms/HomePage";
 
 const App = () => {
 	const [activeUser, setActiveUser] = useState(null);
@@ -82,7 +83,7 @@ const App = () => {
 			/>
 			<main>
 			<Routes>
-				<Route path='/' element={<ProductsPage/>}></Route>
+				<Route path='/' element={<HomePage/>}></Route>
 				<Route path='/aboutUs'></Route>
 				<Route path='/products' element={<ProductsPage/>}></Route>
 				<Route path='/products/:id' element={<ProductDetailsPage/>}></Route>
