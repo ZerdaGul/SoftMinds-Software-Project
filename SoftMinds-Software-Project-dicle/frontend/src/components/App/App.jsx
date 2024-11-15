@@ -16,6 +16,7 @@ import ProductsPage from '../../pages/ProductsPage';
 import ProductDetailsPage from '../product-page/ProductDetailsPage';
 import OrderAdminPage from '../../pages/OrderAdminPage';
 import HomePage from "../forms/HomePage";
+import AboutUs from "../../pages/AboutUs";
 
 const App = () => {
 	const [activeUser, setActiveUser] = useState(null);
@@ -84,7 +85,7 @@ const App = () => {
 			<main>
 			<Routes>
 				<Route path='/' element={<HomePage/>}></Route>
-				<Route path='/aboutUs'></Route>
+				<Route path='/aboutUs' element={<AboutUs/>}></Route>
 				<Route path='/products' element={<ProductsPage/>}></Route>
 				<Route path='/products/:id' element={<ProductDetailsPage/>}></Route>
 				<Route path='/sectors'></Route>
