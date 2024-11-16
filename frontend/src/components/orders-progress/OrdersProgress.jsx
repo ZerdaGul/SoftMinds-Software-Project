@@ -17,29 +17,29 @@ const OrdersProgress = () => {
     <section className='progress'>
         <div className="progress__block">
             <div className="progress__title">In Progress</div>
-            <div className="progress__products">
+            <ul className="progress__products">
                 {orders.map(({product, amount}, i) => {
                     return(
-                        <div key={i} className="progress__product">             
+                        <li key={i} className="progress__product">             
                             <div className="progress__product-name">{product}</div>
                             <div className="progress__product-amount">{amount}</div>
-                        </div>
+                        </li>
                     )
                 })}
-            </div>
+            </ul>
         </div>
         <div className="progress__block">
             <div className="progress__title">Done</div>
-            <div className="progress__products">
+            <ul className="progress__products">
                 {orders.map(({product, amount}, i) => {
                     return(
-                        <div key={i} className="progress__product">             
+                        <li key={i} className="progress__product">             
                             <div className="progress__product-name">{product}</div>
                             <div className="progress__product-amount">{amount}</div>
-                        </div>
+                        </li>
                     )
                 })}
-            </div>
+            </ul>
                 
             
         </div>
