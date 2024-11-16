@@ -16,12 +16,15 @@
         font-size: 18px;
         height: 48px;
         display: grid;
-        grid-template-columns: 540px 70px 240px;
+        grid-template-columns: 440px 50px 100px 240px;
         gap: 35px;
         align-items: center;
         &-name{
             width: 100%;
             text-align: left;
+            position: relative;
+        }
+        &-amount{
             position: relative;
             &::after{
                 content: '';
@@ -33,6 +36,9 @@
                 transform: translateY(50%);
                 left: 100%;
             }
+        }
+        &-price {
+            font-weight: 700;
         }
         &::after{
             content: "";

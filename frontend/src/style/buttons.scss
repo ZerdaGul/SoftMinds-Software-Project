@@ -30,5 +30,15 @@
         color: $red;
         border: 1px solid $red;
     }
+    &:hover{
+        background: none;
+        border: 1px solid $red;
+        color: $red;
+    }
+    &:active{
+        background-color: $orange;
+        color: #fff;
+        border: none;
+    }
 
 }
