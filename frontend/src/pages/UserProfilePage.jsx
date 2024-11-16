@@ -23,7 +23,7 @@ const UserProfilePage = () => {
   return (
     <div style={{display: 'flex'}}>
         <SideMenu main_menu={links}/>
-            <Outlet style={{paddingTop: '24px', paddingLeft: "30px" }}/>
+            <Outlet style={{paddingTop: '24px', paddingLeft: "30px" , }}/>
     </div>
     
   )

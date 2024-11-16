@@ -15,6 +15,8 @@ import CreatePasswordForm from '../forms/CreatePasswordForm';
 import ProductsPage from '../../pages/ProductsPage';
 import ProductDetailsPage from '../product-page/ProductDetailsPage';
 import OrderAdminPage from '../../pages/OrderAdminPage';
+import OrdersProgress from '../orders-progress/OrdersProgress';
+import Requests from '../requests/Requests';
 
 const App = () => {
 	const [activeUser, setActiveUser] = useState(null);
@@ -63,8 +65,8 @@ const App = () => {
 				</Route> */}
 				<Route path='/profile/*' element={<OrderAdminPage/>}>
 					<Route path='dashboard'></Route>
-					<Route path='orders-progress'></Route>
-					<Route path='requests'></Route>
+					<Route path='orders-progress' element={<OrdersProgress/>}></Route>
+					<Route path='requests' element={<Requests/>}></Route>
 					<Route path='my-profile' element={<ProfileForm initialValues={activeUser} />}></Route>
 					<Route path='contacts'></Route>
 					<Route path='settings/*' element={<Settings initialValues={activeUser}/>}>
