@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import './CartForm.scss';
+import './CardForm.scss';
 
-const CartForm = () => {
+const CardForm = () => {
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -153,4 +153,4 @@ const CartForm = () => {
     );
 };
 
-export default CartForm;
+export default CardForm;

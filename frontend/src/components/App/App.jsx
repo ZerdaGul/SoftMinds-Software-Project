@@ -17,6 +17,9 @@ import ProductDetailsPage from '../product-page/ProductDetailsPage';
 import OrderAdminPage from '../../pages/OrderAdminPage';
 import HomePage from "../forms/HomePage";
 import AboutUs from "../../pages/AboutUs";
+import ProductsForAdmin from "../../pages/ProductsForAdmin";
+import CardForm from "../forms/CardForm";
+import ProductDashboard from "../../dashboard/ProductDashboard";
 
 const App = () => {
 	const [activeUser, setActiveUser] = useState(null);
