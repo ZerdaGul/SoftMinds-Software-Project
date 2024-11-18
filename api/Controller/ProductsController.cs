@@ -212,6 +212,8 @@ namespace api.Controllers
             var totalReviews = await _context.Reviews.CountAsync(r => r.ProductId == id);
             var totalPages = (int)Math.Ceiling(totalReviews / (double)reviewsPerPage);
 
+            var averageRating = reviews.Count > 0 ? reviews.Average(r => (double?)r.Rating) : 0.0;
+
             var response = new
             {
                 Reviews = reviews,
@@ -221,23 +223,24 @@ namespace api.Controllers
                     ReviewsPerPage = reviewsPerPage,
                     TotalReviews = totalReviews,
                     TotalPages = totalPages
-                }
+                },
+                AverageRaing = averageRating
             };
 
             return Ok(response);
         }
 
         // POST /api/products/{id}/reviews
-        [HttpPost("{id}/reviews")]
+        [HttpPost("{productId}/reviews")]
         [Authorize] // Ensure the user is authenticated
-        public async Task<IActionResult> PostReview(int id, [FromBody] ReviewDTO reviewDto)
+        public async Task<IActionResult> PostReview(int productId, [FromBody] ReviewDTO reviewDto)
         {
             if (reviewDto == null || string.IsNullOrEmpty(reviewDto.ReviewText) || reviewDto.Rating <= 0)
             {
                 return BadRequest("Invalid review data.");
             }
 
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products.FindAsync(productId);
             if (product == null)
             {
                 return NotFound("Product not found.");
@@ -251,11 +254,11 @@ namespace api.Controllers
 
             var review = new Reviews
             {
-                ProductId = id,
+                UserId = int.Parse(userId),
+                ProductId = productId,
                 ReviewText = reviewDto.ReviewText,
                 Rating = reviewDto.Rating,
                 CreatedAt = DateTime.UtcNow,
-                UserId = int.Parse(userId)
             };
 
             _context.Reviews.Add(review);
