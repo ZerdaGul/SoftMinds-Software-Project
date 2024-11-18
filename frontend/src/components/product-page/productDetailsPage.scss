@@ -4,6 +4,7 @@
 
 
 .product{
+    padding-bottom: 55px;
     width: 825px;
     margin: 0 auto;
     color: $dark;
@@ -42,13 +43,32 @@
     }
 
     &__comment{
+        margin-top: 10px;
+        border-bottom: 1px solid $dark-op-30;
+        padding: 15px 0;
         &-wrapper{
-            columns: 1 / 3;
+            grid-column: 1 / 3;
         }
         &-title{
             color: $dark;
             font-size: 20px;
             font-weight: 700;
+        }
+        &-form {
+            width: 100%;
+            display: grid;
+            grid-template-rows: minmax(110px, auto) 36px;
+            justify-items: end;
+            gap: 15px;
+        }
+        &-field{
+            width: 100%;
+            margin-top: 25px;
+            padding: 10px 15px;
+            font-size: 16px;
+            color: $dark-op-50;
+            border-radius: 8px;
+            border: 1px solid $dark-op-30;
         }
     }
 }
