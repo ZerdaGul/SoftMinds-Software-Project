@@ -6,6 +6,10 @@ using api.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using api.Models;
+using System.Security.Claims;
+using api.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace api.Controllers
 {
@@ -181,6 +185,298 @@ namespace api.Controllers
                 })
             };
             return Ok(response);
+        }
+
+        // GET /api/products/{id}/reviews
+        [HttpGet("{id}/reviews")]
+        public async Task<IActionResult> GetProductReviews(int id, [FromQuery] int pageNumber = 1, [FromQuery] int reviewsPerPage = 10)
+        {
+            if (pageNumber <= 0 || reviewsPerPage <= 0)
+            {
+                return BadRequest("Page number and reviews per page must be greater than zero.");
+            }
+
+            var product = await _context.Products.FindAsync(id);
+            if (product == null)
+            {
+                return NotFound("Product not found.");
+            }
+
+            var reviews = await _context.Reviews
+                .Where(r => r.ProductId == id)
+                .OrderBy(r => r.CreatedAt)
+                .Skip((pageNumber - 1) * reviewsPerPage)
+                .Take(reviewsPerPage)
+                .ToListAsync();
+
+            var totalReviews = await _context.Reviews.CountAsync(r => r.ProductId == id);
+            var totalPages = (int)Math.Ceiling(totalReviews / (double)reviewsPerPage);
+
+            var averageRating = reviews.Count > 0 ? reviews.Average(r => (double?)r.Rating) : 0.0;
+
+            var response = new
+            {
+                Reviews = reviews,
+                Pagination = new
+                {
+                    CurrentPage = pageNumber,
+                    ReviewsPerPage = reviewsPerPage,
+                    TotalReviews = totalReviews,
+                    TotalPages = totalPages
+                },
+                AverageRaing = averageRating
+            };
+
+            return Ok(response);
+        }
+
+        // POST /api/products/{id}/reviews
+        [HttpPost("{productId}/reviews")]
+        [Authorize] // Ensure the user is authenticated
+        public async Task<IActionResult> PostReview(int productId, [FromBody] ReviewDTO reviewDto)
+        {
+            if (reviewDto == null || string.IsNullOrEmpty(reviewDto.ReviewText) || reviewDto.Rating <= 0)
+            {
+                return BadRequest("Invalid review data.");
+            }
+
+            var product = await _context.Products.FindAsync(productId);
+            if (product == null)
+            {
+                return NotFound("Product not found.");
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized("User not authenticated.");
+            }
+
+            var review = new Reviews
+            {
+                UserId = int.Parse(userId),
+                ProductId = productId,
+                ReviewText = reviewDto.ReviewText,
+                Rating = reviewDto.Rating,
+                CreatedAt = DateTime.UtcNow,
+            };
+
+            _context.Reviews.Add(review);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Review posted successfully." });
+        }
+
+        // DELETE /api/products/{productId}/reviews/{reviewId}
+        [HttpDelete("{productId}/reviews/{reviewId}")]
+        [Authorize] // Ensure the user is authenticated
+        public async Task<IActionResult> DeleteReview(int productId, int reviewId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized("User not authenticated.");
+            }
+
+            var review = await _context.Reviews.FirstOrDefaultAsync(r => r.Id == reviewId && r.ProductId == productId);
+            if (review == null)
+            {
+                return NotFound("Review not found.");
+            }
+
+            if (review.UserId != int.Parse(userId))
+            {
+                return Forbid("You are not authorized to delete this review.");
+            }
+
+            _context.Reviews.Remove(review);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Review deleted successfully." });
+        }
+        // PUT /api/products/{productId}/reviews/{reviewId}
+        [HttpPut("{productId}/reviews/{reviewId}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateReview(int productId, int reviewId, [FromBody] ReviewDTO reviewDto)
+        {
+            if (reviewDto == null || string.IsNullOrEmpty(reviewDto.ReviewText) || reviewDto.Rating <= 0)
+            {
+                return BadRequest("Invalid review data.");
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized("User not authenticated.");
+            }
+
+            var review = await _context.Reviews.FirstOrDefaultAsync(r => r.Id == reviewId && r.ProductId == productId);
+            if (review == null)
+            {
+                return NotFound("Review not found.");
+            }
+
+            if (review.UserId != int.Parse(userId))
+            {
+                return Forbid("You are not authorized to update this review.");
+            }
+
+            review.ReviewText = reviewDto.ReviewText;
+            review.Rating = reviewDto.Rating;
+            review.CreatedAt = DateTime.UtcNow;
+
+            _context.Reviews.Update(review);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Review updated successfully." });
+        }
+
+        // GET /api/products/{productId}/comments
+        [HttpGet("{productId}/comments")]
+        public async Task<IActionResult> GetProductComments(int productId, [FromQuery] int pageNumber = 1, [FromQuery] int commentsPerPage = 10)
+        {
+            if (pageNumber <= 0 || commentsPerPage <= 0)
+            {
+                return BadRequest("Page number and comments per page must be greater than zero.");
+            }
+
+            var product = await _context.Products.FindAsync(productId);
+            if (product == null)
+            {
+                return NotFound("Product not found.");
+            }
+
+            var comments = await _context.Comments
+                .Where(c => c.ProductId == productId)
+                .OrderBy(c => c.Created_At)
+                .Skip((pageNumber - 1) * commentsPerPage)
+                .Take(commentsPerPage)
+                .ToListAsync();
+
+            var totalComments = await _context.Comments.CountAsync(c => c.ProductId == productId);
+            var totalPages = (int)Math.Ceiling(totalComments / (double)commentsPerPage);
+
+            var response = new
+            {
+                Comments = comments,
+                Pagination = new
+                {
+                    CurrentPage = pageNumber,
+                    CommentsPerPage = commentsPerPage,
+                    TotalComments = totalComments,
+                    TotalPages = totalPages
+                }
+            };
+
+            return Ok(response);
+        }
+
+        // POST /api/products/{productId}/comments
+        [HttpPost("{productId}/comments")]
+        [Authorize]
+        public async Task<IActionResult> PostComment(int productId, [FromBody] CommentDTO commentDto)
+        {
+            if (commentDto == null || string.IsNullOrEmpty(commentDto.Text))
+            {
+                return BadRequest("Invalid comment data.");
+            }
+
+            var product = await _context.Products.FindAsync(productId);
+            if (product == null)
+            {
+                return NotFound("Product not found.");
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized("User not authenticated.");
+            }
+
+            var user = await _context.Users.FindAsync(int.Parse(userId));
+            if (user == null)
+            {
+                return Unauthorized("User not found.");
+            }
+
+            var comment = new Comments
+            {
+                ProductId = productId,
+                Text = commentDto.Text,
+                Created_At = DateTime.UtcNow,
+                UserId = int.Parse(userId),
+                User = user,
+                Product = product
+            };
+
+            _context.Comments.Add(comment);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Comment posted successfully." });
+        }
+
+        // DELETE /api/products/{productId}/comments/{commentId}
+        [HttpDelete("{productId}/comments/{commentId}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteComment(int productId, int commentId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized("User not authenticated.");
+            }
+
+            var comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId && c.ProductId == productId);
+            if (comment == null)
+            {
+                return NotFound("Comment not found.");
+            }
+
+            if (comment.UserId != int.Parse(userId))
+            {
+                return Forbid("You are not authorized to delete this comment.");
+            }
+
+            _context.Comments.Remove(comment);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Comment deleted successfully." });
+        }
+
+        // PUT /api/products/{productId}/comments/{commentId}
+        [HttpPut("{productId}/comments/{commentId}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateComment(int productId, int commentId, [FromBody] CommentDTO commentDto)
+        {
+            if (commentDto == null || string.IsNullOrEmpty(commentDto.Text))
+            {
+                return BadRequest("Invalid comment data.");
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized("User not authenticated.");
+            }
+
+            var comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId && c.ProductId == productId);
+            if (comment == null)
+            {
+                return NotFound("Comment not found.");
+            }
+
+            if (comment.UserId != int.Parse(userId))
+            {
+                return Forbid("You are not authorized to update this comment.");
+            }
+
+            comment.Text = commentDto.Text;
+            comment.Created_At = DateTime.UtcNow;
+
+            _context.Comments.Update(comment);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Comment updated successfully." });
         }
     }
 }
