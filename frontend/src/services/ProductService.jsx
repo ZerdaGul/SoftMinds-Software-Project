@@ -172,3 +172,19 @@ export const DeleteProductComment = async (productId, commentId) => {
     }
   }
 }
+export const DeleteProduct = async (id) => {
+    try {
+        const response = await axios.delete(`${api}products/${id}`, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data); // Ensure error.response.data exists
+        } else {
+            throw new Error("An unknown error occurred."); // Catch other errors
+        }
+    }
+};

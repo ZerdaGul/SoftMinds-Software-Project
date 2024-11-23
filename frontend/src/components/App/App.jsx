@@ -9,7 +9,7 @@ import ProfileForm from '../forms/ProfileForm';
 import Settings from '../settings/Settings';
 import ResetPasswordForm from '../forms/ResetPasswordForm';
 import UpdateProfile from '../forms/UpdateProfile';
-import { GetActiveUser } from '../../services/AuthService';
+import {GetActiveUser, LogOut} from '../../services/AuthService';
 import ForgotPasswordRequest from '../forms/ForgotPasswordRequest';
 import CreatePasswordForm from '../forms/CreatePasswordForm';
 import ProductsPage from '../../pages/ProductsPage';
@@ -17,32 +17,78 @@ import ProductDetailsPage from '../product-page/ProductDetailsPage';
 import OrderAdminPage from '../../pages/OrderAdminPage';
 import OrdersProgress from '../orders-progress/OrdersProgress';
 import Requests from '../requests/Requests';
+import HomePage from "../forms/HomePage";
+import AboutUs from "../../pages/AboutUs";
+import ProductsForAdmin from "../../pages/ProductsForAdmin";
+import CardForm from "../forms/CardForm";
+import ProductDashboard from "../../dashboard/ProductDashboard";
 
 const App = () => {
 	const [activeUser, setActiveUser] = useState(null);
-	// Runs when isUserUpdated becomes true
-	useEffect(() => {
-		if (activeUser) {
-		  console.log("Active user updated, loading user data...");
-		  loadUser(); // Trigger loadUser when activeUser changes
-		}
-	  }, [activeUser]); 
+	let isLoggedOut = false; // Kullanıcı çıkış durumu
 
+	// Kullanıcı bilgilerini yükleme
 	const loadUser = () => {
+		console.log("loadUser çağrıldı");
+
 		GetActiveUser()
-			.then(data => setActiveUser(data.user))  // Sets the active user
-			.catch((error) => console.log(error.message));
+			.then((user) => {
+				console.log("Sunucudan kullanıcı bilgisi alındı:", user);
+				if (!user || !user.email) {
+					console.error("Kullanıcı bilgisi eksik veya geçersiz:", user);
+					setActiveUser(null);
+					return;
+				}
+				setActiveUser(user);
+			})
+			.catch((err) => {
+				console.error("GetActiveUser çağrısında hata oluştu:", err);
+				setActiveUser(null); // Hata durumunda kullanıcıyı sıfırla
+			});
 	};
 
+	// Uygulama başlangıcında localStorage veya sunucudan kullanıcı bilgilerini kontrol et
+	useEffect(() => {
+		const storedUser = localStorage.getItem('current-user');
+		if (storedUser) {
+			console.log("LocalStorage'dan kullanıcı bulundu:", JSON.parse(storedUser));
+			setActiveUser(JSON.parse(storedUser)); // LocalStorage'dan kullanıcıyı state'e ayarla
+		} else {
+			console.log("LocalStorage'da kullanıcı yok. Sunucudan kullanıcı bilgisi yükleniyor...");
+			loadUser(); // Eğer localStorage'da yoksa sunucudan kullanıcı bilgisi yükle
+		}
+	}, []);
 
+	// Çıkış işlemini yönetme
+	const handleLogout = async () => {
+		try {
+			console.log("Logout işlemi başlatıldı...");
+			await LogOut(); // Sunucudan oturumu kapat
+			localStorage.removeItem('current-user'); // localStorage'daki kullanıcıyı temizle
+			setActiveUser(null); // Kullanıcı state'ini sıfırla
+			isLoggedOut = true; // Çıkış durumunu işaretle
+			console.log("Logout işlemi tamamlandı.");
+		} catch (error) {
+			console.error("Logout sırasında hata oluştu:", error.message);
+		}
+	};
+
+	// activeUser değişimini izleme ve yükleme
+	useEffect(() => {
+		if (isLoggedOut || !activeUser) {
+			console.log("No active user or user logged out. Skipping loadUser.");
+			return;
+		}
+		console.log("Active user updated:", activeUser);
+	}, [activeUser]);
 
 	return (
 		<Router>
-			<Navbar activeUser={activeUser} setActiveUser={setActiveUser} />
+			<Navbar activeUser={activeUser} onLogout={handleLogout} />
 			<main>
 			<Routes>
-				<Route path='/'></Route>
-				<Route path='/aboutUs'></Route>
+				<Route path='/' element={<HomePage/>}></Route>
+				<Route path='/aboutUs' element={<AboutUs/>}></Route>
 				<Route path='/products' element={<ProductsPage/>}></Route>
 				<Route path='/products/:id' element={<ProductDetailsPage/>}></Route>
 				<Route path='/sectors'></Route>
@@ -68,6 +114,9 @@ const App = () => {
 					<Route path='orders-progress' element={<OrdersProgress/>}></Route>
 					<Route path='requests' element={<Requests/>}></Route>
 					<Route path='my-profile' element={<ProfileForm initialValues={activeUser} />}></Route>
+					<Route path='orders-progress'></Route>
+					<Route path='requests'></Route>
+					<Route path='my-profile' element={<ProfileForm initialValues={activeUser || {}} />}></Route>
 					<Route path='contacts'></Route>
 					<Route path='settings/*' element={<Settings initialValues={activeUser}/>}>
 						<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser}/>} />

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import profile_pic from '../../assets/img/profile-pic-default.png';
 
-const ProfileForm = ({initialValues}) => {
+const ProfileForm = ({ initialValues = {} }) => {
     const navigate = useNavigate();
 
     const handleEditClick = () => {
@@ -35,9 +35,9 @@ const ProfileForm = ({initialValues}) => {
                     <input
                         type="text"
                         name="name"
-                        value={initialValues.name}
+                        value={initialValues.name || ""}
                         className="form__input"
-                        readOnly // Sadece görüntüleme için
+                        readOnly
                     />
                 </div>
                 <div className="input__wrapper">
@@ -45,7 +45,7 @@ const ProfileForm = ({initialValues}) => {
                     <input
                         type="text"
                         name="phone"
-                        value={initialValues.phone}
+                        value={initialValues.phone || ""}
                         className="form__input"
                         readOnly
                     />
@@ -75,7 +75,7 @@ const ProfileForm = ({initialValues}) => {
                     <input
                         type="text"
                         name="country"
-                        value={initialValues.country}
+                        value={initialValues.country || ""}
                         className="form__input"
                         readOnly
                     />

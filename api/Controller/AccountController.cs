@@ -109,6 +109,8 @@ namespace api.Controllers
             {
                 return StatusCode(500, "Kullanıcı kaydı sırasında bir hata oluştu. Lütfen tekrar deneyin. Hata: " + ex.Message);
             }
+            // Email doğrulama mesajı gönder
+            await SendVerificationEmail(user);
             return CreatedAtAction(nameof(Register), new { id = user.Id }, user);
         }
 

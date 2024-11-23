@@ -70,7 +70,6 @@ export const LogIn = async (data) => {
       return response.data;
   } catch (error) {
     if (error.response) {
-      
       throw new Error(error.response.data); // Ensure error.response.data exists
     } else {
         throw new Error("An unknown error occurred."); // Catch other errors
