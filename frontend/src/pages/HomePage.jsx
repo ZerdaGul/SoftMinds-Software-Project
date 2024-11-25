@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import smartCityImg from '../assets/img/SmartCity.png';
 import energyImg from '../assets/img/energy.png';
@@ -6,7 +7,9 @@ import itsTrafficImg from '../assets/img/ITS.png';
 import securitySurveillanceImg from '../assets/img/Security.png';
 import ironSteelImg from '../assets/img/IronSteel.webp';
 import packagingImg from '../assets/img/Packaging.jpg';
+import forward from '../assets/icons/arrow-forward-red.svg'
 import './HomePage.scss';
+
 
 const sectors = [
     {
@@ -76,7 +79,9 @@ function HomePage() {
                         {sectors.map(({sector, descr, picture}) => {
                             return(
                             <div key={sector} className="sector-card">
-                                <img src={picture} alt={sector} />{sector}</div>
+                                <img className='sector-img' src={picture} alt={sector} />
+                                <div className="sector-name">{sector}</div>
+                            </div>
                             )
                         })}
                     </div>
@@ -86,43 +91,20 @@ function HomePage() {
 
             {/* About Us Section */}
             <section className="about-us">
-                <h2>About Us</h2>
-                <p>
-                    As EKO Innovation & Trading S.L., we are a consultancy and project
-                    development firm operating in 6 different sectors on an international
-                    scale. Our goal is to optimize business processes, reduce costs, and
-                    develop sustainable projects for the future by offering our clients
-                    the most innovative and efficient solutions.
-                </p>
-                <a href="#" className="read-more">About Us &rarr;</a>
+                <div className="container">
+                    <h3 className='about-us-title'>About Us</h3>
+                    <div className='about-us-text'>
+                        As EKO Innovation & Trading S.L., we are a consultancy and project
+                        development firm operating in 6 different sectors on an international
+                        scale. Our goal is to optimize business processes, reduce costs, and
+                        develop sustainable projects for the future by offering our clients
+                        the most innovative and efficient solutions.
+                    </div>
+                    <Link to='/aboutUs' className="read-more">Learn more <img src={forward} alt="arrow-froward" /></Link>
+                </div>
             </section>
 
-            {/* Footer Section */}
-            <footer className="footer">
-                <div className="container footer-content">
-                    <div className="footer-logo">EKO Innovation</div>
-                    <div className="footer-links">
-                        <h3>Sectors</h3>
-                        <ul>
-                            <li>Smart City</li>
-                            <li>Energy</li>
-                            <li>ITS & Traffic</li>
-                            <li>Security & Surveillance</li>
-                            <li>Iron & Steel</li>
-                            <li>Packaging</li>
-                        </ul>
-                    </div>
-                    <div className="social-media">
-                        <h3>Follow Us</h3>
-                        <ul>
-                            <li>Instagram</li>
-                            <li>Twitter</li>
-                            <li>YouTube</li>
-                            <li>LinkedIn</li>
-                        </ul>
-                    </div>
-                </div>
-            </footer>
+            
         </div>
     );
 }

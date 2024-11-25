@@ -1,0 +1,43 @@
+@import '../../style/style.scss';
+
+.footer {
+    background: #fff;
+    color: $dark;
+    padding: 40px 90px;
+
+    &-content {
+        border-radius: 16px;
+        border: 1px solid $orange;
+        padding: 40px 140px ;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    &-logo {
+        font-size: 28px;
+        font-weight: bold;
+        display: flex;
+        flex-direction: column;
+        img{
+            width: 120px;
+            margin-bottom: 20px;
+        }
+    }
+
+    &-links {
+        ul {
+          list-style: none;
+          padding: 0;
+
+          li {
+            margin: 5px 0;
+          }
+        }
+      }
+
+      h3 {
+        margin-bottom: 10px;
+      }
+}
+  
