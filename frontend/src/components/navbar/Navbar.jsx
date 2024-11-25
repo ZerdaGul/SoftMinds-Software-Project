@@ -47,8 +47,9 @@ const Navbar = ({ activeUser, setActiveUser }) => {
                              to="/products">Products</NavLink>
                 </li>
                 <li>
-                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : '#571846'})}
-                             to="/sectors">Sectors</NavLink>
+                    {/* <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : '#571846'})}
+                             to="/sectors">Sectors</NavLink> */}
+                             <a href="#sectors">Sectors</a>
                 </li>
                 <li>
                     <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : '#571846'})}

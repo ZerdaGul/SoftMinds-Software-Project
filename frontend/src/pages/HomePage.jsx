@@ -1,14 +1,54 @@
 import React from 'react';
+
+import smartCityImg from '../assets/img/SmartCity.png';
+import energyImg from '../assets/img/energy.png';
+import itsTrafficImg from '../assets/img/ITS.png';
+import securitySurveillanceImg from '../assets/img/Security.png';
+import ironSteelImg from '../assets/img/IronSteel.webp';
+import packagingImg from '../assets/img/Packaging.jpg';
 import './HomePage.scss';
+
+const sectors = [
+    {
+        sector: 'Smart City',
+        descr: 'Innovative solutions for urban development, integrating technology to improve infrastructure, communication, and sustainability.',
+        picture: smartCityImg,
+    },
+    {
+        sector: 'Energy',
+        descr: 'Cutting-edge approaches to energy generation, storage, and distribution, focusing on renewable and sustainable resources.',
+        picture: energyImg,
+    },
+    {
+        sector: 'ITS & Traffic',
+        descr: 'Intelligent Transportation Systems to enhance traffic management, safety, and efficiency in transportation networks.',
+        picture: itsTrafficImg,
+    },
+    {
+        sector: 'Security & Surveillance',
+        descr: 'Advanced security and surveillance technologies to ensure safety and monitor critical areas effectively.',
+        picture: securitySurveillanceImg,
+    },
+    {
+        sector: 'Iron & Steel',
+        descr: 'High-quality solutions for the iron and steel industry, driving innovation in materials and production.',
+        picture: ironSteelImg,
+    },
+    {
+        sector: 'Packaging',
+        descr: 'Innovative packaging solutions designed for efficiency, sustainability, and adaptability across industries.',
+        picture: packagingImg,
+    },
+];
 
 function HomePage() {
     return (
         <div className="home-page">
             {/* Hero Section */}
             <section className="hero">
-                <div className="hero-content">
+                <div className="container hero-content">
                     <h1>Innovative Solutions to Empower Businesses</h1>
-                    <button className="learn-more">Learn more</button>
+                    <button className="button">Learn more</button>
                 </div>
             </section>
 
@@ -29,26 +69,16 @@ function HomePage() {
             </section>
 
             {/* Sectors Section */}
-            <section className="sectors">
-                <h2>Sectors</h2>
-                <div className="sector-cards">
-                    <div className="sector-card smart-city">
-                        <p>Smart City</p>
-                    </div>
-                    <div className="sector-card energy">
-                        <p>Energy</p>
-                    </div>
-                    <div className="sector-card its-traffic">
-                        <p>ITS & Traffic</p>
-                    </div>
-                    <div className="sector-card security-surveillance">
-                        <p>Security & Surveillance</p>
-                    </div>
-                    <div className="sector-card iron-steel">
-                        <p>Iron & Steel</p>
-                    </div>
-                    <div className="sector-card packaging">
-                        <p>Packaging</p>
+            <section className="sectors" id='sectors'>
+                <div className="container">
+                    <h2>Sectors</h2>
+                    <div className=" sector-cards">
+                        {sectors.map(({sector, descr, picture}) => {
+                            return(
+                            <div key={sector} className="sector-card">
+                                <img src={picture} alt={sector} />{sector}</div>
+                            )
+                        })}
                     </div>
                 </div>
 
@@ -69,7 +99,7 @@ function HomePage() {
 
             {/* Footer Section */}
             <footer className="footer">
-                <div className="footer-content">
+                <div className="container footer-content">
                     <div className="footer-logo">EKO Innovation</div>
                     <div className="footer-links">
                         <h3>Sectors</h3>

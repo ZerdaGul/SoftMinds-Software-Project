@@ -1,44 +1,27 @@
-/* HomePage.scss */
+@import '../style/style.scss';
 
 .home-page {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
-  color: #333;
-
   .hero {
-    background: url('../../assets/img/bg-main.png') no-repeat center center/cover;
+    
+    background: url('../assets/img/bg-main.png') no-repeat center center/cover;
     color: #fff;
     text-align: center;
     padding: 50px 0;
+    height: 70vh;
 
-    .hero-content {
-      max-width: 600px;
-      margin: 0 auto;
-
+    &-content {
+      text-align: left;
+      padding: 70px 0;
+      
       h1 {
-        font-size: 2.5rem;
-        margin-bottom: 20px;
+        width: 600px;
+        font-size: 58px;
+        line-height: 72px;
+        font-weight: 700;
+        margin-bottom: 50px;
       }
 
-      img {
-        width: 100%;
-        max-width: 800px;
-        border-radius: 10px;
-        margin: 20px 0;
-      }
-
-      .learn-more {
-        background: #d6336c;
-        color: #fff;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-
-        &:hover {
-          background: #b02959;
-        }
-      }
+      
     }
   }
 
@@ -86,58 +69,37 @@
   }
 
   .sectors {
-    padding: 40px 20px;
+    padding: 70px;
+    background: $dark;
 
     h2 {
+      color: #fff;
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 50px;
     }
 
     .sector-cards {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
+      width: fit-content;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 280px);
+      grid-template-rows: repeat(2, 260px);
+      grid-auto-rows: auto;
+      gap: 30px 45px;
 
       .sector-card {
-        width: 200px;
-        height: 200px;
-        background-size: cover;
-        background-position: center;
-        border-radius: 10px;
+        border-radius: 24px;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         color: #fff;
 
-        &.smart-city {
-          background-image: url('../../assets/img/SmartCity.png');
+        img{
+          width: 100%;
         }
 
-        &.energy {
-          background-image: url('../../assets/img/energy.png');
-        }
-
-        &.its-traffic {
-          background-image: url('../../assets/img/ITS.png');
-        }
-
-        &.security-surveillance {
-          background-image: url('../../assets/img/Security.png');
-        }
-
-        &.iron-steel {
-          background-image: url('../../assets/img/IronSteel.webp');
-        }
-
-        &.packaging {
-          background-image: url('../../assets/img/Packaging.jpg');
-        }
-
-        p {
-          font-weight: bold;
-          text-align: center;
-        }
+        
       }
     }
   }
@@ -159,7 +121,7 @@
 
     .read-more {
       display: block;
-      margin: 20px auto;
+      margin: 20px auto;        
       width: fit-content;
       color: #d6336c;
       text-decoration: none;

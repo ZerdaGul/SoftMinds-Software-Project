@@ -119,7 +119,7 @@ const ProductsPage = () => {
     );
 
 	return (
-		<>
+		<div className='container'>
 				{showModal && modal}
 				
 				{!query && <SectorsSideMenu 
@@ -154,7 +154,7 @@ const ProductsPage = () => {
 						totalPages={totalPages}
 						onPageChange={handlePageChange}/>
 				</section>
-				</>
+				</div>
 			
 		
 	)

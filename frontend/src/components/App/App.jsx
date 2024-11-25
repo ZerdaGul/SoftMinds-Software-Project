@@ -17,7 +17,7 @@ import ProductDetailsPage from '../product-page/ProductDetailsPage';
 import OrderAdminPage from '../../pages/OrderAdminPage';
 import OrdersProgress from '../orders-progress/OrdersProgress';
 import Requests from '../requests/Requests';
-import HomePage from "../forms/HomePage";
+import HomePage from "../../pages/HomePage";
 import AboutUs from "../../pages/AboutUs";
 import ProductsForAdmin from "../../pages/ProductsForAdmin";
 import CardForm from "../forms/CardForm";
@@ -91,7 +91,7 @@ const App = () => {
 				<Route path='/aboutUs' element={<AboutUs/>}></Route>
 				<Route path='/products' element={<ProductsPage/>}></Route>
 				<Route path='/products/:id' element={<ProductDetailsPage/>}></Route>
-				<Route path='/sectors'></Route>
+				{/* <Route path='/sectors'></Route> */}
 				<Route path='/solutions'></Route>
 				<Route path='/consultancy'></Route>
 				<Route path='/contactUs'></Route>
