@@ -205,7 +205,7 @@ namespace api.Controllers
             if (order == null)
             {
                 _logger.LogWarning("No pending order found for the user.");
-                return NotFound("No pending order found for the user.");
+                return Ok(new List<OrderItem>()); // Return an empty list
             }
 
             return Ok(order.OrderItems);
@@ -329,8 +329,8 @@ namespace api.Controllers
 
         private int? GetCurrentUserId()
         {
-            // Implement logic to get the current user ID from the JWT token
-            var token = _httpContextAccessor.HttpContext?.Request.Cookies["AuthToken"];
+            // Get the token from the session
+            var token = _httpContextAccessor.HttpContext?.Session.GetString("AuthToken");
             if (string.IsNullOrEmpty(token))
             {
                 return null;

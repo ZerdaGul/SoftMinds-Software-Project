@@ -9,8 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Veritabanı bağlantısını ekle
 builder.Services.AddDbContext<AppDBContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("mysql_connection"), 
-        new MySqlServerVersion(new Version(8,0,39)))); // MySQL sürümüne dikkat edin
+    options.UseMySql(builder.Configuration.GetConnectionString("mysql_connection"),
+        new MySqlServerVersion(new Version(8, 0, 39)))); // MySQL sürümüne dikkat edin
 
 // EmailSettings konfigürasyonunu ekle
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
@@ -18,7 +18,15 @@ builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Emai
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor(); // Bu satırı ekleyin
-
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(60); // Session timeout süresi
+    options.Cookie.Name = "AuthToken";
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SameSite = SameSiteMode.None;
+    options.Cookie.IsEssential = true;
+});
 // JWT Authentication ekle
 var jwtKey = builder.Configuration["Jwt:Key"];
 if (string.IsNullOrEmpty(jwtKey) || jwtKey.Length < 32)
@@ -45,10 +53,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", builder =>
     {
-        builder.WithOrigins("http://localhost:3000")
-            .AllowCredentials()
+        builder.WithOrigins("https://ekoinv.com")
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 
@@ -59,10 +67,14 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+        c.RoutePrefix = string.Empty; // Set Swagger UI at the app's root
+    });
 }
 
 app.UseHttpsRedirection();
@@ -70,6 +82,7 @@ app.UseRouting();
 app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession(); // Session middleware'i ekleyin
 app.MapControllers();
 
 app.Run();

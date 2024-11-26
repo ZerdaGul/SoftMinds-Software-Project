@@ -124,8 +124,6 @@ namespace api.Controllers
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
 
-            // Aktif oturum cookie'sini sil
-            Response.Cookies.Delete("AuthToken");
             return Ok(new { message = "Hesap başarıyla silindi." });
         }
         [HttpGet("verify")]
@@ -157,7 +155,7 @@ namespace api.Controllers
             message.To.Add(new MailboxAddress(user.Name, user.Email));
             message.Subject = "Email Verification";
 
-            var verificationLink = $"http://localhost:5115/api/verify?email={user.Email}&token={user.Password_Hash}";
+            var verificationLink = $"https://api.ekoinv.com/api/verify?email={user.Email}&token={user.Password_Hash}";
             message.Body = new TextPart("plain")
             {
                 Text = $"Please verify your email by clicking on the following link: {verificationLink}"
