@@ -3,19 +3,16 @@ using api.Models; // Model sınıflarının bulunduğu namespace
 
 namespace api.Data
 {
-    public class AppDBContext : DbContext
+    public class AppDBContext(DbContextOptions<AppDBContext> options) : DbContext(options)
     {
-        public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
-        {
-        }
 
         // Mevcut tabloları temsil eden DbSet'ler
-        public DbSet<Products> Products { get; set; }
-        public DbSet<Users> Users { get; set; }
-        public DbSet<Orders> Orders { get; set; }
-        public DbSet<OrderItem> OrderItems { get; set; }
-        public DbSet<Comments> Comments { get; set; }
-        public DbSet<Reviews> Reviews { get; set; }
+        public required DbSet<Products> Products { get; set; }
+        public required DbSet<Users> Users { get; set; }
+        public required DbSet<Orders> Orders { get; set; }
+        public required DbSet<OrderItem> OrderItems { get; set; }
+        public required DbSet<Comments> Comments { get; set; }
+        public required DbSet<Reviews> Reviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
