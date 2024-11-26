@@ -23,15 +23,19 @@
       .learn-more {
         background: #d6336c;
         color: #fff;
-        padding: 10px 20px;
+        padding: 8px 16px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: bold;
+        transition: background 0.3s ease;
 
         &:hover {
           background: #b02959;
         }
       }
+
     }
   }
 

@@ -8,7 +8,9 @@ function HomePage() {
             <section className="hero">
                 <div className="hero-content">
                     <h1>Innovative Solutions to Empower Businesses</h1>
-                    <button className="learn-more">Learn more</button>
+                    <a href="/solutions" className="learn-more">
+                        Learn more
+                    </a>
                 </div>
             </section>
 
@@ -64,7 +66,7 @@ function HomePage() {
                     develop sustainable projects for the future by offering our clients
                     the most innovative and efficient solutions.
                 </p>
-                <a href="#" className="read-more">About Us &rarr;</a>
+                <a href="/aboutUs" className="read-more">About Us &rarr;</a>
             </section>
 
             {/* Footer Section */}
