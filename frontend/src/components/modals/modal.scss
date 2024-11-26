@@ -54,10 +54,26 @@
     right: 0;
     bottom: 0;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: center; /* Dikeyde ortala */
+    justify-content: center; /* Yatayda ortala */
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5); /* Dark background */
     z-index: 1000;
+}
+
+.modal {
+    width: 480px;
+    height: 240px;
+    border-radius: 16px;
+    border: 1px solid $dark-op-50;
+    background-color: #fff;
+    z-index: 1001;
+    padding: 45px 25px 30px 25px;
+    color: $dark;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative; /* Düzeltme: absolute yerine relative */
 }

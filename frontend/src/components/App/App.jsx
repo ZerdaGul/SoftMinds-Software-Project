@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './App.css';
 import Navbar from '../navbar/Navbar';
@@ -9,7 +9,7 @@ import ProfileForm from '../forms/ProfileForm';
 import Settings from '../settings/Settings';
 import ResetPasswordForm from '../forms/ResetPasswordForm';
 import UpdateProfile from '../forms/UpdateProfile';
-import { GetActiveUser, LogOut } from '../../services/AuthService';
+import {GetActiveUser, LogOut} from '../../services/AuthService';
 import ForgotPasswordRequest from '../forms/ForgotPasswordRequest';
 import CreatePasswordForm from '../forms/CreatePasswordForm';
 import ProductsPage from '../../pages/ProductsPage';
@@ -21,104 +21,115 @@ import ProductsForAdmin from "../../pages/ProductsForAdmin";
 import CardForm from "../forms/CardForm";
 import ProductDashboard from "../../dashboard/ProductDashboard";
 import SectorPage from "../../pages/SectorPage";
-import ConsultancyPage from "../../pages/ConsultancyPage";
 import SolutionPage from "../../pages/SolutionPage";
+import ConsultancyPage from "../../pages/ConsultancyPage";
 
 const App = () => {
 	const [activeUser, setActiveUser] = useState(null);
+	let isLoggedOut = false; // Kullanıcı çıkış durumu
 
 	// Kullanıcı bilgilerini yükleme
 	const loadUser = () => {
+		console.log("loadUser çağrıldı");
+
 		GetActiveUser()
 			.then((user) => {
+				console.log("Sunucudan kullanıcı bilgisi alındı:", user);
+				if (!user || !user.email) {
+					console.error("Kullanıcı bilgisi eksik veya geçersiz:", user);
+					setActiveUser(null);
+					return;
+				}
 				setActiveUser(user);
 			})
-			.catch(() => {
-				setActiveUser(null);
+			.catch((err) => {
+				console.error("GetActiveUser çağrısında hata oluştu:", err);
+				setActiveUser(null); // Hata durumunda kullanıcıyı sıfırla
 			});
 	};
 
+	// Uygulama başlangıcında localStorage veya sunucudan kullanıcı bilgilerini kontrol et
 	useEffect(() => {
 		const storedUser = localStorage.getItem('current-user');
 		if (storedUser) {
-			setActiveUser(JSON.parse(storedUser));
+			console.log("LocalStorage'dan kullanıcı bulundu:", JSON.parse(storedUser));
+			setActiveUser(JSON.parse(storedUser)); // LocalStorage'dan kullanıcıyı state'e ayarla
 		} else {
-			loadUser();
+			console.log("LocalStorage'da kullanıcı yok. Sunucudan kullanıcı bilgisi yükleniyor...");
+			loadUser(); // Eğer localStorage'da yoksa sunucudan kullanıcı bilgisi yükle
 		}
 	}, []);
 
+	// Çıkış işlemini yönetme
 	const handleLogout = async () => {
 		try {
-			await LogOut();
-			localStorage.removeItem('current-user');
-			setActiveUser(null);
+			console.log("Logout işlemi başlatıldı...");
+			await LogOut(); // Sunucudan oturumu kapat
+			localStorage.removeItem('current-user'); // localStorage'daki kullanıcıyı temizle
+			setActiveUser(null); // Kullanıcı state'ini sıfırla
+			isLoggedOut = true; // Çıkış durumunu işaretle
+			console.log("Logout işlemi tamamlandı.");
 		} catch (error) {
-			console.error("Logout sırasında hata oluştu:", error);
+			console.error("Logout sırasında hata oluştu:", error.message);
 		}
 	};
 
-	// Rol tabanlı erişim kontrolü
-	const PrivateRoute = ({ roles, element }) => {
-		if (!activeUser) {
-			return <Navigate to="/login" />;
+	// activeUser değişimini izleme ve yükleme
+	useEffect(() => {
+		if (isLoggedOut || !activeUser) {
+			console.log("No active user or user logged out. Skipping loadUser.");
+			return;
 		}
-		if (!roles.includes(activeUser.role)) {
-			return <Navigate to="/" />;
-		}
-		return element;
-	};
+		console.log("Active user updated:", activeUser);
+	}, [activeUser]);
 
 	return (
 		<Router>
-			<Navbar activeUser={activeUser} onLogout={handleLogout} />
+			<Navbar activeUser={activeUser}
+					onLogout={handleLogout}
+			/>
 			<main>
 				<Routes>
-					<Route path="/" element={<HomePage />} />
-					<Route path="/aboutUs" element={<AboutUs />} />
-					<Route path="/products" element={<ProductsPage />} />
-					<Route path="/sectors" element={<SectorPage />} />
-					<Route path="/solutions" element={<SolutionPage />} />
-					<Route path="/consultancy" element={<ConsultancyPage />} />
-					<Route path="/products/:id" element={<ProductDetailsPage />} />
+					<Route path='/' element={<HomePage/>}></Route>
+					<Route path='/aboutUs' element={<AboutUs/>}></Route>
+					<Route path='/products' element={<ProductsPage/>}></Route>
+					<Route path='/products/:id' element={<ProductDetailsPage/>}></Route>
+					<Route path='/sectors' element={<SectorPage/>}></Route>
+					<Route path='/solutions' element={<SolutionPage/>}></Route>
+					<Route path='/consultancy' element={<ConsultancyPage/>}></Route>
+					<Route path='/contactUs'></Route>
+					<Route path='/forgot-password-request' element={<ForgotPasswordRequest />}></Route>
+					<Route path='/create-password' element={<CreatePasswordForm/>}></Route>
+					{/* <Route path='/profile/*' element={<UserProfilePage />}>
+					<Route path='dashboard'></Route>
+					<Route path='orders'></Route>
+					<Route path='cart'></Route>
+					<Route path='my-profile' element={<ProfileForm initialValues={activeUser} />}></Route>
+					<Route path='contacts'></Route>
+					<Route path='settings/*' element={<Settings initialValues={activeUser}/>}>
+						<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser}/>} />
+					</Route>
+					<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
 
-					{/* Customer rolüne özel rotalar */}
-					<Route
-						path="/profile"
-						element={<PrivateRoute roles={['customer']} element={<UserProfilePage />} />}
-					/>
-					<Route
-						path="/cart"
-						element={<PrivateRoute roles={['customer']} element={<CardForm />} />}
-					/>
+				</Route> */}
+					<Route path='/profile/*' element={<OrderAdminPage/>}>
+						<Route path='dashboard'></Route>
+						<Route path='orders-progress'></Route>
+						<Route path='requests'></Route>
+						<Route path='my-profile' element={<ProfileForm initialValues={activeUser || {}} />}></Route>
+						<Route path='contacts'></Route>
+						<Route path='settings/*' element={<Settings initialValues={activeUser}/>}>
+							<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser}/>} />
+						</Route>
+						<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
 
-					{/* Product Admin rolüne özel rotalar */}
-					<Route
-						path="/product-dashboard"
-						element={<PrivateRoute roles={['product admin']} element={<ProductDashboard />} />}
-					/>
-					<Route
-						path="/products-for-admin"
-						element={<PrivateRoute roles={['product admin']} element={<ProductsForAdmin />} />}
-					/>
-
-					{/* Order Admin rolüne özel rotalar */}
-					<Route
-						path="/order-admin"
-						element={<PrivateRoute roles={['order admin']} element={<OrderAdminPage />} />}
-					/>
-
-					{/* Genel rotalar */}
-					<Route path="/registration" element={<SignInPage />} />
-					<Route
-						path="/login"
-						element={<LogInForm setActiveUser={setActiveUser} />}
-					/>
-					<Route path="/forgot-password-request" element={<ForgotPasswordRequest />} />
-					<Route path="/create-password" element={<CreatePasswordForm />} />
+					</Route>
+					<Route path='/registration' element={<SignInPage />}></Route>
+					<Route path='/login' element={<LogInForm setActiveUser={setActiveUser} />}></Route>
 				</Routes>
 			</main>
 		</Router>
 	);
-};
+}
 
 export default App;
