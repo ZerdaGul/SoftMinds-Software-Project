@@ -1,16 +1,21 @@
 import React, {useState, useEffect} from 'react'
-
+import { Link } from 'react-router-dom';
 
 import './footer.scss';
 import logo from '../../assets/icons/logo-circle.svg';
-import { Link } from 'react-router-dom';
+import { LoadSectors } from '../../services/ProductService';
 
-const Footer = ({sectorsList}) => {
+
+const Footer = () => {
     const [sectors, setSectors] = useState([]);
 
-  useEffect(() => {
-    setSectors(sectorsList);
-  }, [sectorsList])
+    useEffect(() => {
+        getSectors();
+    }, [])
+    const getSectors= async() => {
+        const sectorsList=await LoadSectors();
+        setSectors(sectorsList);
+    }
 
 
   return (
@@ -23,7 +28,8 @@ const Footer = ({sectorsList}) => {
                             {sectors.map(item => {
                                 return (
                                     <li>
-                                        <Link to={`/products/${item.name}`} key={item.name}
+                                        <Link to={`/products`}
+                                            state={{filter: item.name}}
                                             >{item.name}</Link>
                                     </li>
                                 )

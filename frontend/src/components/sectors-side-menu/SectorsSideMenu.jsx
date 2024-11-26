@@ -6,15 +6,16 @@ import { LoadSectors } from '../../services/ProductService';
 import { useState } from 'react';
 
 
-
-// const sectors = ['All', 'Smart City', 'Energy', 'ITS & Traffic', 'Security & Survellience', 'Iron & Steel', 'Packaging'];
-const SectorsSideMenu = ({onFilter, filter, sectorsList}) => {
+const SectorsSideMenu = ({onFilter, filter}) => {
   const [sectors, setSectors] = useState([]);
 
   useEffect(() => {
-    setSectors([{name: 'All'}, ...sectorsList]);
+    getSectors();
   }, [])
-
+  const getSectors= async() => {
+    const sectorsList=await LoadSectors();
+    setSectors([{name: 'All'}, ...sectorsList]);
+  }
 
   return (
     <aside className="sectors__menu">

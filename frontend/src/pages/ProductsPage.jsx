@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { createPortal } from 'react-dom';
 import { useEffect } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import SectorsSideMenu from '../components/sectors-side-menu/SectorsSideMenu'
 import ProductCard from '../components/product-card/ProductCard';
@@ -15,13 +15,12 @@ import { SearchProducts } from '../services/ProductService';
 import Search from '../components/search/Search';
 
 
-const ProductsPage = ({sectorsList}) => {
-	const { filter: initialFilter } = useParams();
+const ProductsPage = () => {
 	const navigate = useNavigate();
   	const location = useLocation();
 
 	// Initialize state from location or set default values
-	const [filter, setFilter] = useState(initialFilter || location.state?.filter || 'All');
+	const [filter, setFilter] = useState( location.state?.filter || 'All');
 	const [sortBy, setSortBy] = useState(location.state?.sortBy || '');
 	const [sortOrder, setSortOrder] = useState(location.state?.sortOrder || '');
 	const [currentPage, setCurrentPage] = useState(location.state?.currentPage || 1);
@@ -124,7 +123,6 @@ const ProductsPage = ({sectorsList}) => {
 				{showModal && modal}
 				
 				{!query && <SectorsSideMenu 
-					sectorsList={sectorsList}
 					filter={filter}
 					onFilter={setFilter}/>}
 

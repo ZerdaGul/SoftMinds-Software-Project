@@ -27,7 +27,6 @@ import ProductDashboard from "../../dashboard/ProductDashboard";
 
 const App = () => {
 	const [activeUser, setActiveUser] = useState(null);
-	const [sectors, setSectors] = useState([]);
 	let isLoggedOut = false; // Kullanıcı çıkış durumu
 
 	
@@ -53,13 +52,7 @@ const App = () => {
 		console.log("Active user updated:", activeUser);
 	}, [activeUser]);
 
-	useEffect(() => {
-		getSectors();
-	  }, [])
-	const getSectors= async() => {
-		const sectorsList=await LoadSectors();
-		setSectors(sectorsList);
-	}
+	
 
 	// Çıkış işlemini yönetme
 	const handleLogout = async () => {
@@ -104,7 +97,7 @@ const App = () => {
 			<Routes>
 				<Route path='/' element={<HomePage/>}></Route>
 				<Route path='/aboutUs' element={<AboutUs/>}></Route>
-				<Route path='/products/:filter' element={<ProductsPage sectorsList={sectors}/>}></Route>
+				<Route path='/products' element={<ProductsPage/>}></Route>
 				<Route path='/products/:id' element={<ProductDetailsPage/>}></Route>
 				{/* <Route path='/sectors'></Route> */}
 				<Route path='/solutions'></Route>
@@ -144,7 +137,7 @@ const App = () => {
 			</Routes>
 			</main>
 			{/* Footer Section */}
-			<Footer sectorsList={sectors}/>
+			<Footer />
 		</Router>
 		
 	);
