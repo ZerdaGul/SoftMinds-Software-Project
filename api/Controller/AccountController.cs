@@ -33,8 +33,8 @@ namespace api.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
             // Model null veya gerekli alanlar boş ise hata döndür
-            if (model == null || string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.Email) || 
-                string.IsNullOrEmpty(model.Password) || string.IsNullOrEmpty(model.Phone) || 
+            if (model == null || string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.Email) ||
+                string.IsNullOrEmpty(model.Password) || string.IsNullOrEmpty(model.Phone) ||
                 string.IsNullOrEmpty(model.Country))
             {
                 return BadRequest("Tüm alanlar gereklidir.");
@@ -54,7 +54,7 @@ namespace api.Controllers
             }
 
             // Şifre doğrulaması
-            var passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"; 
+            var passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$";
             if (!Regex.IsMatch(model.Password, passwordPattern))
             {
                 return BadRequest("Şifre en az 8 karakterden oluşmalı, en az bir büyük harf, bir küçük harf ve bir sayı içermelidir.");
@@ -87,10 +87,10 @@ namespace api.Controllers
 
 
             // Kullanıcıyı veritabanına ekle
-            var user = new Users 
-            { 
-                Name = model.Name, 
-                Email = model.Email, 
+            var user = new Users
+            {
+                Name = model.Name,
+                Email = model.Email,
                 Phone = model.Phone,
                 Country = model.Country,
                 Password_Hash = hashed_Password,
@@ -155,7 +155,7 @@ namespace api.Controllers
             message.To.Add(new MailboxAddress(user.Name, user.Email));
             message.Subject = "Email Verification";
 
-            var verificationLink = $"http://localhost:5115/api/verify?email={user.Email}&token={user.Password_Hash}";
+            var verificationLink = $"https://api.ekoinv.com/api/verify?email={user.Email}&token={user.Password_Hash}";
             message.Body = new TextPart("plain")
             {
                 Text = $"Please verify your email by clicking on the following link: {verificationLink}"

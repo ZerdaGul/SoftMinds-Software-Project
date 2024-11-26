@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './App.css';
 import Navbar from '../navbar/Navbar';
@@ -31,34 +31,34 @@ const App = () => {
 		<Router>
 			<Navbar activeUser={activeUser} setActiveUser={setActiveUser} />
 			<main>
-			<Routes>
-				<Route path='/'></Route>
-				<Route path='/aboutUs'></Route>
-				<Route path='/products' element={<ProductsPage/>}></Route>
-				<Route path='/sectors'></Route>
-				<Route path='/solutions'></Route>
-				<Route path='/consultancy'></Route>
-				<Route path='/contactUs'></Route>
-				<Route path='/forgot-password-request' element={<ForgotPasswordRequest />}></Route>
-				<Route path='/create-password' element={<CreatePasswordForm/>}></Route>
-				<Route path='/profile/*' element={<UserProfilePage />}>
-					<Route path='dashboard'></Route>
-					<Route path='orders'></Route>
-					<Route path='my-profile' element={<ProfileForm initialValues={activeUser} />}></Route>
-					<Route path='contacts'></Route>
-					<Route path='settings/*' element={<Settings initialValues={activeUser}/>}>
-						<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser}/>} />
+				<Routes>
+					<Route path='/'></Route>
+					<Route path='/aboutUs'></Route>
+					<Route path='/products' element={<ProductsPage />}></Route>
+					<Route path='/sectors'></Route>
+					<Route path='/solutions'></Route>
+					<Route path='/consultancy'></Route>
+					<Route path='/contactUs'></Route>
+					<Route path='/forgot-password-request' element={<ForgotPasswordRequest />}></Route>
+					<Route path='/create-password' element={<CreatePasswordForm />}></Route>
+					<Route path='/profile/*' element={<UserProfilePage />}>
+						<Route path='dashboard'></Route>
+						<Route path='orders'></Route>
+						<Route path='my-profile' element={<ProfileForm initialValues={activeUser} />}></Route>
+						<Route path='contacts'></Route>
+						<Route path='settings/*' element={<Settings initialValues={activeUser} />}>
+							<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser} />} />
+						</Route>
+
+						<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
+
 					</Route>
-					
-					<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
-					
-				</Route>
-				<Route path='/registration' element={<SignInPage />}></Route>
-				<Route path='/login' element={<LogInForm setActiveUser={setActiveUser} />}></Route>
-			</Routes>
+					<Route path='/registration' element={<SignInPage />}></Route>
+					<Route path='/login' element={<LogInForm setActiveUser={setActiveUser} />}></Route>
+				</Routes>
 			</main>
 		</Router>
 	);
 }
 
-	export default App;
+export default App;
