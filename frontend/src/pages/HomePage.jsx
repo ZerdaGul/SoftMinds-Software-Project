@@ -9,6 +9,7 @@ import ironSteelImg from '../assets/img/IronSteel.webp';
 import packagingImg from '../assets/img/Packaging.jpg';
 import forward from '../assets/icons/arrow-forward-red.svg'
 import './HomePage.scss';
+import ContactForm from '../components/contact-form/ContactForm';
 
 
 const sectors = [
@@ -103,6 +104,8 @@ function HomePage() {
                     <Link to='/aboutUs' className="read-more">Learn more <img src={forward} alt="arrow-froward" /></Link>
                 </div>
             </section>
+
+            <ContactForm/>
 
             
         </div>

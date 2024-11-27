@@ -3,16 +3,18 @@
 .footer {
     background: #fff;
     color: $dark;
-    padding: 40px 90px;
+    padding: 40px 0;
 
     &-content {
+        margin: 0 auto;
+        max-width: 880px;
         border-radius: 16px;
         border: 1px solid $orange;
         padding: 40px 140px ;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 20px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 20px;
     }
     &-logo {
         font-size: 28px;
