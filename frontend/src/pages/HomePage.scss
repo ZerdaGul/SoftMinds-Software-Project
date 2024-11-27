@@ -1,0 +1,157 @@
+@import '../style/style.scss';
+
+.home-page {
+  .hero {
+    
+    background: url('../assets/img/bg-main.png') no-repeat center center/cover;
+    color: #fff;
+    text-align: center;
+    padding: 50px 0;
+    height: 70vh;
+
+    &-content {
+      text-align: left;
+      padding: 70px 0;
+      
+      h1 {
+        width: 600px;
+        font-size: 58px;
+        line-height: 72px;
+        font-weight: 700;
+        margin-bottom: 50px;
+      }
+
+      
+    }
+  }
+
+  .new-products {
+    padding: 40px 20px;
+    background: #f7f7f7;
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 42px;
+    }
+
+    .products {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+
+      .product-card {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        text-align: center;
+        padding: 20px;
+        width: 200px;
+
+        img {
+          max-width: 100%;
+          border-radius: 5px;
+        }
+
+        .product-details {
+          margin-top: 10px;
+
+          h3 {
+            font-size: 1.2rem;
+          }
+
+          p {
+            color: #d6336c;
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+  }
+
+  .sectors {
+    padding: 70px;
+    background: $dark;
+
+    h2 {
+      color: #fff;
+      text-align: center;
+      font-size: 42px;
+      margin-bottom: 50px;
+    }
+
+    .sector-cards {
+      width: fit-content;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 280px);
+      grid-template-rows: repeat(2, 260px);
+      grid-auto-rows: auto;
+      gap: 30px 45px;
+
+      
+    }
+    .sector{
+      &-card {
+        border-radius: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+        justify-content: space-between;
+        color: $dark;
+        background-color: rgba($color: #fff, $alpha: .8);
+      }
+      &-img{
+        height: 165px;
+        border-top-right-radius: 24px;
+        border-top-left-radius: 24px;
+      }
+      &-name{
+        font-size: 20px;
+        font-weight: 700;
+        height: 100px;
+        padding: 25px;
+      }
+    }
+  }
+
+  .about-us {
+    padding: 60px 0px;
+    background: #f7f7f7;
+    color: $dark;
+    display: flex;
+    flex-direction: column;
+    align-items:flex-start;
+    
+
+    &-title {
+      margin-bottom: 20px;
+      font-size: 42px;
+    }
+
+    &-text {
+      margin-top: 50px;
+      font-size: 16px;
+      width: 800px;
+    }
+
+    .read-more {
+      margin-top: 30px;
+      display: block;       
+      width: fit-content;
+      color: $red ;
+      text-decoration: none;
+      font-size: 24px;
+      height: 40px;
+
+      img{
+        margin-left: 10px;
+      }
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  
+}

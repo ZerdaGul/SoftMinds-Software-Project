@@ -20,7 +20,7 @@ const ProductsPage = () => {
   	const location = useLocation();
 
 	// Initialize state from location or set default values
-	const [filter, setFilter] = useState(location.state?.filter || 'All');
+	const [filter, setFilter] = useState( location.state?.filter || 'All');
 	const [sortBy, setSortBy] = useState(location.state?.sortBy || '');
 	const [sortOrder, setSortOrder] = useState(location.state?.sortOrder || '');
 	const [currentPage, setCurrentPage] = useState(location.state?.currentPage || 1);
@@ -119,7 +119,7 @@ const ProductsPage = () => {
     );
 
 	return (
-		<>
+		<div className='container'>
 				{showModal && modal}
 				
 				{!query && <SectorsSideMenu 
@@ -154,7 +154,7 @@ const ProductsPage = () => {
 						totalPages={totalPages}
 						onPageChange={handlePageChange}/>
 				</section>
-				</>
+				</div>
 			
 		
 	)

@@ -28,9 +28,8 @@ const LogInForm = ({ setActiveUser }) => {
         setLoading(true);
         try {
             const user = await LogIn(values);
-            localStorage.setItem('current-user', JSON.stringify(user));
-            setActiveUser(user);
-            navigate('/');
+            setActiveUser(user); // Kullanıcı durumunu günceller
+            navigate('/'); // Giriş yaptıktan sonra ana sayfaya yönlendir
         } catch (err) {
             onError(err.message);
         } finally {

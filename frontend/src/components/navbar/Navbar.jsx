@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 
@@ -10,8 +10,22 @@ import './Navbar.scss';
 import { LogOut } from '../../services/AuthService';
 import ConfirmModal from '../modals/ConfirmModal';
 
-const Navbar = ({ activeUser, onLogout }) => {
+const Navbar = ({ activeUser, setActiveUser }) => {
+    const navigate = useNavigate();
     const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+    const handleLogout = async () => {
+        try {
+            await LogOut(); // Backend çıkış işlemi
+            setActiveUser(null); // Kullanıcıyı çıkış yapmış duruma getir
+            localStorage.removeItem('current-user');
+            setShowLogoutModal(false);
+            navigate('/login'); // Giriş sayfasına yönlendir
+        } catch (error) {
+            console.error("Çıkış işlemi sırasında hata oluştu:", error);
+        }
+    };
+
 
     const confirmLogout = () => setShowLogoutModal(true);
     const closeModal = () => setShowLogoutModal(false);
@@ -75,15 +89,11 @@ const Navbar = ({ activeUser, onLogout }) => {
             {showLogoutModal &&
                 createPortal(
                     <ConfirmModal
-                        title="Do you want to log out?"
-                        buttonConfirmText="Yes"
-                        buttonCloseText="No"
+                        title={"Do you want to log out?"}
+                        buttonConfirmText={"Yes"}
+                        buttonCloseText={'No'}
                         onClose={closeModal}
-                        onConfirm={() => {
-                            onLogout(); // App.jsx'deki logout işlemini çağır
-                            closeModal(); // Modalı kapat
-                        }}
-                    />,
+                        onConfirm={handleLogout} />,
                     document.body
                 )}
         </nav>

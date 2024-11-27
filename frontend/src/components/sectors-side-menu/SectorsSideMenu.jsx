@@ -6,8 +6,6 @@ import { LoadSectors } from '../../services/ProductService';
 import { useState } from 'react';
 
 
-
-// const sectors = ['All', 'Smart City', 'Energy', 'ITS & Traffic', 'Security & Survellience', 'Iron & Steel', 'Packaging'];
 const SectorsSideMenu = ({onFilter, filter}) => {
   const [sectors, setSectors] = useState([]);
 

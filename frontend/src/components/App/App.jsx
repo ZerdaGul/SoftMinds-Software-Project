@@ -10,13 +10,17 @@ import Settings from '../settings/Settings';
 import ResetPasswordForm from '../forms/ResetPasswordForm';
 import UpdateProfile from '../forms/UpdateProfile';
 import { GetActiveUser, LogOut } from '../../services/AuthService';
+import { LoadSectors } from '../../services/ProductService';
 import ForgotPasswordRequest from '../forms/ForgotPasswordRequest';
 import CreatePasswordForm from '../forms/CreatePasswordForm';
 import ProductsPage from '../../pages/ProductsPage';
 import ProductDetailsPage from '../product-page/ProductDetailsPage';
 import OrderAdminPage from '../../pages/OrderAdminPage';
-import HomePage from "../forms/HomePage";
+import OrdersProgress from '../orders-progress/OrdersProgress';
+import Requests from '../requests/Requests';
+import HomePage from "../../pages/HomePage";
 import AboutUs from "../../pages/AboutUs";
+import Footer from '../footer/Footer';
 import ProductsForAdmin from "../../pages/ProductsForAdmin";
 import CardForm from "../forms/CardForm";
 import ProductDashboard from "../../dashboard/ProductDashboard";
@@ -27,6 +31,45 @@ import ConsultancyPage from "../../pages/ConsultancyPage";
 const App = () => {
 	const [activeUser, setActiveUser] = useState(null);
 	let isLoggedOut = false; // Kullanıcı çıkış durumu
+
+
+
+	// Uygulama başlangıcında localStorage veya sunucudan kullanıcı bilgilerini kontrol et
+	useEffect(() => {
+		const storedUser = localStorage.getItem('current-user');
+		if (storedUser) {
+			console.log("LocalStorage'dan kullanıcı bulundu:", JSON.parse(storedUser));
+			setActiveUser(JSON.parse(storedUser)); // LocalStorage'dan kullanıcıyı state'e ayarla
+		} else {
+			console.log("LocalStorage'da kullanıcı yok. Sunucudan kullanıcı bilgisi yükleniyor...");
+			loadUser(); // Eğer localStorage'da yoksa sunucudan kullanıcı bilgisi yükle
+		}
+	}, []);
+
+	// activeUser değişimini izleme ve yükleme
+	useEffect(() => {
+		if (isLoggedOut || !activeUser) {
+			console.log("No active user or user logged out. Skipping loadUser.");
+			return;
+		}
+		console.log("Active user updated:", activeUser);
+	}, [activeUser]);
+
+
+
+	// Çıkış işlemini yönetme
+	const handleLogout = async () => {
+		try {
+			console.log("Logout işlemi başlatıldı...");
+			await LogOut(); // Sunucudan oturumu kapat
+			localStorage.removeItem('current-user'); // localStorage'daki kullanıcıyı temizle
+			setActiveUser(null); // Kullanıcı state'ini sıfırla
+			isLoggedOut = true; // Çıkış durumunu işaretle
+			console.log("Logout işlemi tamamlandı.");
+		} catch (error) {
+			console.error("Logout sırasında hata oluştu:", error.message);
+		}
+	};
 
 	// Kullanıcı bilgilerini yükleme
 	const loadUser = () => {
@@ -48,46 +91,11 @@ const App = () => {
 			});
 	};
 
-	// Uygulama başlangıcında localStorage veya sunucudan kullanıcı bilgilerini kontrol et
-	useEffect(() => {
-		const storedUser = localStorage.getItem('current-user');
-		if (storedUser) {
-			console.log("LocalStorage'dan kullanıcı bulundu:", JSON.parse(storedUser));
-			setActiveUser(JSON.parse(storedUser)); // LocalStorage'dan kullanıcıyı state'e ayarla
-		} else {
-			console.log("LocalStorage'da kullanıcı yok. Sunucudan kullanıcı bilgisi yükleniyor...");
-			loadUser(); // Eğer localStorage'da yoksa sunucudan kullanıcı bilgisi yükle
-		}
-	}, []);
 
-	// Çıkış işlemini yönetme
-	const handleLogout = async () => {
-		try {
-			console.log("Logout işlemi başlatıldı...");
-			await LogOut(); // Sunucudan oturumu kapat
-			localStorage.removeItem('current-user'); // localStorage'daki kullanıcıyı temizle
-			setActiveUser(null); // Kullanıcı state'ini sıfırla
-			isLoggedOut = true; // Çıkış durumunu işaretle
-			console.log("Logout işlemi tamamlandı.");
-		} catch (error) {
-			console.error("Logout sırasında hata oluştu:", error.message);
-		}
-	};
-
-	// activeUser değişimini izleme ve yükleme
-	useEffect(() => {
-		if (isLoggedOut || !activeUser) {
-			console.log("No active user or user logged out. Skipping loadUser.");
-			return;
-		}
-		console.log("Active user updated:", activeUser);
-	}, [activeUser]);
 
 	return (
 		<Router>
-			<Navbar activeUser={activeUser}
-				onLogout={handleLogout}
-			/>
+			<Navbar activeUser={activeUser} onLogout={handleLogout} />
 			<main>
 				<Routes>
 					<Route path='/' element={<HomePage />}></Route>
@@ -110,10 +118,13 @@ const App = () => {
 						<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser}/>} />
 					</Route>
 					<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
-
+					
 				</Route> */}
 					<Route path='/profile/*' element={<OrderAdminPage />}>
 						<Route path='dashboard'></Route>
+						<Route path='orders-progress' element={<OrdersProgress />}></Route>
+						<Route path='requests' element={<Requests />}></Route>
+						<Route path='my-profile' element={<ProfileForm initialValues={activeUser} />}></Route>
 						<Route path='orders-progress'></Route>
 						<Route path='requests'></Route>
 						<Route path='my-profile' element={<ProfileForm initialValues={activeUser || {}} />}></Route>
@@ -128,7 +139,10 @@ const App = () => {
 					<Route path='/login' element={<LogInForm setActiveUser={setActiveUser} />}></Route>
 				</Routes>
 			</main>
+			{/* Footer Section */}
+			<Footer />
 		</Router>
+
 	);
 }
 

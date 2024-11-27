@@ -15,6 +15,7 @@ const ProductDetailsPage = () => {
 
 	const [amount, setAmount] = useState(1);
 	const [product, setProduct] = useState({});
+	const [comment, setComment] = useState('');
 	const [loaded, setLoaded] = useState(false);
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState(false);
@@ -51,13 +52,23 @@ const ProductDetailsPage = () => {
 		// Navigate back to /products with the previous state
 		navigate('/products', { state: location.state });
 	};
-	const handleSubmit = async(e )=> {
+	const handleAddToCart = async(e )=> {
 		e.preventDefault();
 		try{
 			await AddToCart({productId, quantity: amount})
 		} catch (error) {
             onError(error);
 		}
+	}
+
+	const handleAddComment = ()=> {
+	
+
+		//add comment to DB
+	}
+
+	const handleCommentChange = (e) => {
+		setComment(e.target.value);
 	}
 
 	const modal = (
@@ -96,7 +107,7 @@ const ProductDetailsPage = () => {
 						<div className="form__label">Description</div>
 						<div className="product__descr-text">{description}</div>
 					</div>
-					<form onSubmit={handleSubmit} className="form__wrapper">
+					<form onSubmit={handleAddToCart} className="form__wrapper">
 						<div className="input__wrapper">
 							<label htmlFor="">Amount of product</label>
 							<input
@@ -120,6 +131,16 @@ const ProductDetailsPage = () => {
 								<div className='product__comment'>{comment}</div>
 							)
 					})}
+					<form onSubmit={handleAddComment} className="product__comment-form">
+						<textarea
+							className="product__comment-field"
+							placeholder="Leave your comment..."
+							value={comment}
+							onChange={handleCommentChange}
+							// onKeyDown={handleKeyDown}
+						/>
+						<button type="submit" className="button button__small">Add Comment</button>
+					</form>
 				</div>
 			</div> 
 		</>

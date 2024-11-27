@@ -4,6 +4,10 @@
     border-radius: 16px;
     text-align: center;
     border: none;
+    padding: 7px 12px;
+    font-size: 24px;
+    height: 60px;
+    width: 230px;
     &__long{
         margin-top: 35px;
         width: 335px;
@@ -29,6 +33,16 @@
         background-color: #fff;
         color: $red;
         border: 1px solid $red;
+    }
+    &:hover{
+        background: none;
+        border: 1px solid $red;
+        color: $red;
+    }
+    &:active{
+        background-color: $orange;
+        color: #fff;
+        border: none;
     }
 
 }

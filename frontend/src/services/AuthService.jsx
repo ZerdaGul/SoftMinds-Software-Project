@@ -49,7 +49,7 @@ export const GetActiveUser = async () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      withCredentials: true // Enable cookies
+      withCredentials: true // Enable cookies 
     })
     return response.data;
   } catch (error) {

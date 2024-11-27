@@ -1,0 +1,58 @@
+@import '../../style/style.scss';
+
+.requests{
+    height: 100%;
+    width: 100vw;
+    padding: 30px  ;
+    margin-left: 50px;
+    background-color: #F5F2F2;
+    &__products {
+        min-height: 800px;
+        margin-top: 20px;
+    }
+    &__product {
+        position: relative;
+        color: $dark;   
+        font-size: 18px;
+        height: 48px;
+        display: grid;
+        grid-template-columns: 440px 50px 100px 240px;
+        gap: 35px;
+        align-items: center;
+        &-name{
+            width: 100%;
+            text-align: left;
+            position: relative;
+        }
+        &-amount{
+            position: relative;
+            &::after{
+                content: '';
+                position: absolute;
+                width: 1px;
+                height: 37px;
+                background-color: $dark-op-50;
+                bottom: 50%;
+                transform: translateY(50%);
+                left: 100%;
+            }
+        }
+        &-price {
+            font-weight: 700;
+        }
+        &::after{
+            content: "";
+            position: absolute;
+            width: 660px;
+            height: 1px;
+            background: #A6A6A6;
+            top:100%;
+            left: 0;
+        }
+    }
+    &__buttons{
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+    }
+}
