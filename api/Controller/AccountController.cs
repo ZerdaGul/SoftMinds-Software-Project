@@ -14,7 +14,7 @@ using MimeKit;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 
-namespace api.Controllers
+namespace api.Controller
 {
     [Route("api/")]
     [ApiController]
