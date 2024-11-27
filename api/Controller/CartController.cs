@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
@@ -11,21 +10,19 @@ using api.Models;
 using api.Data;
 using api.DTO;
 
-namespace api.Controllers
+namespace api.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
     public class CartController : ControllerBase
     {
         private readonly AppDBContext _context;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IConfiguration _configuration;
         private readonly ILogger<CartController> _logger;
 
-        public CartController(AppDBContext context, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, ILogger<CartController> logger)
+        public CartController(AppDBContext context, IConfiguration configuration, ILogger<CartController> logger)
         {
             _context = context;
-            _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
             _logger = logger;
         }
@@ -205,7 +202,7 @@ namespace api.Controllers
             if (order == null)
             {
                 _logger.LogWarning("No pending order found for the user.");
-                return NotFound("No pending order found for the user.");
+                return Ok(new List<OrderItem>()); // Return an empty list
             }
 
             return Ok(order.OrderItems);
@@ -329,17 +326,20 @@ namespace api.Controllers
 
         private int? GetCurrentUserId()
         {
-            // Implement logic to get the current user ID from the JWT token
-            var token = _httpContextAccessor.HttpContext?.Request.Cookies["AuthToken"];
+            var token = HttpContext.Request.Cookies["AuthToken"];
             if (string.IsNullOrEmpty(token))
             {
+                _logger.LogWarning("No auth token found in the request.");
                 return null;
             }
+
+            _logger.LogInformation($"AuthToken cookie: {token}");
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var jwtKey = _configuration["Jwt:Key"];
             if (string.IsNullOrEmpty(jwtKey))
             {
+                _logger.LogWarning("JWT key is not configured.");
                 return null;
             }
             var key = Encoding.UTF8.GetBytes(jwtKey);
@@ -356,8 +356,14 @@ namespace api.Controllers
                 }, out SecurityToken validatedToken);
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
-                var userId = jwtToken.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+                var userIdClaim = jwtToken.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub);
+                if (userIdClaim == null)
+                {
+                    _logger.LogWarning("User ID claim is not present in the token.");
+                    return null;
+                }
 
+                var userId = userIdClaim.Value;
                 return int.Parse(userId);
             }
             catch

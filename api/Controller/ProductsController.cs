@@ -11,7 +11,7 @@ using System.Security.Claims;
 using api.DTO;
 using Microsoft.AspNetCore.Authorization;
 
-namespace api.Controllers
+namespace api.Controller
 {
     [Route("api/products")]
     [ApiController]

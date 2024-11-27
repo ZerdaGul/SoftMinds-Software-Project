@@ -1,17 +1,20 @@
 @import '../style/style.scss';
 
-.products{
-    &__page{
+.products {
+    &__page {
         margin-left: 310px;
         margin-bottom: 60px;
     }
+
     &__sorting {
         height: 32px;
     }
-    &__control{
+
+    &__control {
         display: grid;
-        grid-template-columns: 220px 1fr minmax(332px 370px); 
+        grid-template-columns: 220px 1fr minmax(332px 370px);
     }
+
     &__list {
         margin-top: 30px;
         display: grid;

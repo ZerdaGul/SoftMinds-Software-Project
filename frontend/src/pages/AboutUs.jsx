@@ -13,25 +13,33 @@ function AboutUs() {
             <section className="who-we-are">
                 <h2>Who we are</h2>
                 <p>
-                    As EKO Innovation & Trading S.L., we are a consultancy and project development firm operating in 6 different
-                    sectors on an international scale. Our goal is to optimize business processes, reduce costs, and develop
-                    sustainable projects for the future by offering our clients the most innovative and efficient solutions.
+                    As EKO Innovation & Trading S.L., we are a consultancy and project development firm operating in 6
+                    different
+                    sectors on an international scale. Our goal is to optimize business processes, reduce costs, and
+                    develop
+                    sustainable projects for the future by offering our clients the most innovative and efficient
+                    solutions.
                 </p>
                 <p>
-                    With our expert team, we provide advanced technology-based solutions in the fields of Smart Cities, Energy,
+                    With our expert team, we provide advanced technology-based solutions in the fields of Smart Cities,
+                    Energy,
                     Transportation & Traffic, Security & Surveillance, Iron & Steel, and Packaging.
                 </p>
                 <p>
-                    In addition to our consultancy and project development services, we offer a wide range of products within the
-                    framework of international trade, including ANPR and CCTV Camera Systems, Data Centers, RFID Systems and Tags,
-                    Electrical Panels, Sensors, Zircon Refractory Bricks, PET Flake, Iron & Steel Industry Spare Parts, and Carbon
+                    In addition to our consultancy and project development services, we offer a wide range of products
+                    within the
+                    framework of international trade, including ANPR and CCTV Camera Systems, Data Centers, RFID Systems
+                    and Tags,
+                    Electrical Panels, Sensors, Zircon Refractory Bricks, PET Flake, Iron & Steel Industry Spare Parts,
+                    and Carbon
                     Credits.
                 </p>
                 <p>
-                    Our company prioritizes quality, safety, and sustainability in every project, aiming to provide the best
+                    Our company prioritizes quality, safety, and sustainability in every project, aiming to provide the
+                    best
                     service to our clients by closely following innovations and developments in the sector.
                 </p>
-                <a href="#" className="link">More about our products &rarr;</a>
+                <a href="/sectors" className="link">More about our products &rarr;</a>
             </section>
 
             {/* Our Vision Section */}

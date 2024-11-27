@@ -2,7 +2,7 @@ import React from 'react';
 import close from '../../assets/icons/close-dark.svg';
 import './modal.scss';
 
-const ConfirmModal = ({title, subtitle, buttonConfirmText, buttonCloseText, onClose, onConfirm}) => {
+const ConfirmModal = ({ title, subtitle, buttonConfirmText, buttonCloseText, onClose, onConfirm }) => {
     return (
         <div className="overlay">
             <div className="modal">

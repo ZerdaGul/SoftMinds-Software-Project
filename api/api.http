@@ -1,6 +1,13 @@
-@api_HostAddress = http://localhost:5115
+@api_HostAddress = https://api.ekoinv.com
+### Login
+POST {{api_HostAddress}}/api/auth/login
+Content-Type: application/json
 
-GET {{api_HostAddress}}/weatherforecast/
+{
+  "email": "semih@gmail.com",
+  "password": "Semih123"
+}
+
+### Get Active Session
+GET {{api_HostAddress}}/api/auth/active-session
 Accept: application/json
-
-###

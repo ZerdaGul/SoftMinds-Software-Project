@@ -14,7 +14,7 @@ using MimeKit;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 
-namespace api.Controllers
+namespace api.Controller
 {
     [Route("api/")]
     [ApiController]
@@ -40,8 +40,8 @@ namespace api.Controllers
                 return BadRequest("Tüm alanlar gereklidir.");
             }
 
-            // İsim kontrolü: Sadece harf ve boşluk karakteri
-            if (!System.Text.RegularExpressions.Regex.IsMatch(model.Name, @"^[a-zA-Z\s]+$"))
+            // İsim kontrolü: Sadece harf (Türkçe karakterler dahil) ve boşluk karakteri
+            if (!System.Text.RegularExpressions.Regex.IsMatch(model.Name, @"^[a-zA-ZçÇğĞıİöÖşŞüÜ\s]+$"))
             {
                 return BadRequest("İsim yalnızca harflerden ve boşluk karakterlerinden oluşmalıdır.");
             }
@@ -126,8 +126,6 @@ namespace api.Controllers
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
 
-            // Aktif oturum cookie'sini sil
-            Response.Cookies.Delete("AuthToken");
             return Ok(new { message = "Hesap başarıyla silindi." });
         }
         [HttpGet("verify")]
@@ -159,7 +157,7 @@ namespace api.Controllers
             message.To.Add(new MailboxAddress(user.Name, user.Email));
             message.Subject = "Email Verification";
 
-            var verificationLink = $"http://localhost:5115/api/verify?email={user.Email}&token={user.Password_Hash}";
+            var verificationLink = $"https://api.ekoinv.com/api/verify?email={user.Email}&token={user.Password_Hash}";
             message.Body = new TextPart("plain")
             {
                 Text = $"Please verify your email by clicking on the following link: {verificationLink}"

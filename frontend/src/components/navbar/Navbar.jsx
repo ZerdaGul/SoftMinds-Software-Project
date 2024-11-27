@@ -39,38 +39,37 @@ const Navbar = ({ activeUser, setActiveUser }) => {
             </div>
             <ul className="navbar-links">
                 <li>
-                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : '#571846'})}
-                             to="/aboutUs">About Us</NavLink>
+                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
+                        to="/aboutUs">About Us</NavLink>
                 </li>
                 <li>
-                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : '#571846'})}
-                             to="/products">Products</NavLink>
+                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
+                        to="/products">Products</NavLink>
                 </li>
                 <li>
-                    {/* <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : '#571846'})}
-                             to="/sectors">Sectors</NavLink> */}
-                             <a href="#sectors">Sectors</a>
+                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
+                        to="/sectors">Sectors</NavLink>
                 </li>
                 <li>
-                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : '#571846'})}
-                             to="/solutions">Solutions</NavLink>
+                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
+                        to="/solutions">Solutions</NavLink>
                 </li>
                 <li>
-                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : '#571846'})}
-                             to="/consultancy">Consultancy</NavLink>
+                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
+                        to="/consultancy">Consultancy</NavLink>
                 </li>
                 <li>
-                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : '#571846'})}
-                             to="/contactUs">Contact Us</NavLink>
+                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
+                        to="/contactUs">Contact Us</NavLink>
                 </li>
                 <li>
-                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : '#571846'})}
-                             to="/"> <img src={earth} alt="languages" style={{height: "20px", width: "auto"}}/>
+                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
+                        to="/"> <img src={earth} alt="languages" style={{ height: "20px", width: "auto" }} />
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink style={({isActive}) => ({color: isActive ? '#FF5733' : '#571846'})}
-                             to="/profile"> <img src={user} alt="user" style={{height: "40px", width: "auto"}}/>
+                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
+                        to="/profile"> <img src={user} alt="user" style={{ height: "40px", width: "auto" }} />
                     </NavLink>
                 </li>
                 <li>
@@ -87,14 +86,14 @@ const Navbar = ({ activeUser, setActiveUser }) => {
                 <span className="bar"></span>
             </div>
 
-            {showLogoutModal && 
+            {showLogoutModal &&
                 createPortal(
                     <ConfirmModal
-                    title={"Do you want to log out?"}
-                    buttonConfirmText={"Yes"}
-                    buttonCloseText={'No'}
-                    onClose={closeModal}
-                    onConfirm={handleLogout} />,
+                        title={"Do you want to log out?"}
+                        buttonConfirmText={"Yes"}
+                        buttonCloseText={'No'}
+                        onClose={closeModal}
+                        onConfirm={handleLogout} />,
                     document.body
                 )}
         </nav>

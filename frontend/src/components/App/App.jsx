@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './App.css';
 import Navbar from '../navbar/Navbar';
@@ -9,7 +9,7 @@ import ProfileForm from '../forms/ProfileForm';
 import Settings from '../settings/Settings';
 import ResetPasswordForm from '../forms/ResetPasswordForm';
 import UpdateProfile from '../forms/UpdateProfile';
-import {GetActiveUser, LogOut} from '../../services/AuthService';
+import { GetActiveUser, LogOut } from '../../services/AuthService';
 import { LoadSectors } from '../../services/ProductService';
 import ForgotPasswordRequest from '../forms/ForgotPasswordRequest';
 import CreatePasswordForm from '../forms/CreatePasswordForm';
@@ -24,12 +24,15 @@ import Footer from '../footer/Footer';
 import ProductsForAdmin from "../../pages/ProductsForAdmin";
 import CardForm from "../forms/CardForm";
 import ProductDashboard from "../../dashboard/ProductDashboard";
+import SectorPage from "../../pages/SectorPage";
+import SolutionPage from "../../pages/SolutionPage";
+import ConsultancyPage from "../../pages/ConsultancyPage";
 
 const App = () => {
 	const [activeUser, setActiveUser] = useState(null);
 	let isLoggedOut = false; // Kullanıcı çıkış durumu
 
-	
+
 
 	// Uygulama başlangıcında localStorage veya sunucudan kullanıcı bilgilerini kontrol et
 	useEffect(() => {
@@ -52,7 +55,7 @@ const App = () => {
 		console.log("Active user updated:", activeUser);
 	}, [activeUser]);
 
-	
+
 
 	// Çıkış işlemini yönetme
 	const handleLogout = async () => {
@@ -88,24 +91,24 @@ const App = () => {
 			});
 	};
 
-	
+
 
 	return (
 		<Router>
 			<Navbar activeUser={activeUser} onLogout={handleLogout} />
 			<main>
-			<Routes>
-				<Route path='/' element={<HomePage/>}></Route>
-				<Route path='/aboutUs' element={<AboutUs/>}></Route>
-				<Route path='/products' element={<ProductsPage/>}></Route>
-				<Route path='/products/:id' element={<ProductDetailsPage/>}></Route>
-				{/* <Route path='/sectors'></Route> */}
-				<Route path='/solutions'></Route>
-				<Route path='/consultancy'></Route>
-				<Route path='/contactUs'></Route>
-				<Route path='/forgot-password-request' element={<ForgotPasswordRequest />}></Route>
-				<Route path='/create-password' element={<CreatePasswordForm/>}></Route>
-				{/* <Route path='/profile/*' element={<UserProfilePage />}>
+				<Routes>
+					<Route path='/' element={<HomePage />}></Route>
+					<Route path='/aboutUs' element={<AboutUs />}></Route>
+					<Route path='/products' element={<ProductsPage />}></Route>
+					<Route path='/products/:id' element={<ProductDetailsPage />}></Route>
+					<Route path='/sectors' element={<SectorPage />}></Route>
+					<Route path='/solutions' element={<SolutionPage />}></Route>
+					<Route path='/consultancy' element={<ConsultancyPage />}></Route>
+					<Route path='/contactUs'></Route>
+					<Route path='/forgot-password-request' element={<ForgotPasswordRequest />}></Route>
+					<Route path='/create-password' element={<CreatePasswordForm />}></Route>
+					{/* <Route path='/profile/*' element={<UserProfilePage />}>
 					<Route path='dashboard'></Route>
 					<Route path='orders'></Route>
 					<Route path='cart'></Route>
@@ -117,30 +120,30 @@ const App = () => {
 					<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
 					
 				</Route> */}
-				<Route path='/profile/*' element={<OrderAdminPage/>}>
-					<Route path='dashboard'></Route>
-					<Route path='orders-progress' element={<OrdersProgress/>}></Route>
-					<Route path='requests' element={<Requests/>}></Route>
-					<Route path='my-profile' element={<ProfileForm initialValues={activeUser} />}></Route>
-					<Route path='orders-progress'></Route>
-					<Route path='requests'></Route>
-					<Route path='my-profile' element={<ProfileForm initialValues={activeUser || {}} />}></Route>
-					<Route path='contacts'></Route>
-					<Route path='settings/*' element={<Settings initialValues={activeUser}/>}>
-						<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser}/>} />
+					<Route path='/profile/*' element={<OrderAdminPage />}>
+						<Route path='dashboard'></Route>
+						<Route path='orders-progress' element={<OrdersProgress />}></Route>
+						<Route path='requests' element={<Requests />}></Route>
+						<Route path='my-profile' element={<ProfileForm initialValues={activeUser} />}></Route>
+						<Route path='orders-progress'></Route>
+						<Route path='requests'></Route>
+						<Route path='my-profile' element={<ProfileForm initialValues={activeUser || {}} />}></Route>
+						<Route path='contacts'></Route>
+						<Route path='settings/*' element={<Settings initialValues={activeUser} />}>
+							<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser} />} />
+						</Route>
+						<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
+
 					</Route>
-					<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
-					
-				</Route>
-				<Route path='/registration' element={<SignInPage />}></Route>
-				<Route path='/login' element={<LogInForm setActiveUser={setActiveUser} />}></Route>
-			</Routes>
+					<Route path='/registration' element={<SignInPage />}></Route>
+					<Route path='/login' element={<LogInForm setActiveUser={setActiveUser} />}></Route>
+				</Routes>
 			</main>
 			{/* Footer Section */}
 			<Footer />
 		</Router>
-		
+
 	);
 }
 
-	export default App;
+export default App;

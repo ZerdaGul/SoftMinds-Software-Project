@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using api.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace api.Controllers
+namespace api.Controller
 {
     [Route("api/categories")]
     [ApiController]

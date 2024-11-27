@@ -8,7 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
-namespace api.Controllers
+namespace api.Controller
 {
     [Route("api/auth")]
     [ApiController]
@@ -16,6 +16,7 @@ namespace api.Controllers
     {
         private readonly AppDBContext _context;
         private readonly IConfiguration _configuration;
+
         private const int MaxFailedAccessAttempts = 5; // Maksimum başarısız giriş denemesi
         private const int LockoutDuration = 5; // Kilitlenme süresi (dakika)
 
@@ -74,8 +75,8 @@ namespace api.Controllers
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
             var jwtKey = _configuration["Jwt:Key"];
@@ -94,14 +95,13 @@ namespace api.Controllers
                 signingCredentials: creds);
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-
-            // Token'ı HTTP-only cookie olarak ayarla
+            // Set the token as a cookie
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
                 Secure = false,
                 SameSite = SameSiteMode.None,
-                Expires = token.ValidTo
+                Expires = DateTime.Now.AddDays(1)
             };
             Response.Cookies.Append("AuthToken", tokenString, cookieOptions);
 
@@ -116,63 +116,44 @@ namespace api.Controllers
             return Ok(new { message = "Çıkış başarılı." });
         }
 
+
         // GET /api/auth/active-session
         [HttpGet("active-session")]
-        public async Task<IActionResult> GetActiveSession()
+        public async Task<IActionResult> ActiveSession()
         {
-            if (Request.Cookies.TryGetValue("AuthToken", out var token))
+            var token = Request.Cookies["AuthToken"];
+            if (string.IsNullOrEmpty(token))
             {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var jwtKey = _configuration["Jwt:Key"];
-                if (string.IsNullOrEmpty(jwtKey))
-                {
-                    return StatusCode(500, "JWT key is not configured.");
-                }
-                var key = Encoding.UTF8.GetBytes(jwtKey);
-
-                try
-                {
-                    tokenHandler.ValidateToken(token, new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                        ClockSkew = TimeSpan.Zero
-                    }, out SecurityToken validatedToken);
-
-                    var jwtToken = (JwtSecurityToken)validatedToken;
-                    var userId = jwtToken.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
-
-                    var user = await _context.Users.FindAsync(int.Parse(userId));
-                    if (user == null)
-                    {
-                        return NotFound("Kullanıcı bulunamadı.");
-                    }
-
-                    return Ok(new
-                    {
-                        user = new
-                        {
-                            user.Id,
-                            user.Email,
-                            user.Name,
-                            user.Country,
-                            user.Phone,
-                        }
-                    });
-                }
-                catch (SecurityTokenException ex)
-                {
-                    return Unauthorized("Geçersiz token: " + ex.Message);
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, "Token doğrulama hatası: " + ex.Message);
-                }
+                return NotFound(new { message = "Oturum bulunamadı." });
             }
 
-            return NotFound("Aktif oturum bulunamadı.");
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+            var idClaim = jsonToken?.Claims.First(claim => claim.Type == JwtRegisteredClaimNames.Sub)?.Value;
+            if (string.IsNullOrEmpty(idClaim))
+            {
+                return NotFound(new { message = "Geçerli bir oturum bulunamadı." });
+            }
+
+            if (!int.TryParse(idClaim, out var userId))
+            {
+                return NotFound(new { message = "Geçerli bir oturum bulunamadı." });
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null)
+            {
+                return NotFound(new { message = "Kullanıcı bulunamadı." });
+            }
+
+            return Ok(new
+            {
+                user.Id,
+                user.Email,
+                user.Name,
+                user.Country,
+                user.Phone
+            });
         }
     }
 }

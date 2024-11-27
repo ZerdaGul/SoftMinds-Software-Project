@@ -9,8 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Veritabanı bağlantısını ekle
 builder.Services.AddDbContext<AppDBContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("mysql_connection"), 
-        new MySqlServerVersion(new Version(8,0,39)))); // MySQL sürümüne dikkat edin
+    options.UseMySql(builder.Configuration.GetConnectionString("mysql_connection"),
+        new MySqlServerVersion(new Version(8, 0, 39)))); // MySQL sürümüne dikkat edin
 
 // EmailSettings konfigürasyonunu ekle
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
@@ -19,13 +19,11 @@ builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Emai
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor(); // Bu satırı ekleyin
 
-// JWT Authentication ekle
 var jwtKey = builder.Configuration["Jwt:Key"];
-if (string.IsNullOrEmpty(jwtKey) || jwtKey.Length < 32)
+if (string.IsNullOrEmpty(jwtKey))
 {
-    throw new ArgumentException("JWT Key must be at least 32 characters long.");
+    throw new InvalidOperationException("JWT Key is not configured.");
 }
-
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -45,13 +43,12 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", builder =>
     {
-        builder.WithOrigins("http://localhost:3000")
-            .AllowCredentials()
+        builder.WithOrigins("http://localhost:3000") // React uygulamasının adresi
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -70,6 +67,7 @@ app.UseRouting();
 app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();
