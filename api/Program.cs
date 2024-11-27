@@ -18,22 +18,12 @@ builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Emai
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor(); // Bu satırı ekleyin
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(60); // Session timeout süresi
-    options.Cookie.Name = "AuthToken";
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-    options.Cookie.SameSite = SameSiteMode.None;
-    options.Cookie.IsEssential = true;
-});
-// JWT Authentication ekle
-var jwtKey = builder.Configuration["Jwt:Key"];
-if (string.IsNullOrEmpty(jwtKey) || jwtKey.Length < 32)
-{
-    throw new ArgumentException("JWT Key must be at least 32 characters long.");
-}
 
+var jwtKey = builder.Configuration["Jwt:Key"];
+if (string.IsNullOrEmpty(jwtKey))
+{
+    throw new InvalidOperationException("JWT Key is not configured.");
+}
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -53,13 +43,12 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", builder =>
     {
-        builder.WithOrigins("https://ekoinv.com")
+        builder.WithOrigins("http://localhost:3000") // React uygulamasının adresi
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
     });
 });
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -67,22 +56,19 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-        c.RoutePrefix = string.Empty; // Set Swagger UI at the app's root
-    });
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors("CorsPolicy");
+
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseSession(); // Session middleware'i ekleyin
+
 app.MapControllers();
 
 app.Run();

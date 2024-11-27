@@ -7,7 +7,6 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using Microsoft.AspNetCore.Http;
 
 namespace api.Controllers
 {
@@ -17,16 +16,14 @@ namespace api.Controllers
     {
         private readonly AppDBContext _context;
         private readonly IConfiguration _configuration;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
         private const int MaxFailedAccessAttempts = 5; // Maksimum başarısız giriş denemesi
         private const int LockoutDuration = 5; // Kilitlenme süresi (dakika)
 
-        public AuthController(AppDBContext context, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public AuthController(AppDBContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         // POST /api/auth/login
@@ -78,8 +75,8 @@ namespace api.Controllers
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
             var jwtKey = _configuration["Jwt:Key"];
@@ -98,7 +95,15 @@ namespace api.Controllers
                 signingCredentials: creds);
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-            _httpContextAccessor.HttpContext?.Session.SetString("AuthToken", tokenString);
+            // Set the token as a cookie
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false,
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.Now.AddDays(1)
+            };
+            Response.Cookies.Append("AuthToken", tokenString, cookieOptions);
 
             return Ok(new { token = tokenString });
         }
@@ -107,15 +112,16 @@ namespace api.Controllers
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-            _httpContextAccessor.HttpContext?.Session.Clear();
+            Response.Cookies.Delete("AuthToken");
             return Ok(new { message = "Çıkış başarılı." });
         }
 
+
         // GET /api/auth/active-session
         [HttpGet("active-session")]
-        public async Task<IActionResult> GetActiveSession()
+        public async Task<IActionResult> ActiveSession()
         {
-            var token = _httpContextAccessor.HttpContext?.Session.GetString("AuthToken");
+            var token = Request.Cookies["AuthToken"];
             if (string.IsNullOrEmpty(token))
             {
                 return NotFound(new { message = "Oturum bulunamadı." });
@@ -123,8 +129,18 @@ namespace api.Controllers
 
             var handler = new JwtSecurityTokenHandler();
             var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
-            var email = jsonToken?.Claims.First(claim => claim.Type == ClaimTypes.Name).Value;
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            var idClaim = jsonToken?.Claims.First(claim => claim.Type == JwtRegisteredClaimNames.Sub)?.Value;
+            if (string.IsNullOrEmpty(idClaim))
+            {
+                return NotFound(new { message = "Geçerli bir oturum bulunamadı." });
+            }
+
+            if (!int.TryParse(idClaim, out var userId))
+            {
+                return NotFound(new { message = "Geçerli bir oturum bulunamadı." });
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
             if (user == null)
             {
                 return NotFound(new { message = "Kullanıcı bulunamadı." });

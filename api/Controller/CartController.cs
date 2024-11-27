@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
@@ -18,14 +17,12 @@ namespace api.Controllers
     public class CartController : ControllerBase
     {
         private readonly AppDBContext _context;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IConfiguration _configuration;
         private readonly ILogger<CartController> _logger;
 
-        public CartController(AppDBContext context, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, ILogger<CartController> logger)
+        public CartController(AppDBContext context, IConfiguration configuration, ILogger<CartController> logger)
         {
             _context = context;
-            _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
             _logger = logger;
         }
@@ -329,17 +326,20 @@ namespace api.Controllers
 
         private int? GetCurrentUserId()
         {
-            // Get the token from the session
-            var token = _httpContextAccessor.HttpContext?.Session.GetString("AuthToken");
+            var token = HttpContext.Request.Cookies["AuthToken"];
             if (string.IsNullOrEmpty(token))
             {
+                _logger.LogWarning("No auth token found in the request.");
                 return null;
             }
+
+            _logger.LogInformation($"AuthToken cookie: {token}");
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var jwtKey = _configuration["Jwt:Key"];
             if (string.IsNullOrEmpty(jwtKey))
             {
+                _logger.LogWarning("JWT key is not configured.");
                 return null;
             }
             var key = Encoding.UTF8.GetBytes(jwtKey);
@@ -356,8 +356,14 @@ namespace api.Controllers
                 }, out SecurityToken validatedToken);
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
-                var userId = jwtToken.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+                var userIdClaim = jwtToken.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub);
+                if (userIdClaim == null)
+                {
+                    _logger.LogWarning("User ID claim is not present in the token.");
+                    return null;
+                }
 
+                var userId = userIdClaim.Value;
                 return int.Parse(userId);
             }
             catch
