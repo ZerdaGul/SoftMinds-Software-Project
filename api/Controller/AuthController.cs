@@ -8,7 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
-namespace api.Controllers
+namespace api.Controller
 {
     [Route("api/auth")]
     [ApiController]

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 
 
-namespace api.Controllers;
+namespace api.Controller;
 [Route("api/update")]
 [ApiController]
 public class UpdateController : ControllerBase

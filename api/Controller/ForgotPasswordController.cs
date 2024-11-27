@@ -12,7 +12,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using api.Models;
 
-namespace api.Controllers
+namespace api.Controller
 {
     [Route("api/forgotpassword")]
     [ApiController]
