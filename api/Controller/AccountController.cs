@@ -40,8 +40,8 @@ namespace api.Controller
                 return BadRequest("Tüm alanlar gereklidir.");
             }
 
-            // İsim kontrolü: Sadece harf ve boşluk karakteri
-            if (!System.Text.RegularExpressions.Regex.IsMatch(model.Name, @"^[a-zA-Z\s]+$"))
+            // İsim kontrolü: Sadece harf (Türkçe karakterler dahil) ve boşluk karakteri
+            if (!System.Text.RegularExpressions.Regex.IsMatch(model.Name, @"^[a-zA-ZçÇğĞıİöÖşŞüÜ\s]+$"))
             {
                 return BadRequest("İsim yalnızca harflerden ve boşluk karakterlerinden oluşmalıdır.");
             }
