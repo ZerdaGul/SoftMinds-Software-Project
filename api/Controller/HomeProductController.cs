@@ -30,7 +30,6 @@ public class HomeProductController : ControllerBase
                 Id = p.Id,
                 Name = p.Name,
                 Price = p.Price,
-                Sector = p.Sector
             })
             .ToListAsync();
 
