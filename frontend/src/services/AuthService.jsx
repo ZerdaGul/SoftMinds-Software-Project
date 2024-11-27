@@ -1,13 +1,14 @@
 import axios from 'axios';
 
-const api = "https://api.ekoinv.com/api/";
+const api = "http://localhost:5115/api/";
 
 export const RegisterUser = async (data) => {
   try {
     const response = await axios.post(api + 'register', data, {
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      withCredentials: true
     });
     return response; // Return response if needed
   } catch (error) {
@@ -25,7 +26,8 @@ export const DeleteUser = async (id) => {
     const response = await axios.delete(`${api}account/delete/${id}`, {
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      withCredentials: true
     });
     return response;
   } catch (error) {
@@ -83,7 +85,7 @@ export const LogOut = async () => {
       headers: {
         'Content-Type': 'application/json'
       },
-
+      withCredentials: true
     })
     return response.data;
   } catch (error) {
@@ -101,7 +103,8 @@ export const UpdateUser = async (data) => {
     const response = await axios.post(`${api}update/update`, data, {
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      withCredentials: true
     })
     return response.data;
   } catch (error) {
@@ -120,7 +123,8 @@ export const ResetPassword = async (data) => {
     const response = await axios.post(`${api}update/reset-password`, data, {
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      withCredentials: true
     })
     return response.data;
   } catch (error) {
@@ -139,7 +143,8 @@ export const ForgotPasswordSendRequest = async (data) => {
     const response = await axios.post(`${api}forgotpassword/request`, data, {
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      withCredentials: true
     })
     return response.data;
   } catch (error) {
@@ -157,7 +162,8 @@ export const CreatePassword = async (data) => {
     const response = await axios.post(`${api}forgotpassword/reset`, data, {
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      withCredentials: true
     })
     return response.data;
   } catch (error) {
