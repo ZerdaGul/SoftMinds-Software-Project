@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import profile_pic from '../../assets/img/profile-pic-default.png';
 
-const ProfileForm = ({initialValues}) => {
+const ProfileForm = ({ initialValues = {} }) => {
     const navigate = useNavigate();
 
     const handleEditClick = () => {
@@ -25,8 +25,12 @@ const ProfileForm = ({initialValues}) => {
                     <h2>{initialValues.name || "Your Name"}</h2>
                     <p>{initialValues.email || "user@example.com"}</p>
                 </div>
-                <button className="button button__small"
-                        onClick={handleEditClick}>Edit</button>
+                <button
+                    className="button button__small"
+                    onClick={handleEditClick}
+                >
+                    Edit
+                </button>
             </div>
 
             <form className="form__wrapper">
@@ -35,9 +39,9 @@ const ProfileForm = ({initialValues}) => {
                     <input
                         type="text"
                         name="name"
-                        value={initialValues.name}
+                        value={initialValues.name || ""}
                         className="form__input"
-                        readOnly // Sadece görüntüleme için
+                        readOnly
                     />
                 </div>
                 <div className="input__wrapper">
@@ -45,7 +49,7 @@ const ProfileForm = ({initialValues}) => {
                     <input
                         type="text"
                         name="phone"
-                        value={initialValues.phone}
+                        value={initialValues.phone || ""}
                         className="form__input"
                         readOnly
                     />
@@ -55,27 +59,17 @@ const ProfileForm = ({initialValues}) => {
                     <input
                         type="email"
                         name="email"
-                        value={initialValues.email}
+                        value={initialValues.email || ""}
                         className="form__input"
                         readOnly
                     />
                 </div>
-                {/* <div className="input__wrapper">
-                    <label className="form__label" htmlFor="companyName">Company Name</label>
-                    <input
-                        type="text"
-                        name="companyName"
-                        value={initialValues.companyName}
-                        className="form__input"
-                        readOnly
-                    />
-                </div> */}
                 <div className="input__wrapper">
                     <label className="form__label" htmlFor="country">Country</label>
                     <input
                         type="text"
                         name="country"
-                        value={initialValues.country}
+                        value={initialValues.country || ""}
                         className="form__input"
                         readOnly
                     />

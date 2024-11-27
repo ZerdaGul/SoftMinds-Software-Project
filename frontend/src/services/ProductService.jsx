@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const api = "https://api.ekoinv.com/api/";
+const api = "http://localhost:5115/api/"
 
 export const LoadProducts = async (data) => {
   try {
@@ -23,39 +23,39 @@ export const LoadProducts = async (data) => {
 
 export const SearchProducts = async (data) => {
   try {
-    const response = await axios.get( `${api}products/search`,  {
-          params: data,
-        headers: {
-          'Content-Type': 'application/json'
-        }
+    const response = await axios.get(`${api}products/search`, {
+      params: data,
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
     return response.data;
-} catch (error) {
-  if (error.response) {
-    
-    throw new Error(error.response.data); // Ensure error.response.data exists
-  } else {
+  } catch (error) {
+    if (error.response) {
+
+      throw new Error(error.response.data); // Ensure error.response.data exists
+    } else {
       throw new Error("An unknown error occurred."); // Catch other errors
+    }
   }
-}
 }
 
 export const LoadSingleProduct = async (id) => {
   try {
-    const response = await axios.get( `${api}products/${id}`,  {
-        headers: {
-          'Content-Type': 'application/json'
-        } 
+    const response = await axios.get(`${api}products/${id}`, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
     return response.data;
-} catch (error) {
-  if (error.response) {
-    
-    throw new Error(error.response.data); // Ensure error.response.data exists
-  } else {
+  } catch (error) {
+    if (error.response) {
+
+      throw new Error(error.response.data); // Ensure error.response.data exists
+    } else {
       throw new Error("An unknown error occurred."); // Catch other errors
+    }
   }
-}
 }
 
 export const LoadSectors = async (data) => {
@@ -94,3 +94,20 @@ export const AddToCart = async (data) => {
     }
   }
 }
+
+export const DeleteProduct = async (id) => {
+  try {
+    const response = await axios.delete(`${api}products/${id}`, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data); // Ensure error.response.data exists
+    } else {
+      throw new Error("An unknown error occurred."); // Catch other errors
+    }
+  }
+};

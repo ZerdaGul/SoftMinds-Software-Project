@@ -16,20 +16,21 @@ const LogInForm = ({ setActiveUser }) => {
     const navigate = useNavigate();
 
 
-    
+
     const onError = (error) => {
         setLoading(false);
-        setError(true);  
+        setError(true);
         setShowModal(true)
-        setErrorMessage(error.message)      
+        setErrorMessage(error.message)
     }
 
     const handleSubmit = async (values) => {
         setLoading(true);
         try {
             const user = await LogIn(values);
-            setActiveUser(user.user); // Kullanıcı durumunu günceller
-            navigate('/'); // Giriş yaptıktan sonra ana sayfaya yönlendir
+            localStorage.setItem('current-user', JSON.stringify(user));
+            setActiveUser(user);
+            navigate('/');
         } catch (err) {
             onError(err.message);
         } finally {
@@ -39,19 +40,20 @@ const LogInForm = ({ setActiveUser }) => {
 
 
     const modal = <div>
-                        {loaded && navigate('/')}
-                        {error && createPortal(
-                            <InfoModal 
-                            title={"Error"}
-                            subtitle={errorMessage}
-                            onClose={() => {    
-                                setShowModal(false)
-                                navigate('/');}}/>,
-                            document.body
-                        )}
-                        {loading && <img src='../../assets/loading-animation.gif'></img>}
-                        <div className='overlay'></div>
-                    </div>
+        {loaded && navigate('/')}
+        {error && createPortal(
+            <InfoModal
+                title={"Error"}
+                subtitle={errorMessage}
+                onClose={() => {
+                    setShowModal(false)
+                    navigate('/');
+                }} />,
+            document.body
+        )}
+        {loading && <img src='../../assets/loading-animation.gif'></img>}
+        <div className='overlay'></div>
+    </div>
 
     return (
         <div className="form">
@@ -92,7 +94,7 @@ const LogInForm = ({ setActiveUser }) => {
                             <button className="button button__long" type="submit" disabled={isSubmitting}>
                                 {isSubmitting ? 'Logging in...' : 'Login'}
                             </button>
-                            <p className='form__pages'>Don't have an account? <Link to="/registration" style={{textDecoration: 'underline'}}>Sign up here</Link></p>
+                            <p className='form__pages'>Don't have an account? <Link to="/registration" style={{ textDecoration: 'underline' }}>Sign up here</Link></p>
                         </div>
                     </Form>
                 )}

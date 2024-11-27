@@ -47,7 +47,7 @@ export const GetActiveUser = async () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      withCredentials: true // Enable cookies 
+      withCredentials: true // Enable cookies
     })
     return response.data;
   } catch (error) {
@@ -65,7 +65,7 @@ export const LogIn = async (data) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      // withCredentials: true
+      withCredentials: true
     })
     return response.data;
   } catch (error) {
@@ -74,6 +74,11 @@ export const LogIn = async (data) => {
       throw new Error(error.response.data); // Ensure error.response.data exists
     } else {
       throw new Error("An unknown error occurred."); // Catch other errors
+    }
+  }
+  throw new Error(error.response.data); // Ensure error.response.data exists
+} else {
+  throw new Error("An unknown error occurred."); // Catch other errors
     }
   }
 }
@@ -132,6 +137,13 @@ export const ResetPassword = async (data) => {
       throw new Error("An unknown error occurred."); // Catch other errors
     }
   }
+  if (error.response) {
+
+    throw new Error(error.response.data); // Ensure error.response.data exists
+  } else {
+    throw new Error("An unknown error occurred."); // Catch other errors
+  }
+}
 }
 
 export const ForgotPasswordSendRequest = async (data) => {

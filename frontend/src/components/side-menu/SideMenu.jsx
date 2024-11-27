@@ -4,17 +4,25 @@ import { NavLink } from 'react-router-dom'
 // import cart from '../../assets/icons/profile/cart.svg';
 import contacts from '../../assets/icons/profile/contacts.svg';
 import settings from '../../assets/icons/profile/settings.svg';
-import dashboard from '../../assets/icons/profile/dashboard.svg';
-import orders from '../../assets/icons/profile/orders.svg';
 import user from '../../assets/icons/profile/user.svg';
 import "./sideMenu.scss"
 
-const SideMenu = () => {
+const SideMenu = ({main_menu}) => {
   return (
     <aside className='side-menu'>
         <div className="side-menu__title">Main menu</div>
         <ul className="side-menu__link-wrapper">
-            <li>
+            {main_menu.map(({path, icon, alt, text}) => {
+                return(
+                    <li>
+                        <NavLink className='side-menu__link' to={path}
+                            style={({isActive}) => ({backgroundColor: isActive ? '#F5F2F2' : 'inherit'})}>  
+                            <img src={icon} alt={alt}></img>
+                            {text}</NavLink>
+                    </li>
+                )
+            })}
+            {/* <li>
                 <NavLink className='side-menu__link' to='/profile/dashboard'
                     style={({isActive}) => ({backgroundColor: isActive ? '#F5F2F2' : 'inherit'})}>   
                     <img src={dashboard} alt='dashboard'></img>
@@ -25,7 +33,7 @@ const SideMenu = () => {
                     style={({isActive}) => ({backgroundColor: isActive ? '#F5F2F2' : 'inherit'})}>  
                     <img src={orders} alt='orders'></img>
                     Orders</NavLink>
-            </li>
+            </li> */}
         </ul>
         <div className="side-menu__title">Account</div>
         <ul className="side-menu__link-wrapper">

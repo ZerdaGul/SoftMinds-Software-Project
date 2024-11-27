@@ -15,21 +15,23 @@
     justify-content: space-between;
     position: absolute;
 
-    &__info{
+    &__info {
         display: flex;
         flex-direction: column;
         align-items: center;
     }
-    &__title{
+
+    &__title {
         font-size: 28px;
         font-weight: 700;
     }
-    &__subtitle{
+
+    &__subtitle {
         font-size: 16px;
         margin-top: 20px;
     }
 
-    &__close{
+    &__close {
         position: absolute;
         top: 20px;
         right: 20px;
@@ -37,13 +39,14 @@
         border: none;
         cursor: pointer;
     }
-    .button__wrapper{
+
+    .button__wrapper {
         display: grid;
         min-width: 235px;
-        grid-template-columns: repeat(2 , minmax(110px, 130px));
+        grid-template-columns: repeat(2, minmax(110px, 130px));
         gap: 15px;
         align-self: flex-end;
-        justify-self: flex-end;        
+        justify-self: flex-end;
     }
 }
 
@@ -55,9 +58,29 @@
     bottom: 0;
     display: flex;
     align-items: center;
+    /* Dikeyde ortala */
     justify-content: center;
+    /* Yatayda ortala */
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Dark background */
+    background: rgba(0, 0, 0, 0.5);
+    /* Dark background */
     z-index: 1000;
+}
+
+.modal {
+    width: 480px;
+    height: 240px;
+    border-radius: 16px;
+    border: 1px solid $dark-op-50;
+    background-color: #fff;
+    z-index: 1001;
+    padding: 45px 25px 30px 25px;
+    color: $dark;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    /* Düzeltme: absolute yerine relative */
 }
