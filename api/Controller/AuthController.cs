@@ -99,7 +99,7 @@ namespace api.Controller
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Secure = false,
+                Secure = true,
                 SameSite = SameSiteMode.None,
                 Expires = DateTime.Now.AddDays(1)
             };
