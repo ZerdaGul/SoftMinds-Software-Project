@@ -16,8 +16,8 @@ import CreatePasswordForm from '../forms/CreatePasswordForm';
 import ProductsPage from '../../pages/ProductsPage';
 import ProductDetailsPage from '../product-page/ProductDetailsPage';
 import OrderAdminPage from '../../pages/OrderAdminPage';
-import OrdersProgress from '../orders-progress/OrdersProgress';
-import Requests from '../requests/Requests';
+import OrdersProgress from '../order-admin/orders-progress/OrdersProgress';
+import Requests from '../order-admin/requests/Requests';
 import HomePage from "../../pages/HomePage";
 import AboutUs from "../../pages/AboutUs";
 import Footer from '../footer/Footer';
@@ -58,18 +58,18 @@ const App = () => {
 
 
 	// Çıkış işlemini yönetme
-	const handleLogout = async () => {
-		try {
-			console.log("Logout işlemi başlatıldı...");
-			await LogOut(); // Sunucudan oturumu kapat
-			localStorage.removeItem('current-user'); // localStorage'daki kullanıcıyı temizle
-			setActiveUser(null); // Kullanıcı state'ini sıfırla
-			isLoggedOut = true; // Çıkış durumunu işaretle
-			console.log("Logout işlemi tamamlandı.");
-		} catch (error) {
-			console.error("Logout sırasında hata oluştu:", error.message);
-		}
-	};
+	// const handleLogout = async () => {
+	// 	try {
+	// 		console.log("Logout işlemi başlatıldı...");
+	// 		await LogOut(); // Sunucudan oturumu kapat
+	// 		localStorage.removeItem('current-user'); // localStorage'daki kullanıcıyı temizle
+	// 		setActiveUser(null); // Kullanıcı state'ini sıfırla
+	// 		isLoggedOut = true; // Çıkış durumunu işaretle
+	// 		console.log("Logout işlemi tamamlandı.");
+	// 	} catch (error) {
+	// 		console.error("Logout sırasında hata oluştu:", error.message);
+	// 	}
+	// };
 
 	// Kullanıcı bilgilerini yükleme
 	const loadUser = () => {
@@ -95,7 +95,7 @@ const App = () => {
 
 	return (
 		<Router>
-			<Navbar activeUser={activeUser} onLogout={handleLogout} />
+			<Navbar activeUser={activeUser}  setActiveUser={setActiveUser} />
 			<main>
 				<Routes>
 					<Route path='/' element={<HomePage />}></Route>
