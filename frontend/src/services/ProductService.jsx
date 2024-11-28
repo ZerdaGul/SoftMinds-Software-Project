@@ -84,7 +84,8 @@ export const AddToCart = async (data) => {
       params: data,
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      withCredentials: true
     })
     return response.data;
   } catch (error) {
@@ -110,7 +111,8 @@ export const AddComment = async (id, text) => {
         headers: {
           'Accept': '*/*',
           'Content-Type': 'application/json'
-        }
+        },
+        withCredentials: true
       }
     );
 
