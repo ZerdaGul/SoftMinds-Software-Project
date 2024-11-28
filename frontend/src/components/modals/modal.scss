@@ -68,19 +68,19 @@
     z-index: 1000;
 }
 
-.modal {
-    width: 480px;
-    height: 240px;
-    border-radius: 16px;
-    border: 1px solid $dark-op-50;
-    background-color: #fff;
-    z-index: 1001;
-    padding: 45px 25px 30px 25px;
-    color: $dark;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-    /* Düzeltme: absolute yerine relative */
-}
+// .modal {
+//     width: 480px;
+//     height: 240px;
+//     border-radius: 16px;
+//     border: 1px solid $dark-op-50;
+//     background-color: #fff;
+//     z-index: 1001;
+//     padding: 45px 25px 30px 25px;
+//     color: $dark;
+//     text-align: center;
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: space-between;
+//     position: relative;
+//     /* Düzeltme: absolute yerine relative */
+// }

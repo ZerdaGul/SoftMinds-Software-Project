@@ -18,10 +18,7 @@ const ConfirmModal = ({ title, subtitle, buttonConfirmText, buttonCloseText, onC
                         {buttonCloseText}
                     </button>
                     <button
-                        onClick={() => {
-                            console.log("Confirm butonuna tıklandı"); // Debugging için
-                            onConfirm(); // Çıkışı tetikleyen fonksiyon
-                        }}
+                        onClick={onConfirm}
                         className="button button__small"
                     >
                         {buttonConfirmText}

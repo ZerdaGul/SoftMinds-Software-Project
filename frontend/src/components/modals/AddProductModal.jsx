@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './AddEditProductModal.scss';
+
 import { FaCheck, FaTimes } from 'react-icons/fa'; // Font Awesome'dan tik ve çarpı ikonları
 
 export const AddProductModal = ({ onClose, onProductAdded }) => {
@@ -36,7 +37,7 @@ export const AddProductModal = ({ onClose, onProductAdded }) => {
     };
 
     return (
-        <div className="modal">
+        <div className="overlay">
             <div className="modal-content">
                 <button className="close-button" onClick={onClose}>X</button>
                 <h2>Add Product</h2>

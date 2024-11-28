@@ -85,6 +85,7 @@ const ProductsPage = () => {
 				onError(error);
 			}
 		} else {
+			setReset(false);
 			updateProducts();
 		}
 	}
