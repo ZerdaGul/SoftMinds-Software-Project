@@ -25,12 +25,6 @@ const ProfileForm = ({ initialValues = {} }) => {
                     <h2>{initialValues.name || "Your Name"}</h2>
                     <p>{initialValues.email || "user@example.com"}</p>
                 </div>
-                <button
-                    className="button button__small"
-                    onClick={handleEditClick}
-                >
-                    Edit
-                </button>
                 <button className="button button__small"
                     onClick={handleEditClick}>Edit</button>
             </div>

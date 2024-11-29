@@ -1,0 +1,67 @@
+@import '../../style/style.scss';
+
+.faq{
+    &__page {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    }
+    &__title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 20px;
+    color: $orange;
+    }
+
+
+    &__item {
+        margin-bottom: 15px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+    }
+    &__question {
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: $dark;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 15px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+
+        &:hover {
+            background-color: #f1f1f1;
+        }
+
+        &.active {
+            font-weight: 700;
+            background-color: #e7f3ff;
+            color: $dark;
+        }
+
+        .toggle-icon {
+            font-size: 1.5rem;
+        }
+    }
+
+    &__answer {
+        margin-top: 10px;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: $dark;
+        padding: 0 15px;
+        animation: fadeIn 0.3s ease-in-out;
+
+        @keyframes fadeIn {
+            from {
+            opacity: 0;
+            }
+            to {
+            opacity: 1;
+            }
+        }
+    }
+}
+
+  

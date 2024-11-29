@@ -65,6 +65,10 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout }) => {
                 </li>
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
+                        to="/faq">FAQ</NavLink>
+                </li>
+                <li>
+                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
                         to="/"> <img src={earth} alt="languages" style={{ height: "20px", width: "auto" }} />
                     </NavLink>
                 </li>

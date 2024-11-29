@@ -22,6 +22,7 @@ import OrderAdminPage from '../../pages/OrderAdminPage';
 import OrdersProgress from '../order-admin/orders-progress/OrdersProgress';
 import Requests from '../order-admin/requests/Requests';
 import HomePage from "../../pages/HomePage";
+import FAQPage from '../FAQPage/FAQPage';
 import AboutUs from "../../pages/AboutUs";
 import Footer from '../footer/Footer';
 import ContactForm from '../contact-form/ContactForm';
@@ -107,6 +108,7 @@ const App = () => {
 					<Route path='/solutions' element={<SolutionPage />}></Route>
 					<Route path='/consultancy' element={<ConsultancyPage />}></Route>
 					<Route path='/contactUs' element={<ContactForm/>}></Route>
+					<Route path='/faq' element={<FAQPage/>}></Route>
 					<Route path='/forgot-password-request' element={<ForgotPasswordRequest />}></Route>
 					<Route path='/create-password' element={<CreatePasswordForm />}></Route>
 					{/* <Route path='/profile/*' element={<UserProfilePage />}>
