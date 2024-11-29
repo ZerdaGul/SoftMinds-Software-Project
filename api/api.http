@@ -37,5 +37,8 @@ POST {{api_HostAddress}}/api/products/8/comments
 Content-Type: application/json
 
 {
-  "comment": "This is a comment for product 8"
+  "text": "This is a comment for product 8"
 }
+
+### Get Product Comments
+GET {{api_HostAddress}}/api/products/8/comments

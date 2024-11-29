@@ -13,6 +13,8 @@ namespace api.Models
         // Relationships
         [JsonIgnore]
         public Orders? Order { get; set; }
+        
+        [JsonIgnore]
         public Products? Product { get; set; }
     }
 }
