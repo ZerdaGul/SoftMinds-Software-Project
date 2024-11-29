@@ -24,6 +24,7 @@ import Requests from '../order-admin/requests/Requests';
 import HomePage from "../../pages/HomePage";
 import AboutUs from "../../pages/AboutUs";
 import Footer from '../footer/Footer';
+import ContactForm from '../contact-form/ContactForm';
 import ProductsForAdmin from "../../pages/ProductsForAdmin";
 import CardForm from "../forms/CardForm";
 import ProductDashboard from "../../dashboard/ProductDashboard";
@@ -105,7 +106,7 @@ const App = () => {
 					<Route path='/sectors' element={<SectorPage />}></Route>
 					<Route path='/solutions' element={<SolutionPage />}></Route>
 					<Route path='/consultancy' element={<ConsultancyPage />}></Route>
-					<Route path='/contactUs'></Route>
+					<Route path='/contactUs' element={<ContactForm/>}></Route>
 					<Route path='/forgot-password-request' element={<ForgotPasswordRequest />}></Route>
 					<Route path='/create-password' element={<CreatePasswordForm />}></Route>
 					{/* <Route path='/profile/*' element={<UserProfilePage />}>
