@@ -40,6 +40,11 @@ namespace api.Controller
             {
                 return Unauthorized("Geçersiz email");
             }
+            
+            if (user.Is_Email_Verified == false)
+            {
+                return Unauthorized("Email adresiniz doğrulanmamış. Lütfen email adresinizi doğrulayın.");
+            }
 
             // Hesap kilitli mi kontrol et
             if (user.Lockout_End.HasValue && user.Lockout_End.Value > DateTime.UtcNow)
@@ -157,7 +162,8 @@ namespace api.Controller
                 user.Email,
                 user.Name,
                 user.Country,
-                user.Phone
+                user.Phone,
+                user.Role
             });
         }
     }
