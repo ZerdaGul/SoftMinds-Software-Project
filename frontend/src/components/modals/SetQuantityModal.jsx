@@ -67,8 +67,8 @@ const SetQuantityModal = ({ product_id, onClose }) => {
                     >
                         {() => (
                             <Form className="form__wrapper">
-                                <div className="input__wrapper">
-                                    <Field name="quantity" type="number" className="form__input" min="1" />
+                                <div style={{marginTop: '0px', height:'40px'}}className="input__wrapper">
+                                    <Field style={{marginTop: '0px'}} name="quantity" type="number" className="form__input" min="1" />
                                     <ErrorMessage name="quantity" component="div" className="form__error" />
                                 </div>
                                 <div className="button__wrapper">

@@ -160,7 +160,8 @@ export const DeleteProductComment = async (productId, commentId) => {
         headers: {
           'Accept': '*/*',
           'Content-Type': 'application/json'
-        }
+        },
+        withCredentials: true
       }
     );
 

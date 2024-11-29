@@ -1,5 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useCookies } from 'react-cookie';
+
+
 import './App.css';
 import Navbar from '../navbar/Navbar';
 import SignInPage from '../../pages/SignInPage';
@@ -29,73 +32,70 @@ import SolutionPage from "../../pages/SolutionPage";
 import ConsultancyPage from "../../pages/ConsultancyPage";
 
 const App = () => {
-	const [activeUser, setActiveUser] = useState(null);
-	let isLoggedOut = false; // Kullanıcı çıkış durumu
+	const [activeUser, setActiveUser] = useState(null); // Stores the current active user
+    const [isLoggedOut, setIsLoggedOut] = useState(false); // Tracks logout state
+	const [isLoggedIn, setIsLoggedIn] = useState(false);	// Tracks login state
 
+	// Load user information on app initialization
+    useEffect(() => {
+        const storedUser = getUserFromLocalStorage();
+        if (storedUser) {
+            console.log('User found in localStorage:', storedUser);
+            setActiveUser(storedUser);
+        } else if (!isLoggedOut) {
+            loadUserFromServer(); // Fetch from server if no stored user and not logged out
+        } 
+    }, [isLoggedIn, isLoggedOut]);
 
+	const getUserFromLocalStorage = () => {
+        const storedUser = localStorage.getItem('current-user');
+        return storedUser ? JSON.parse(storedUser) : null;
+    };
 
-	// Uygulama başlangıcında localStorage veya sunucudan kullanıcı bilgilerini kontrol et
-	useEffect(() => {
-		const storedUser = localStorage.getItem('current-user');
-		if (storedUser) {
-			console.log("LocalStorage'dan kullanıcı bulundu:", JSON.parse(storedUser));
-			setActiveUser(JSON.parse(storedUser)); // LocalStorage'dan kullanıcıyı state'e ayarla
-		} else {
-			console.log("LocalStorage'da kullanıcı yok. Sunucudan kullanıcı bilgisi yükleniyor...");
-			loadUser(); // Eğer localStorage'da yoksa sunucudan kullanıcı bilgisi yükle
-		}
-	}, []);
+    // Utility: Save user to localStorage
+    const saveUserToLocalStorage = (user) => {
+        if (user) {
+            localStorage.setItem('current-user', JSON.stringify(user));
+        } else {
+            localStorage.removeItem('current-user');
+        }
+    };
 
-	// activeUser değişimini izleme ve yükleme
-	useEffect(() => {
-		if (isLoggedOut || !activeUser) {
-			console.log("No active user or user logged out. Skipping loadUser.");
-			return;
-		}
-		console.log("Active user updated:", activeUser);
-	}, [activeUser]);
+    // Fetch user info from the server
+    const loadUserFromServer = async () => {
+        console.log('Fetching user from the server...');
+        try {
+            const user = await GetActiveUser();
+            if (user && user.email) {
+                console.log('User fetched successfully:', user);
+                saveUserToLocalStorage(user); // Save user to localStorage
+                setActiveUser(user); // Update state
+            } else {
+                console.warn('Invalid user data received:', user);
+                setActiveUser(null);
+            }
+        } catch (error) {
+            console.error('Error fetching user from server:', error);
+            setActiveUser(null);
+        }
+    };
 
+    // Handle logout
+    const handleLogout = () => {
+        console.log('User logged out');
+        setIsLoggedIn(false); // Mark user as logged out
+        setIsLoggedOut(true); // Set logout state
+        setActiveUser(null); // Clear active user
+        saveUserToLocalStorage(null); // Clear localStorage
+    };
 
-
-	// Çıkış işlemini yönetme
-	// const handleLogout = async () => {
-	// 	try {
-	// 		console.log("Logout işlemi başlatıldı...");
-	// 		await LogOut(); // Sunucudan oturumu kapat
-	// 		localStorage.removeItem('current-user'); // localStorage'daki kullanıcıyı temizle
-	// 		setActiveUser(null); // Kullanıcı state'ini sıfırla
-	// 		isLoggedOut = true; // Çıkış durumunu işaretle
-	// 		console.log("Logout işlemi tamamlandı.");
-	// 	} catch (error) {
-	// 		console.error("Logout sırasında hata oluştu:", error.message);
-	// 	}
-	// };
-
-	// Kullanıcı bilgilerini yükleme
-	const loadUser = () => {
-		console.log("loadUser çağrıldı");
-
-		GetActiveUser()
-			.then((user) => {
-				console.log("Sunucudan kullanıcı bilgisi alındı:", user);
-				if (!user || !user.email) {
-					console.error("Kullanıcı bilgisi eksik veya geçersiz:", user);
-					setActiveUser(null);
-					return;
-				}
-				setActiveUser(user);
-			})
-			.catch((err) => {
-				console.error("GetActiveUser çağrısında hata oluştu:", err);
-				setActiveUser(null); // Hata durumunda kullanıcıyı sıfırla
-			});
-	};
+    
 
 
 
 	return (
 		<Router>
-			<Navbar activeUser={activeUser}  setActiveUser={setActiveUser} />
+			<Navbar isLoggedIn={isLoggedIn}  setIsLoggedIn={setIsLoggedIn} onLogout={handleLogout} />
 			<main>
 				<Routes>
 					<Route path='/' element={<HomePage />}></Route>
@@ -136,7 +136,7 @@ const App = () => {
 
 					</Route>
 					<Route path='/registration' element={<SignInPage />}></Route>
-					<Route path='/login' element={<LogInForm setActiveUser={setActiveUser} />}></Route>
+					<Route path='/login' element={<LogInForm setIsLoggedIn={setIsLoggedIn} />}></Route>
 				</Routes>
 			</main>
 			{/* Footer Section */}

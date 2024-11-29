@@ -10,16 +10,17 @@ import './Navbar.scss';
 import { LogOut } from '../../services/AuthService';
 import ConfirmModal from '../modals/ConfirmModal';
 
-const Navbar = ({ activeUser, setActiveUser }) => {
+const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout }) => {
     const navigate = useNavigate();
     const [showLogoutModal, setShowLogoutModal] = useState(false);
 
     const handleLogout = async () => {
         try {
             await LogOut(); // Backend çıkış işlemi
-            setActiveUser(null); // Kullanıcıyı çıkış yapmış duruma getir
+            setIsLoggedIn(false);
             localStorage.removeItem('current-user');
             setShowLogoutModal(false);
+            onLogout();
             navigate('/login'); // Giriş sayfasına yönlendir
         } catch (error) {
             console.error("Çıkış işlemi sırasında hata oluştu:", error);
@@ -73,7 +74,7 @@ const Navbar = ({ activeUser, setActiveUser }) => {
                     </NavLink>
                 </li>
                 <li>
-                    {activeUser ? (
+                    {isLoggedIn ? (
                         <Link onClick={confirmLogout}>Log Out</Link>
                     ) : (
                         <NavLink to="/login">Log In</NavLink>

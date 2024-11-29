@@ -7,7 +7,7 @@ import { createPortal } from 'react-dom';
 import "./form.scss";
 import { LogIn } from '../../services/AuthService';
 import InfoModal from '../modals/InfoModal';
-const LogInForm = ({ setActiveUser }) => {
+const LogInForm = ({ setIsLoggedIn }) => {
     const [loading, setLoading] = useState(false);
     const [loaded, setLoaded] = useState(false);
     const [error, setError] = useState(false);
@@ -28,7 +28,8 @@ const LogInForm = ({ setActiveUser }) => {
         setLoading(true);
         try {
             const user = await LogIn(values);
-            setActiveUser(user); // Kullanıcı durumunu günceller
+            console.log("User logged in")
+            setIsLoggedIn(true) // Kullanıcı durumunu günceller
             navigate('/'); // Giriş yaptıktan sonra ana sayfaya yönlendir
         } catch (err) {
             onError(err.message);

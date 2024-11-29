@@ -8,7 +8,7 @@
         grid-auto-rows: 53px;
         row-gap: 10px;
         position: fixed;
-        z-index: 1000000;
+        z-index: 100;
         top: 150px;
         bottom: 80px; /* Add this to avoid overlapping the footer (adjust 80px to your footer height) */
         height: calc(100vh - 150px - 80px); /* Top offset and footer height */
