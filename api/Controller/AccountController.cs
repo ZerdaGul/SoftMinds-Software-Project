@@ -103,14 +103,13 @@ namespace api.Controller
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
                 // Email doğrulama mesajı gönder
-                // await SendVerificationEmail(user);
+                await SendVerificationEmail(user);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, "Kullanıcı kaydı sırasında bir hata oluştu. Lütfen tekrar deneyin. Hata: " + ex.Message);
             }
             // Email doğrulama mesajı gönder
-            await SendVerificationEmail(user);
             return CreatedAtAction(nameof(Register), new { id = user.Id }, user);
         }
 
