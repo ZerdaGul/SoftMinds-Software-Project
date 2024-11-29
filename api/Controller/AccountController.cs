@@ -127,6 +127,7 @@ namespace api.Controller
 
             return Ok(new { message = "Hesap başarıyla silindi." });
         }
+
         [HttpGet("verify")]
         public async Task<IActionResult> VerifyEmail(string email, string token)
         {
@@ -136,8 +137,9 @@ namespace api.Controller
                 return NotFound("Kullanıcı bulunamadı.");
             }
 
-            // Token doğrulaması (basit bir karşılaştırma, daha güvenli bir yöntem kullanabilirsiniz)
-            if (user.Password_Hash != token)
+            // Token doğrulaması
+            var decodedToken = Uri.UnescapeDataString(token);
+            if (user.Password_Hash != decodedToken)
             {
                 return BadRequest("Geçersiz doğrulama token'ı.");
             }
@@ -156,7 +158,7 @@ namespace api.Controller
             message.To.Add(new MailboxAddress(user.Name, user.Email));
             message.Subject = "Email Verification";
 
-            var verificationLink = $"https://api.ekoinv.com/api/verify?email={user.Email}&token={user.Password_Hash}";
+            var verificationLink = $"https://api.ekoinv.com/api/verify?email={user.Email}&token={Uri.EscapeDataString(user.Password_Hash)}";
             message.Body = new TextPart("plain")
             {
                 Text = $"Please verify your email by clicking on the following link: {verificationLink}"
