@@ -13,7 +13,26 @@
     color: $orange;
     }
 
-
+    &__list {
+        margin-top: 30px;
+    }
+    &__search{
+        margin-top: 40px;
+        &-input{
+            width: 100%;
+            max-width: 300px;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+      
+            &:focus {
+              border-color: $dark-op-50;
+              box-shadow: 0 0 5px $dark-op-50;
+            }
+          }
+    }
     &__item {
         margin-bottom: 15px;
         border-bottom: 1px solid #ddd;
@@ -61,6 +80,19 @@
             opacity: 1;
             }
         }
+    }
+
+    &__more{
+        display: flex;
+        width: 255px;
+        margin-top: 20px;
+        justify-content: space-between;
+        font-size: 16px;
+        line-height: 1.6;
+        color: $dark;
+      &-link{
+        color: $red;text-decoration: underline;
+      }
     }
 }
 
