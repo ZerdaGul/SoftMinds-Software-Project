@@ -9,22 +9,25 @@ using Microsoft.Extensions.Logging;
 using api.Models;
 using api.Data;
 using api.DTO;
+using api.Services;
 
 namespace api.Controller
 {
-    [Route("api/[controller]")]
+    [Route("api/cart")]
     [ApiController]
     public class CartController : ControllerBase
     {
         private readonly AppDBContext _context;
         private readonly IConfiguration _configuration;
         private readonly ILogger<CartController> _logger;
+        private readonly UserService _userService;
 
-        public CartController(AppDBContext context, IConfiguration configuration, ILogger<CartController> logger)
+        public CartController(AppDBContext context, IConfiguration configuration, ILogger<CartController> logger, UserService userService)
         {
             _context = context;
             _configuration = configuration;
             _logger = logger;
+            _userService = userService;
         }
 
         // POST: api/cart
@@ -38,7 +41,7 @@ namespace api.Controller
             }
 
             // Get the current user from the session
-            var userId = GetCurrentUserId();
+            var userId = _userService.GetCurrentUserId();
             if (userId == null)
             {
                 _logger.LogWarning("User is not authenticated.");
@@ -100,7 +103,7 @@ namespace api.Controller
         [HttpDelete("remove-item")]
         public IActionResult RemoveItemFromCart([FromQuery] int productId)
         {
-            var userId = GetCurrentUserId();
+            var userId = _userService.GetCurrentUserId();
             if (userId == null)
             {
                 _logger.LogWarning("User is not authenticated.");
@@ -138,7 +141,7 @@ namespace api.Controller
         [HttpDelete("clear")]
         public IActionResult ClearCart()
         {
-            var userId = GetCurrentUserId();
+            var userId = _userService.GetCurrentUserId();
             if (userId == null)
             {
                 _logger.LogWarning("User is not authenticated.");
@@ -187,7 +190,7 @@ namespace api.Controller
         [HttpGet]
         public IActionResult GetAllCartItems()
         {
-            var userId = GetCurrentUserId();
+            var userId = _userService.GetCurrentUserId();
             if (userId == null)
             {
                 _logger.LogWarning("User is not authenticated.");
@@ -212,7 +215,7 @@ namespace api.Controller
         [HttpGet("summary")]
         public IActionResult GetCartSummary()
         {
-            var userId = GetCurrentUserId();
+            var userId = _userService.GetCurrentUserId();
             if (userId == null)
             {
                 _logger.LogWarning("User is not authenticated.");
@@ -242,7 +245,7 @@ namespace api.Controller
         [HttpPatch("update-quantity")]
         public IActionResult UpdateCartItemQuantity([FromBody] CartDTO updateQuantityDto)
         {
-            var userId = GetCurrentUserId();
+            var userId = _userService.GetCurrentUserId();
             if (userId == null)
             {
                 _logger.LogWarning("User is not authenticated.");
@@ -297,7 +300,7 @@ namespace api.Controller
         [HttpPost("checkout")]
         public IActionResult Checkout()
         {
-            var userId = GetCurrentUserId();
+            var userId = _userService.GetCurrentUserId();
             if (userId == null)
             {
                 _logger.LogWarning("User is not authenticated.");
@@ -322,54 +325,6 @@ namespace api.Controller
             _logger.LogInformation($"User ID {userId.Value} checked out their cart.");
 
             return Ok(order);
-        }
-
-        private int? GetCurrentUserId()
-        {
-            var token = HttpContext.Request.Cookies["AuthToken"];
-            if (string.IsNullOrEmpty(token))
-            {
-                _logger.LogWarning("No auth token found in the request.");
-                return null;
-            }
-
-            _logger.LogInformation($"AuthToken cookie: {token}");
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var jwtKey = _configuration["Jwt:Key"];
-            if (string.IsNullOrEmpty(jwtKey))
-            {
-                _logger.LogWarning("JWT key is not configured.");
-                return null;
-            }
-            var key = Encoding.UTF8.GetBytes(jwtKey);
-
-            try
-            {
-                tokenHandler.ValidateToken(token, new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ClockSkew = TimeSpan.Zero
-                }, out SecurityToken validatedToken);
-
-                var jwtToken = (JwtSecurityToken)validatedToken;
-                var userIdClaim = jwtToken.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub);
-                if (userIdClaim == null)
-                {
-                    _logger.LogWarning("User ID claim is not present in the token.");
-                    return null;
-                }
-
-                var userId = userIdClaim.Value;
-                return int.Parse(userId);
-            }
-            catch
-            {
-                return null;
-            }
         }
 
         private int GetOrCreateOrderId(int userId)

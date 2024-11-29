@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using api.Data;
 using api.Models;
+using api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -15,9 +16,12 @@ builder.Services.AddDbContext<AppDBContext>(options =>
 // EmailSettings konfigürasyonunu ekle
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
+builder.Services.AddHttpContextAccessor(); // Bu satırı ekleyin
+builder.Services.AddScoped<UserService>(); // Bu satırı ekleyin
+builder.Services.AddScoped<EmailService>(); // Bu satırı ekleyin
+
 // Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddHttpContextAccessor(); // Bu satırı ekleyin
 
 var jwtKey = builder.Configuration["Jwt:Key"];
 if (string.IsNullOrEmpty(jwtKey))

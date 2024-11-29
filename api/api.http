@@ -4,10 +4,38 @@ POST {{api_HostAddress}}/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "semih@gmail.com",
+  "email": "ssarikoca7@gmail.com",
   "password": "Semih123"
 }
 
 ### Get Active Session
 GET {{api_HostAddress}}/api/auth/active-session
-Accept: application/json
+
+### Get cart items
+GET {{api_HostAddress}}/api/cart
+
+### Add item to cart
+POST {{api_HostAddress}}/api/cart
+Content-Type: application/json
+
+{
+  "productId": 8,
+  "quantity": 5
+}
+
+### Remove item from cart
+DELETE {{api_HostAddress}}/api/cart/remove-item?productId=8
+
+### get item in cart with id
+GET {{api_HostAddress}}/api/cart/18
+
+### summary of cart
+GET {{api_HostAddress}}/api/cart/summary
+
+### Comment to products
+POST {{api_HostAddress}}/api/products/8/comments
+Content-Type: application/json
+
+{
+  "comment": "This is a comment for product 8"
+}

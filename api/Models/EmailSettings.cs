@@ -7,6 +7,5 @@ namespace api.Models
         public required string SmtpUsername { get; set; } = null!;
         public required string SmtpPassword { get; set; } = null!;
         public required string SenderEmail { get; set; } = null!;
-        public required string SenderName { get; set; } = null!;
     }
 }

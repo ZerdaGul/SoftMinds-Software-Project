@@ -1,81 +1,57 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using api.DTO;
 using api.Data;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
+using api.Services;
 using System.Security.Cryptography;
-using System.Text;
-using System.Net.Mail;
-using System.Net;
-using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
+using api.DTO;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using api.Models;
 
-namespace api.Controller
+namespace api.Controllers
 {
-    [Route("api/forgotpassword")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ForgotPasswordController : ControllerBase
     {
         private readonly AppDBContext _context;
-        private readonly IOptions<EmailSettings> _emailSettings;
+        private readonly EmailService _emailService;
 
-        public ForgotPasswordController(AppDBContext context, IOptions<EmailSettings> emailSettings)
+
+        public ForgotPasswordController(AppDBContext context, EmailService emailService, ILogger<ForgotPasswordController> logger)
         {
             _context = context;
-            _emailSettings = emailSettings;
+            _emailService = emailService;
         }
 
-        // POST /api/forgotpassword/request
-        [HttpPost("request")]
-        public async Task<IActionResult> RequestPasswordReset([FromBody] ForgotPasswordRequestDTO model)
+        // POST api/forgotpassword
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDTO model)
         {
             if (model == null || string.IsNullOrEmpty(model.Email))
             {
-                return BadRequest("E-posta alanı gereklidir.");
-            }
-
-            // Email validation
-            var emailValidator = new EmailAddressAttribute();
-            if (!emailValidator.IsValid(model.Email))
-            {
-                return BadRequest("Geçersiz email adresi.");
+                return BadRequest("Invalid email data.");
             }
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
             if (user == null)
             {
-                return NotFound("Kullanıcı bulunamadı.");
+                return NotFound("User not found.");
             }
 
             // Generate reset token
             var token = GenerateResetToken();
             user.ResetToken = token;
-            user.ResetTokenExpires = DateTime.UtcNow.AddHours(1);
+            user.ResetTokenExpires = DateTime.UtcNow.AddHours(1); // Token expires in 1 hour
             await _context.SaveChangesAsync();
 
             // Send email
-            var mailMessage = new MailMessage
-            {
-                From = new MailAddress(_emailSettings.Value.SenderEmail),
-                Subject = "Şifre Sıfırlama Talebi",
-                Body = $"Şifrenizi sıfırlamak için lütfen aşağıdaki kodu kullanın:\n{token}",
-                IsBodyHtml = false,
-            };
-            mailMessage.To.Add(model.Email);
+            var subject = "Şifre Sıfırlama Talebi";
+            var body = $"Şifrenizi sıfırlamak için lütfen aşağıdaki kodu kullanın:\n{token}";
+            await _emailService.SendEmailAsync(user.Email, subject, body);
 
-            using (var smtpClient = new SmtpClient(_emailSettings.Value.SmtpServer, _emailSettings.Value.SmtpPort))
-            {
-                smtpClient.Credentials = new NetworkCredential(_emailSettings.Value.SmtpUsername, _emailSettings.Value.SmtpPassword);
-                smtpClient.EnableSsl = true;
-                await smtpClient.SendMailAsync(mailMessage);
-            }
-
-            return Ok("Şifre sıfırlama kodu e-posta adresinize gönderildi.");
+            return Ok(new { message = "Şifre sıfırlama talimatları e-posta ile gönderildi." });
         }
 
-        // POST /api/forgotpassword/reset
+        // POST api/forgotpassword/reset
         [HttpPost("reset")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDTO model)
         {

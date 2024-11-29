@@ -40,7 +40,7 @@ namespace api.Controller
             {
                 return Unauthorized("Geçersiz email");
             }
-            
+
             if (user.Is_Email_Verified == false)
             {
                 return Unauthorized("Email adresiniz doğrulanmamış. Lütfen email adresinizi doğrulayın.");
@@ -100,15 +100,14 @@ namespace api.Controller
                 signingCredentials: creds);
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-            // Set the token as a cookie
-            var cookieOptions = new CookieOptions
+
+            Response.Cookies.Append("AuthToken", tokenString, new CookieOptions
             {
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.None,
-                Expires = DateTime.Now.AddDays(1)
-            };
-            Response.Cookies.Append("AuthToken", tokenString, cookieOptions);
+                Expires = DateTime.Now.AddHours(1)
+            });
 
             return Ok(new { token = tokenString });
         }
@@ -125,7 +124,6 @@ namespace api.Controller
             });
             return Ok(new { message = "Çıkış başarılı." });
         }
-
 
         // GET /api/auth/active-session
         [HttpGet("active-session")]
@@ -165,6 +163,31 @@ namespace api.Controller
                 user.Phone,
                 user.Role
             });
+        }
+
+        // GET /api/auth/verify
+        [HttpGet("verify")]
+        public async Task<IActionResult> VerifyEmail(string email, string token)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (user == null)
+            {
+                return NotFound("Kullanıcı bulunamadı.");
+            }
+
+            // Token doğrulaması
+            var decodedToken = Uri.UnescapeDataString(token);
+            if (user.Password_Hash != decodedToken)
+            {
+                return BadRequest("Geçersiz doğrulama token'ı.");
+            }
+
+            // Kullanıcıyı doğrula
+            user.Is_Email_Verified = true;
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return Ok("Doğrulama tamamlandı.");
         }
     }
 }

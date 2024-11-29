@@ -80,7 +80,7 @@ export const LoadSectors = async (data) => {
 
 export const AddToCart = async (data) => {
   try {
-    const response = await axios.get(`${api}Cart`, {
+    const response = await axios.get(`${api}cart`, {
       params: data,
       headers: {
         'Content-Type': 'application/json'

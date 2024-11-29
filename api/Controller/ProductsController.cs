@@ -10,6 +10,7 @@ using api.Models;
 using System.Security.Claims;
 using api.DTO;
 using Microsoft.AspNetCore.Authorization;
+using api.Services;
 
 namespace api.Controller
 {
@@ -19,12 +20,14 @@ namespace api.Controller
     {
         private readonly AppDBContext _context;
         private readonly ILogger<ProductsController> _logger;
+        private readonly UserService _userService;
 
 
-        public ProductsController(AppDBContext context, ILogger<ProductsController> logger)
+        public ProductsController(AppDBContext context, ILogger<ProductsController> logger, UserService userService)
         {
             _context = context;
             _logger = logger;
+            _userService = userService;
         }
 
         // GET /api/products
@@ -230,9 +233,8 @@ namespace api.Controller
             return Ok(response);
         }
 
-        // POST /api/products/{id}/reviews
+        // POST /api/products/{productId}/reviews
         [HttpPost("{productId}/reviews")]
-        [Authorize] // Ensure the user is authenticated
         public async Task<IActionResult> PostReview(int productId, [FromBody] ReviewDTO reviewDto)
         {
             if (reviewDto == null || string.IsNullOrEmpty(reviewDto.ReviewText) || reviewDto.Rating <= 0)
@@ -246,15 +248,15 @@ namespace api.Controller
                 return NotFound("Product not found.");
             }
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userId))
+            var userId = _userService.GetCurrentUserId();
+            if (userId == null)
             {
                 return Unauthorized("User not authenticated.");
             }
 
             var review = new Reviews
             {
-                UserId = int.Parse(userId),
+                UserId = userId.Value,
                 ProductId = productId,
                 ReviewText = reviewDto.ReviewText,
                 Rating = reviewDto.Rating,
@@ -269,11 +271,10 @@ namespace api.Controller
 
         // DELETE /api/products/{productId}/reviews/{reviewId}
         [HttpDelete("{productId}/reviews/{reviewId}")]
-        [Authorize] // Ensure the user is authenticated
         public async Task<IActionResult> DeleteReview(int productId, int reviewId)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userId))
+            var userId = _userService.GetCurrentUserId();
+            if (userId == null)
             {
                 return Unauthorized("User not authenticated.");
             }
@@ -284,7 +285,7 @@ namespace api.Controller
                 return NotFound("Review not found.");
             }
 
-            if (review.UserId != int.Parse(userId))
+            if (review.UserId != userId.Value)
             {
                 return Forbid("You are not authorized to delete this review.");
             }
@@ -294,9 +295,9 @@ namespace api.Controller
 
             return Ok(new { message = "Review deleted successfully." });
         }
+
         // PUT /api/products/{productId}/reviews/{reviewId}
         [HttpPut("{productId}/reviews/{reviewId}")]
-        [Authorize]
         public async Task<IActionResult> UpdateReview(int productId, int reviewId, [FromBody] ReviewDTO reviewDto)
         {
             if (reviewDto == null || string.IsNullOrEmpty(reviewDto.ReviewText) || reviewDto.Rating <= 0)
@@ -304,8 +305,8 @@ namespace api.Controller
                 return BadRequest("Invalid review data.");
             }
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userId))
+            var userId = _userService.GetCurrentUserId();
+            if (userId == null)
             {
                 return Unauthorized("User not authenticated.");
             }
@@ -316,7 +317,7 @@ namespace api.Controller
                 return NotFound("Review not found.");
             }
 
-            if (review.UserId != int.Parse(userId))
+            if (review.UserId != userId.Value)
             {
                 return Forbid("You are not authorized to update this review.");
             }
@@ -330,7 +331,7 @@ namespace api.Controller
 
             return Ok(new { message = "Review updated successfully." });
         }
-
+        
         // GET /api/products/{productId}/comments
         [HttpGet("{productId}/comments")]
         public async Task<IActionResult> GetProductComments(int productId, [FromQuery] int pageNumber = 1, [FromQuery] int commentsPerPage = 10)
@@ -373,7 +374,6 @@ namespace api.Controller
 
         // POST /api/products/{productId}/comments
         [HttpPost("{productId}/comments")]
-        [Authorize]
         public async Task<IActionResult> PostComment(int productId, [FromBody] CommentDTO commentDto)
         {
             if (commentDto == null || string.IsNullOrEmpty(commentDto.Text))
@@ -387,13 +387,13 @@ namespace api.Controller
                 return NotFound("Product not found.");
             }
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userId))
+            var userId = _userService.GetCurrentUserId();
+            if (userId == null)
             {
                 return Unauthorized("User not authenticated.");
             }
 
-            var user = await _context.Users.FindAsync(int.Parse(userId));
+            var user = await _context.Users.FindAsync(userId.Value);
             if (user == null)
             {
                 return Unauthorized("User not found.");
@@ -404,7 +404,7 @@ namespace api.Controller
                 ProductId = productId,
                 Text = commentDto.Text,
                 Created_At = DateTime.UtcNow,
-                UserId = int.Parse(userId),
+                UserId = userId.Value,
                 User = user,
                 Product = product
             };
@@ -417,11 +417,10 @@ namespace api.Controller
 
         // DELETE /api/products/{productId}/comments/{commentId}
         [HttpDelete("{productId}/comments/{commentId}")]
-        [Authorize]
         public async Task<IActionResult> DeleteComment(int productId, int commentId)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userId))
+            var userId = _userService.GetCurrentUserId();
+            if (userId == null)
             {
                 return Unauthorized("User not authenticated.");
             }
@@ -432,7 +431,7 @@ namespace api.Controller
                 return NotFound("Comment not found.");
             }
 
-            if (comment.UserId != int.Parse(userId))
+            if (comment.UserId != userId.Value)
             {
                 return Forbid("You are not authorized to delete this comment.");
             }
@@ -445,7 +444,6 @@ namespace api.Controller
 
         // PUT /api/products/{productId}/comments/{commentId}
         [HttpPut("{productId}/comments/{commentId}")]
-        [Authorize]
         public async Task<IActionResult> UpdateComment(int productId, int commentId, [FromBody] CommentDTO commentDto)
         {
             if (commentDto == null || string.IsNullOrEmpty(commentDto.Text))
@@ -453,8 +451,8 @@ namespace api.Controller
                 return BadRequest("Invalid comment data.");
             }
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userId))
+            var userId = _userService.GetCurrentUserId();
+            if (userId == null)
             {
                 return Unauthorized("User not authenticated.");
             }
@@ -465,7 +463,7 @@ namespace api.Controller
                 return NotFound("Comment not found.");
             }
 
-            if (comment.UserId != int.Parse(userId))
+            if (comment.UserId != userId.Value)
             {
                 return Forbid("You are not authorized to update this comment.");
             }
