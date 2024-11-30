@@ -1,25 +1,54 @@
 @import '../../style/style.scss';
 
-.settings{
-    width:920px;
+.settings {
+    width: 920px;
     display: flex;
-    align-items:center;
-    
+    flex-direction: column; /* Dikey hizalama */
+    align-items: flex-start; /* Sol üst köşeye hizalama */
+    padding-left: 40px; /* İçerikleri biraz sağa kaydırmak */
+    text-align: left; /* Metin içeriğini sola hizalamak */
+
+    &__list {
+        width: 100%; /* Listeyi tam genişliğe yay */
+    }
+
+    &__item {
+        margin-bottom: 30px; /* Elemanlar arasında boşluk */
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; /* Elemanları sola hizala */
+    }
+
     &__action {
         font-weight: 700;
         color: $dark;
         font-size: 18px;
-        margin-top: 20px;
+        margin-top: 10px;
+        margin-left: 30px; /* Yazıları sağa kaydır */
+        text-align: left; /* Yazıları sola hizala */
+
         &-delete {
             color: $red;
         }
-        &:hover{
+
+        &:hover {
             color: $orange;
         }
     }
+
     &__descr {
         font-size: 14px;
         margin-top: 10px;
+        margin-left: 30px; /* Açıklamaları da sağa kaydır */
         color: $dark;
+        text-align: left; /* Açıklamaları sola hizala */
+    }
+}
+
+/* Responsive düzenlemeler */
+@media (max-width: 768px) {
+    .settings {
+        padding-left: 20px; /* Daha küçük ekranlarda daha az sağa kaydır */
+        align-items: flex-start; /* Sol üst hizalama */
     }
 }

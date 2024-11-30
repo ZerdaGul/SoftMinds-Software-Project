@@ -1,122 +1,58 @@
-@import '../../style/style.scss';
+.form__pages {
+  display: flex; /* İçerik hizalamak için flexbox */
+  align-items: center; /* Dikey ortalama */
+  justify-content: center; /* Yazıyı ve oku tam ortaya hizala */
+  font-size: 14px; /* Yazı boyutu */
+  margin: 0 auto; /* Tam olarak ortada yer alması için */
+  gap: 6px; /* Yazı ve ok işareti arasında boşluk */
+  color: #571846;
+  text-decoration: none; /* Alt çizgi olmaması için */
 
-.profile-form {
-  background-color: #F5F2F2;
-  border-radius: 24px;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  width: 450px; /* Varsayılan genişliği yüzde olarak ayarla */
-  max-width: 600px; /* Maksimum genişlik sınırı */
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-  align-items: center;
-  border: 1px solid #e0e0e0;
-  text-align: center;
-
-  .profile-header {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 20px;
-    width: 100%;
-    justify-content: left;
-    margin-top: 15px;
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 10px;
-
-    .profile-picture-wrapper {
-      position: relative;
-
-      .profile-picture {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        object-fit: cover;
-      }
-    }
-
-    .profile-info {
-      text-align: left;
-
-      h2 {
-        margin: 0;
-        font-size: 20px;
-        color: #571846;
-      }
-
-      p {
-        margin: 5px 0;
-        color: #666;
-      }
-    }
+  img {
+    width: 16px; /* Ok işaretinin boyutunu küçült */
+    height: auto;
   }
 
-  .form__wrapper {
-    width: 100%;
-    .input__wrapper {
-      margin-bottom: 15px;
-      text-align: left;
-      width: 100%;
+  &.back {
+    font-weight: 500;
+    transition: color 0.3s ease;
 
-      .form__label {
-        font-size: 14px;
-        font-weight: 500;
-        color: #571846;
-        margin-bottom: 5px;
-        display: block;
-      }
-
-      .form__input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        font-size: 14px;
-        color: #333;
-        background-color: #fff;
-      }
+    &:hover {
+      color: #ff5733; /* Hover sırasında renk değişimi */
     }
   }
 }
 
-/* Responsive Düzenlemeler */
+/* SideMenu ile çakışmayı önlemek için margin */
+.profile-form {
+  margin-left: 20px; /* SideMenu'den uzaklaştırıldı */
+  position: relative; /* Form alanına özel konumlandırma */
+
+  .form__pages {
+    margin-top: -10px; /* Forma daha yakın hale getir */
+    margin-left: 15px; /* SideMenu'den uzaklaştırıldı */
+  }
+}
+
+/* Responsive düzenlemeler */
 @media (max-width: 768px) {
+  .form__pages {
+    font-size: 12px; /* Mobilde yazı boyutunu küçült */
+    img {
+      width: 14px; /* Ok işaretini daha da küçült */
+    }
+  }
+
   .profile-form {
-    padding: 15px; /* Mobil cihazlar için daha küçük padding */
-    .profile-header {
-      flex-direction: column; /* Dar ekranlarda üst üste yerleştir */
-      align-items: center; /* Profil resmini ortala */
-    }
-
-    .profile-picture-wrapper .profile-picture {
-      width: 70px;
-      height: 70px;
-    }
-
-    .form__wrapper {
-      .input__wrapper {
-        .form__input {
-          font-size: 13px; /* Daha küçük yazı boyutu */
-        }
-      }
-    }
+    margin-left: 0; /* Mobilde SideMenu ile hizalama */
   }
 }
 
 @media (max-width: 480px) {
-  .profile-form {
-    padding: 10px;
-    .profile-header {
-      gap: 10px; /* Daha az boşluk */
-      .profile-info h2 {
-        font-size: 18px; /* Daha küçük başlık boyutu */
-      }
-
-      .profile-info p {
-        font-size: 12px; /* Daha küçük alt metin boyutu */
-      }
+  .form__pages {
+    font-size: 11px; /* Daha küçük ekranlarda yazı boyutu */
+    img {
+      width: 12px; /* Ok boyutu daha küçük */
     }
   }
 }

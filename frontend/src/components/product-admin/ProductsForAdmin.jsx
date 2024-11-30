@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useLocation } from 'react-router-dom';
-import SectorsSideMenu from '../components/sectors-side-menu/SectorsSideMenu';
-import AdminProductCard from '../components/product-card/AdminProductCard';
-import './productsPage.scss';
-import { LoadProducts, DeleteProduct } from '../services/ProductService';
-import { EditProductModal } from '../components/modals/EditProductModal';
-import { AddProductModal } from '../components/modals/AddProductModal';
-import InfoModal from '../components/modals/InfoModal';
-import Pagination from '../components/pagination/Pagination';
+import SectorsSideMenu from '../sectors-side-menu/SectorsSideMenu';
+import AdminProductCard from './AdminProductCard';
+import '../../pages/productsPage.scss';
+import { LoadProducts, DeleteProduct } from '../../services/ProductService';
+import { EditProductModal } from '../modals/EditProductModal';
+import { AddProductModal } from '../modals/AddProductModal';
+import InfoModal from '../modals/InfoModal';
+import Pagination from '../pagination/Pagination';
 
 const ProductsForAdmin = () => {
     const location = useLocation();

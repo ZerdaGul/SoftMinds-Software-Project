@@ -31,8 +31,6 @@ const ProfileForm = ({ initialValues = {} }) => {
                 >
                     Edit
                 </button>
-                <button className="button button__small"
-                    onClick={handleEditClick}>Edit</button>
             </div>
 
             <form className="form__wrapper">
@@ -66,16 +64,6 @@ const ProfileForm = ({ initialValues = {} }) => {
                         readOnly
                     />
                 </div>
-                {/* <div className="input__wrapper">
-                    <label className="form__label" htmlFor="companyName">Company Name</label>
-                    <input
-                        type="text"
-                        name="companyName"
-                        value={initialValues.companyName}
-                        className="form__input"
-                        readOnly
-                    />
-                </div> */}
                 <div className="input__wrapper">
                     <label className="form__label" htmlFor="country">Country</label>
                     <input
@@ -90,5 +78,6 @@ const ProfileForm = ({ initialValues = {} }) => {
         </div>
     );
 };
+
 
 export default ProfileForm;

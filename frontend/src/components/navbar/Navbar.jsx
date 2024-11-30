@@ -1,34 +1,58 @@
-
 import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 
-import earth from '../../assets/icons/earth.svg'
-import user from '../../assets/icons/user.svg'
-import logo from '../../assets/icons/logo.png'
+import earth from '../../assets/icons/earth.svg';
+import user from '../../assets/icons/user.svg';
+import logo from '../../assets/icons/logo.png';
+import bellIcon from '../../assets/icons/bell.png'; // Bildirim ikonu
 import './Navbar.scss';
 import { LogOut } from '../../services/AuthService';
 import ConfirmModal from '../modals/ConfirmModal';
+import NotificationModal from '../modals/NotificationModal'; // Bildirim modalı
 
-const Navbar = ({ activeUser, setActiveUser }) => {
+const Navbar = ({ activeUser, setActiveUser, lowStockProducts }) => {
     const navigate = useNavigate();
     const [showLogoutModal, setShowLogoutModal] = useState(false);
+    const [showNotificationModal, setShowNotificationModal] = useState(false); // Bildirim modalı kontrolü
 
+    // Çıkış işlemi
     const handleLogout = async () => {
         try {
-            await LogOut(); // Backend çıkış işlemi
-            setActiveUser(null); // Kullanıcıyı çıkış yapmış duruma getir
+            await LogOut();
+            setActiveUser(null);
             localStorage.removeItem('current-user');
             setShowLogoutModal(false);
-            navigate('/login'); // Giriş sayfasına yönlendir
+            navigate('/login');
         } catch (error) {
             console.error("Çıkış işlemi sırasında hata oluştu:", error);
         }
     };
 
-
     const confirmLogout = () => setShowLogoutModal(true);
-    const closeModal = () => setShowLogoutModal(false);
+    const closeLogoutModal = () => setShowLogoutModal(false);
+
+    // Bildirim modalını açma
+    const openNotificationModal = () => setShowNotificationModal(true);
+    const closeNotificationModal = () => setShowNotificationModal(false);
+
+    const renderNotificationButton = () => {
+        // Sadece giriş yapılmışsa göster
+        if (activeUser) {
+            return (
+                <li>
+                    <button className="navbar-notification" onClick={openNotificationModal}>
+                        <img src={bellIcon} alt="Notifications" />
+                        {/* Eğer düşük stok varsa, uyarı göstergesi */}
+                        {lowStockProducts?.length > 0 && (
+                            <span className="notification-badge">{lowStockProducts.length}</span>
+                        )}
+                    </button>
+                </li>
+            );
+        }
+        return null; // Giriş yapılmamışsa gösterme
+    };
 
     return (
         <nav className="navbar">
@@ -40,38 +64,41 @@ const Navbar = ({ activeUser, setActiveUser }) => {
             <ul className="navbar-links">
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                        to="/aboutUs">About Us</NavLink>
+                             to="/aboutUs">About Us</NavLink>
                 </li>
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                        to="/products">Products</NavLink>
+                             to="/products">Products</NavLink>
                 </li>
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                        to="/sectors">Sectors</NavLink>
+                             to="/sectors">Sectors</NavLink>
                 </li>
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                        to="/solutions">Solutions</NavLink>
+                             to="/solutions">Solutions</NavLink>
                 </li>
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                        to="/consultancy">Consultancy</NavLink>
+                             to="/consultancy">Consultancy</NavLink>
                 </li>
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                        to="/contactUs">Contact Us</NavLink>
+                             to="/contactUs">Contact Us</NavLink>
                 </li>
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                        to="/"> <img src={earth} alt="languages" style={{ height: "20px", width: "auto" }} />
+                             to="/"> <img src={earth} alt="languages" style={{ height: "20px", width: "auto" }} />
                     </NavLink>
                 </li>
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                        to="/profile"> <img src={user} alt="user" style={{ height: "40px", width: "auto" }} />
+                             to="/profile"> <img src={user} alt="user" style={{ height: "40px", width: "auto" }} />
                     </NavLink>
                 </li>
+                {/* Bildirim butonu */}
+                {renderNotificationButton()}
+                {/* Kullanıcı giriş/çıkış */}
                 <li>
                     {activeUser ? (
                         <Link onClick={confirmLogout}>Log Out</Link>
@@ -86,14 +113,25 @@ const Navbar = ({ activeUser, setActiveUser }) => {
                 <span className="bar"></span>
             </div>
 
+            {/* Çıkış Modalı */}
             {showLogoutModal &&
                 createPortal(
                     <ConfirmModal
                         title={"Do you want to log out?"}
                         buttonConfirmText={"Yes"}
                         buttonCloseText={'No'}
-                        onClose={closeModal}
+                        onClose={closeLogoutModal}
                         onConfirm={handleLogout} />,
+                    document.body
+                )}
+
+            {/* Bildirim Modalı */}
+            {showNotificationModal &&
+                createPortal(
+                    <NotificationModal
+                        lowStockProducts={lowStockProducts}
+                        onClose={closeNotificationModal}
+                    />,
                     document.body
                 )}
         </nav>

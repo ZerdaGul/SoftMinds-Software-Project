@@ -1,5 +1,5 @@
 import React from 'react';
-import './productCard.scss';
+import '../product-card/productCard.scss';
 import product_pic from '../../assets/product-pic-default.jpg'; // Varsayılan ürün resmi
 import editIcon from '../../assets/icons/edit-icon.webp'; // Edit ikonu
 import deleteIcon from '../../assets/icons/delete-icon.png'; // Delete ikonu

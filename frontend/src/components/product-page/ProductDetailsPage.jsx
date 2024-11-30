@@ -7,6 +7,8 @@ import './productDetailsPage.scss'
 import default_img from '../../assets/product-pic-default.jpg';
 import { AddToCart } from '../../services/ProductService';
 import InfoModal from '../modals/InfoModal';
+import { Link } from "react-router-dom";
+
 
 const ProductDetailsPage = () => {
 	const { id: productId } = useParams();
@@ -93,12 +95,13 @@ const ProductDetailsPage = () => {
 		loaded ? 
 		<>{showModal && modal}
 			<div className="product">
-				
-				<button 
+				<button
 					onClick={handleBackClick}
 					className="back">
-						Back</button>
-				<img src={default_img} alt="product-image" className="product__image" />
+					Back
+				</button>
+
+				<img src={default_img} alt="product-image" className="product__image"/>
 				<div className="product__info">
 
 					<div className="product__title">{name}</div>
@@ -118,7 +121,9 @@ const ProductDetailsPage = () => {
 								className="form__input"
 							/>
 						</div>
-						<button type="submit" className="button button__long">Add to Cart</button>
+						<Link to="/cart" className="add-to-cart-button">
+							Add to Card
+						</Link>
 					</form>
 				</div>
 				<div className="product__comment-wrapper">

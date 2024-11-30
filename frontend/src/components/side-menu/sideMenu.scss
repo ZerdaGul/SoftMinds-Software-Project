@@ -1,18 +1,22 @@
 @import '../../style/style.scss';
 
-
 .side-menu {
     padding: 12px 0 20px 0px;
     background-color: #fff;
     width: 235px;
 
-    &__title{
+    &__title {
         font-size: 16px;
         color: $red;
         margin-top: 12px;
         margin-bottom: 28px;
         position: relative;
         width: 100%;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-align: center; // Yatayda ortalama
+        line-height: 1.5; // Dikeyde hizalama
+
         &::before {
             content: "";
             position: absolute;
@@ -22,31 +26,76 @@
             top: -12px;
         }
     }
-    &__link-wrapper{
+
+    &__link-wrapper {
         margin-bottom: 40px;
+        list-style: none;
+        padding: 0;
     }
-    &__link{
-        position: relative;
+
+    &__link {
         color: #571846;
-        padding: 9px 20px;
+        padding: 12px 20px;
         font-size: 16px;
-        width: 235px;
+        font-weight: 500;
         border-radius: 8px;
         display: flex;
         align-items: center;
-        display: grid;
-        grid-template-columns: 18px auto 24px;
-        gap: 15px;
+        justify-content: flex-start; // Yatay hizalama
+        text-decoration: none;
+        transition: background-color 0.3s ease, color 0.3s ease;
+
+        &:hover {
+            background-color: #f5f2f2;
+            color: $red;
+        }
+
+        &.active {
+            background-color: #f5f2f2;
+            font-weight: bold;
+            color: $red;
+        }
     }
-    .indicator{
+
+    .indicator {
         width: 24px;
         height: 24px;
-        font-size: 16px;
-        color:#fff;
+        font-size: 14px;
+        color: #fff;
         background-color: $red;
-        border-radius: 100%;
+        border-radius: 50%;
         display: flex;
-        align-items:center;
+        align-items: center;
         justify-content: center;
+        font-weight: bold;
+    }
+
+    &__user {
+        margin-top: 20px;
+        text-align: center;
+
+        &-pic {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #ddd;
+            margin: 0 auto 10px;
+            object-fit: cover;
+            display: block; // Tam ortalama
+        }
+
+        &-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 1rem;
+            color: #571846;
+            text-align: center; // Ortala
+        }
+
+        &-email {
+            font-size: 0.9rem;
+            color: #888;
+            text-align: center; // Ortala
+        }
     }
 }

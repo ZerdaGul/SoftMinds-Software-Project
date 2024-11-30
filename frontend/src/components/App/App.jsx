@@ -21,12 +21,12 @@ import Requests from '../order-admin/requests/Requests';
 import HomePage from "../../pages/HomePage";
 import AboutUs from "../../pages/AboutUs";
 import Footer from '../footer/Footer';
-import ProductsForAdmin from "../../pages/ProductsForAdmin";
-import CardForm from "../forms/CardForm";
-import ProductDashboard from "../../dashboard/ProductDashboard";
+import ProductsForAdmin from "../product-admin/ProductsForAdmin";
+import ProductDashboard from "../product-admin/dashboard/ProductDashboard";
 import SectorPage from "../../pages/SectorPage";
 import SolutionPage from "../../pages/SolutionPage";
 import ConsultancyPage from "../../pages/ConsultancyPage";
+import { useLocation } from "react-router-dom";
 
 const App = () => {
 	const [activeUser, setActiveUser] = useState(null);
@@ -71,6 +71,16 @@ const App = () => {
 	// 	}
 	// };
 
+	const ScrollToTop = () => {
+		const { pathname } = useLocation();
+
+		useEffect(() => {
+			window.scrollTo(0, 0); // Sayfanın en üstüne kaydır
+		}, [pathname]); // Rota değişikliklerinde çalışır
+
+		return null; // Görünür bir bileşen olmadığı için null döner
+	};
+
 	// Kullanıcı bilgilerini yükleme
 	const loadUser = () => {
 		console.log("loadUser çağrıldı");
@@ -95,6 +105,7 @@ const App = () => {
 
 	return (
 		<Router>
+			<ScrollToTop />
 			<Navbar activeUser={activeUser}  setActiveUser={setActiveUser} />
 			<main>
 				<Routes>
@@ -108,6 +119,8 @@ const App = () => {
 					<Route path='/contactUs'></Route>
 					<Route path='/forgot-password-request' element={<ForgotPasswordRequest />}></Route>
 					<Route path='/create-password' element={<CreatePasswordForm />}></Route>
+					<Route path='/product-dashboard' element={<ProductDashboard />}></Route>
+					<Route path='/products-admin' element={<ProductsForAdmin/>}></Route>
 					{/* <Route path='/profile/*' element={<UserProfilePage />}>
 					<Route path='dashboard'></Route>
 					<Route path='orders'></Route>
