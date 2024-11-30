@@ -1,58 +1,116 @@
-.form__pages {
-  display: flex; /* İçerik hizalamak için flexbox */
-  align-items: center; /* Dikey ortalama */
-  justify-content: center; /* Yazıyı ve oku tam ortaya hizala */
-  font-size: 14px; /* Yazı boyutu */
-  margin: 0 auto; /* Tam olarak ortada yer alması için */
-  gap: 6px; /* Yazı ve ok işareti arasında boşluk */
-  color: #571846;
-  text-decoration: none; /* Alt çizgi olmaması için */
-
-  img {
-    width: 16px; /* Ok işaretinin boyutunu küçült */
-    height: auto;
-  }
-
-  &.back {
-    font-weight: 500;
-    transition: color 0.3s ease;
-
-    &:hover {
-      color: #ff5733; /* Hover sırasında renk değişimi */
-    }
-  }
-}
-
-/* SideMenu ile çakışmayı önlemek için margin */
 .profile-form {
-  margin-left: 20px; /* SideMenu'den uzaklaştırıldı */
-  position: relative; /* Form alanına özel konumlandırma */
+  margin-left: 250px; /* Yan menüden yeterli boşluk bırak */
+  margin-top: 20px;
+  max-width: 700px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 
-  .form__pages {
-    margin-top: -10px; /* Forma daha yakın hale getir */
-    margin-left: 15px; /* SideMenu'den uzaklaştırıldı */
-  }
-}
+  .profile-header {
+    display: flex; /* Yan yana hizalama */
+    align-items: center; /* Dikey olarak ortalama */
+    margin-bottom: 20px;
 
-/* Responsive düzenlemeler */
-@media (max-width: 768px) {
-  .form__pages {
-    font-size: 12px; /* Mobilde yazı boyutunu küçült */
-    img {
-      width: 14px; /* Ok işaretini daha da küçült */
+    .profile-picture-wrapper {
+      width: 80px; /* Profil resmi boyutu */
+      height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-right: 10px; /* Resim ile içerik arasına boşluk */
+    }
+
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      margin-left: 10px;
+      margin-right: 10px;
+
+      h2 {
+        font-size: 20px;
+        color: #571846;
+        margin: 0;
+      }
+
+      p {
+        font-size: 14px;
+        color: #888;
+        margin: 5px 0;
+      }
+    }
+
+    .edit-button {
+      margin-left: auto; /* En sağa hizala */
+      padding: 8px 16px;
+      font-size: 14px;
+      background-color: #ff5733;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #e04a2b;
+      }
     }
   }
 
-  .profile-form {
-    margin-left: 0; /* Mobilde SideMenu ile hizalama */
+  label {
+    font-weight: bold;
+    color: #571846;
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #d1d1d1;
+    border-radius: 4px;
+    margin-bottom: 15px;
+  }
+
+  .form__group {
+    margin-bottom: 20px;
+  }
+
+  .form__actions {
+    display: flex;
+    justify-content: flex-end;
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #571846;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #ff5733;
+      }
+    }
   }
 }
 
-@media (max-width: 480px) {
-  .form__pages {
-    font-size: 11px; /* Daha küçük ekranlarda yazı boyutu */
-    img {
-      width: 12px; /* Ok boyutu daha küçük */
+/* Mobil düzenlemeler */
+@media (max-width: 768px) {
+  .profile-form {
+    margin-left: 0; /* Mobilde tam genişlik */
+    max-width: 100%;
+    padding: 15px;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .edit-button {
+      margin-left: 0;
+      margin-top: 10px;
     }
   }
 }

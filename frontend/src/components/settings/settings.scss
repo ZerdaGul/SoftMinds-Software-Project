@@ -3,20 +3,20 @@
 .settings {
     width: 920px;
     display: flex;
-    flex-direction: column; /* Dikey hizalama */
-    align-items: flex-start; /* Sol üst köşeye hizalama */
-    padding-left: 40px; /* İçerikleri biraz sağa kaydırmak */
-    text-align: left; /* Metin içeriğini sola hizalamak */
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 40px;
+    text-align: left;
 
     &__list {
-        width: 100%; /* Listeyi tam genişliğe yay */
+        width: 100%;
     }
 
     &__item {
-        margin-bottom: 30px; /* Elemanlar arasında boşluk */
+        margin-bottom: 30px;
         display: flex;
         flex-direction: column;
-        align-items: flex-start; /* Elemanları sola hizala */
+        align-items: center;
     }
 
     &__action {
@@ -24,8 +24,8 @@
         color: $dark;
         font-size: 18px;
         margin-top: 10px;
-        margin-left: 30px; /* Yazıları sağa kaydır */
-        text-align: left; /* Yazıları sola hizala */
+        margin-left: 30px;
+        text-align: left;
 
         &-delete {
             color: $red;
@@ -39,16 +39,16 @@
     &__descr {
         font-size: 14px;
         margin-top: 10px;
-        margin-left: 30px; /* Açıklamaları da sağa kaydır */
+        margin-left: 40px;
         color: $dark;
-        text-align: left; /* Açıklamaları sola hizala */
+        text-align: center;
     }
 }
 
-/* Responsive düzenlemeler */
+
 @media (max-width: 768px) {
     .settings {
-        padding-left: 20px; /* Daha küçük ekranlarda daha az sağa kaydır */
-        align-items: flex-start; /* Sol üst hizalama */
+        padding-left: 20px;
+        align-items: flex-start;
     }
 }
