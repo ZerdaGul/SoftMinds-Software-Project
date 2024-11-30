@@ -1,51 +1,60 @@
 @import '../../style/style.scss';
 @import '../../components/forms/form.scss';
 
-.contact{
-    &__form{
+.contact {
+    &__form {
         max-width: 880px;
-        margin:0 auto;
+        margin: 0 auto;
         padding-top: 50px;
         text-align: left;
-
-
     }
-    &__wrapper{
+
+    &__wrapper {
         margin-top: 30px;
         display: grid;
-        grid-template-columns: 335px 500px;
-        grid-template-rows: repeat(3, 70px);
-        gap: 20px
+        grid-template-columns: 1fr 1fr; /* Eşit sütunlar */
+        grid-template-rows: auto auto auto;
+        gap: 20px;
+        align-items: start; /* Elemanları üst hizalar */
     }
-
-    
-
 }
 
-.form{
-    &__wrapper{
-        // width: 335px;
+.form {
+    &__wrapper {
         display: flex;
-        flex-direction: column;}
-    
-    
-}
-#name {
-    grid-column: 1/2;
-}
-
-#email{
-    grid-column: 1/2;
-}
-
-#message{
-    padding: 7px 15px;
-    height: 100px;
-    grid-column: 2/3;
-    grid-row: 1/3;
+        flex-direction: column;
+        label {
+            margin-bottom: 5px; /* Label ile input arasında boşluk */
+            font-weight: bold;
+            color: #571846;
+        }
+        input,
+        textarea {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #d1d1d1;
+            border-radius: 4px;
+            width: 100%; /* Tam genişlik */
+        }
+    }
 }
 
-#button{
-    margin: 0;
-    grid-column: 1/2;
+#name,
+#email {
+    grid-column: 1 / 2;
+    display: flex;
+    flex-direction: column; /* Label ve input yukarıdan aşağı hizalanır */
 }
+
+#message {
+    grid-column: 2 / 3;
+    grid-row: 1 / 3; /* Mesaj alanını iki satıra yayar */
+    display: flex;
+    flex-direction: column; /* Label ve textarea yukarıdan aşağı hizalanır */
+}
+
+#button {
+    grid-column: 1 / 3; /* Buton genişliği iki sütuna yayılır */
+    justify-self: start; /* Sol hizalanır */
+}
+

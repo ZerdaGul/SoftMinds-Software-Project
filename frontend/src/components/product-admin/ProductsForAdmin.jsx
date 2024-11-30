@@ -79,10 +79,10 @@ const ProductsForAdmin = () => {
                         title="Delete Product"
                         subtitle="Are you sure you want to delete this product?"
                         onConfirm={() => {
-                            handleDeleteProduct(deleteProductId);
-                            setDeleteProductId(null);
+                            handleDeleteProduct(deleteProductId); // Silme işlemi
+                            setDeleteProductId(null); // Modal kapatılır
                         }}
-                        onClose={() => setDeleteProductId(null)}
+                        onClose={() => setDeleteProductId(null)} // Modal kapatılır
                     />,
                     document.body
                 )}

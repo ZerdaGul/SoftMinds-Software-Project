@@ -1,24 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../product-card/productCard.scss';
-import product_pic from '../../assets/product-pic-default.jpg'; // Varsayılan ürün resmi
-import editIcon from '../../assets/icons/edit-icon.webp'; // Edit ikonu
-import deleteIcon from '../../assets/icons/delete-icon.png'; // Delete ikonu
+import product_pic from '../../assets/product-pic-default.jpg';
+import {DeleteProduct} from "../../services/ProductService"; // Varsayılan ürün resmi
 
 const AdminProductCard = ({ product, handleEdit, handleDelete }) => {
+    const [showConfirmation, setShowConfirmation] = useState(false); // Popup kontrolü
+
     const handleEditClick = (e) => {
-        e.stopPropagation(); // Tıklamanın kartın diğer click eventine geçmesini engeller
-        handleEdit(product.id);
+        e.stopPropagation();
+        handleEdit(product); // Düzenleme işlemini tetikleyin
     };
 
     const handleDeleteClick = (e) => {
-        e.stopPropagation(); // Tıklamanın kartın diğer click eventine geçmesini engeller
+        e.stopPropagation();
         handleDelete(product.id);
+    };
+
+    const cancelDelete = (e) => {
+        e.stopPropagation();
+        setShowConfirmation(false); // Popup iptal edilir
     };
 
     return (
         <div className="productCard">
             <img
-                src={product.imageUrl || product_pic} // Eğer `product.imageUrl` yoksa varsayılan resmi göster
+                src={product.imageUrl || product_pic} // Eğer `imageUrl` yoksa varsayılan resmi göster
                 alt={product.name || "Product Image"}
                 className="productCard__image"
             />
@@ -33,15 +39,41 @@ const AdminProductCard = ({ product, handleEdit, handleDelete }) => {
                     >
                         Edit
                     </button>
+
                     <button
                         onClick={handleDeleteClick}
                         className="button button__small button__delete"
                     >
                         Delete
                     </button>
-
                 </div>
             </div>
+
+            {/* Popup Modal */}
+            {/*{showConfirmation && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <p>Are you sure you want to delete this product?</p>
+                        <div className="modal-buttons">
+                            <button
+                                onClick={() => {
+                                    handleDelete(product.id); // Ürünü sil
+                                    setShowConfirmation(false); // Popup kapanır
+                                }}
+                                className="button button__confirm"
+                            >
+                                Yes
+                            </button>
+                            <button
+                                onClick={cancelDelete}
+                                className="button button__cancel"
+                            >
+                                No
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}*/}
         </div>
     );
 };

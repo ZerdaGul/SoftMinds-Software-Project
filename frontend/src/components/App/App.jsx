@@ -27,6 +27,7 @@ import SectorPage from "../../pages/SectorPage";
 import SolutionPage from "../../pages/SolutionPage";
 import ConsultancyPage from "../../pages/ConsultancyPage";
 import { useLocation } from "react-router-dom";
+import CardForm from "../forms/CardForm";
 
 const App = () => {
 	const [activeUser, setActiveUser] = useState(null);
@@ -121,6 +122,7 @@ const App = () => {
 					<Route path='/create-password' element={<CreatePasswordForm />}></Route>
 					<Route path='/product-dashboard' element={<ProductDashboard />}></Route>
 					<Route path='/products-admin' element={<ProductsForAdmin/>}></Route>
+					<Route path='/profile/cart' element={CardForm}></Route>
 					{/* <Route path='/profile/*' element={<UserProfilePage />}>
 					<Route path='dashboard'></Route>
 					<Route path='orders'></Route>

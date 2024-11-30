@@ -1,5 +1,6 @@
 /* Temel stil */
 @import '../../style/style.scss';
+
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -138,5 +139,65 @@
         font-size: 0.8rem;
         font-weight: bold;
     }
-}
 
+    .notifications {
+        position: absolute;
+        top: 40px;
+        right: 0;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        width: 300px;
+
+        &__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: #f7f7f7;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+
+        &__close {
+            cursor: pointer;
+            color: #888;
+            &:hover {
+                color: black;
+            }
+        }
+
+        &__items {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #f0f0f0;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            &--approved {
+                color: #4caf50; /* Onaylanan sipariş */
+            }
+
+            &--rejected {
+                color: #f44336; /* Reddedilen sipariş */
+            }
+
+            &--low-stock {
+                color: #ff9800; /* Düşük stok */
+            }
+
+            &:hover {
+                background-color: #f9f9f9;
+            }
+        }
+    }
+}

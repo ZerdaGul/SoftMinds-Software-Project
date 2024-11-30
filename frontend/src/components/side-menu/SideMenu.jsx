@@ -5,7 +5,7 @@ import './sideMenu.scss';
 const SideMenu = ({ activeUser }) => {
     const aUser = {
         name: "Product Admin",
-        email: "padmin@ekoinv.com",
+        email: "Padmin@ekoinv.com",
         role: "padmin"
     };
     const getMainMenu = () => {
