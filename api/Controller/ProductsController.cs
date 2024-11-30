@@ -1,16 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using api.Data;
+using api.DTO;
+using api.Models;
+using api.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using api.Models;
-using System.Security.Claims;
-using api.DTO;
-using Microsoft.AspNetCore.Authorization;
-using api.Services;
 
 namespace api.Controller
 {

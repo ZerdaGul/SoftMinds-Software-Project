@@ -5,8 +5,6 @@ using api.Services;
 using System.Text.RegularExpressions;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using System.Security.Cryptography;
 
 
 namespace api.Controller;

@@ -1,10 +1,9 @@
 using api.Data;
 using api.DTO;
-using api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace api.Controllers;
+namespace api.Controller;
 
 [ApiController]
 [Route("api/homepage")]

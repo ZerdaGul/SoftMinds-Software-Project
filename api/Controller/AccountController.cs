@@ -3,8 +3,6 @@ using api.Models;
 using api.DTO;
 using api.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using api.Services;
 
 namespace api.Controller

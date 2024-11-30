@@ -1,12 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using api.Data;
 using api.Services;
-using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using api.DTO;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
-namespace api.Controllers
+namespace api.Controller
 {
     [Route("api/forgotpassword")]
     [ApiController]

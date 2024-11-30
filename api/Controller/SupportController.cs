@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using api.Services;
+using api.DTO;
 
 using System;
 using System.Threading.Tasks;
-using api.DTO;
 
-namespace api.Controllers
+namespace api.Controller
 {
     [Route("api/support")]
     [ApiController]
