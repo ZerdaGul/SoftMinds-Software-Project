@@ -8,18 +8,19 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/forgotpassword")]
     [ApiController]
     public class ForgotPasswordController : ControllerBase
     {
         private readonly AppDBContext _context;
         private readonly EmailService _emailService;
+        private readonly PasswordService _passwordService;
 
-
-        public ForgotPasswordController(AppDBContext context, EmailService emailService, ILogger<ForgotPasswordController> logger)
+        public ForgotPasswordController(AppDBContext context, EmailService emailService, PasswordService passwordService)
         {
             _context = context;
             _emailService = emailService;
+            _passwordService = passwordService;
         }
 
         // POST api/forgotpassword
@@ -44,9 +45,7 @@ namespace api.Controllers
             await _context.SaveChangesAsync();
 
             // Send email
-            var subject = "Şifre Sıfırlama Talebi";
-            var body = $"Şifrenizi sıfırlamak için lütfen aşağıdaki kodu kullanın:\n{token}";
-            await _emailService.SendEmailAsync(user.Email, subject, body);
+            await _emailService.SendForgotPasswordEmail(user.Email, token);
 
             return Ok(new { message = "Şifre sıfırlama talimatları e-posta ile gönderildi." });
         }
@@ -67,16 +66,9 @@ namespace api.Controllers
             }
 
             // Hash new password
-            byte[] salt = RandomNumberGenerator.GetBytes(128 / 8);
-            string hashed_Password = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: model.NewPassword,
-                salt: salt,
-                prf: KeyDerivationPrf.HMACSHA256,
-                iterationCount: 100000,
-                numBytesRequested: 256 / 8));
-
-            user.Password_Hash = hashed_Password;
-            user.Password_Salt = Convert.ToBase64String(salt);
+            var (hashedPassword, salt) = _passwordService.HashPassword(model.NewPassword);
+            user.Password_Hash = hashedPassword;
+            user.Password_Salt = salt;
             user.ResetToken = null;
             user.ResetTokenExpires = null;
             await _context.SaveChangesAsync();

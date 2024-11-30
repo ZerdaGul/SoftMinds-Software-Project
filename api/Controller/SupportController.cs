@@ -44,10 +44,7 @@ namespace api.Controllers
 
         private async Task SendSupportRequestEmail(SupportRequestDTO model)
         {
-            var subject = "New Support Request";
-            var body = $"You have a new support request:\n\nName: {model.Name}\nEmail: {model.Email}\nMessage:\n{model.Message}";
-
-            await _emailService.SendEmailAsync(_emailService.GetSenderEmail(), subject, body);
+            await _emailService.SendSupportRequestEmail(model.Email, model.Name, model.Message);
         }
     }
 }

@@ -1,8 +1,6 @@
 using System.Net;
 using System.Net.Mail;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
-using api.Models;
 
 namespace api.Services
 {
@@ -15,11 +13,11 @@ namespace api.Services
             _emailSettings = emailSettings.Value;
         }
 
-        public async Task SendEmailAsync(string toEmail, string subject, string body, bool isBodyHtml = false)
+        public async Task SendEmailAsync(string toEmail, string fromEmail, string subject, string body, bool isBodyHtml = false)
         {
             var mailMessage = new MailMessage
             {
-                From = new MailAddress(_emailSettings.SenderEmail),
+                From = new MailAddress(fromEmail),
                 Subject = subject,
                 Body = body,
                 IsBodyHtml = isBodyHtml,
@@ -33,9 +31,26 @@ namespace api.Services
                 await client.SendMailAsync(mailMessage);
             }
         }
-        public string GetSenderEmail()
+
+        public async Task SendVerificationEmail(string toEmail, string verificationLink)
         {
-            return _emailSettings.SenderEmail;
+            var subject = "Email Verification";
+            var body = $"Please verify your email by clicking on the following link: {verificationLink}";
+            await SendEmailAsync(toEmail, _emailSettings.SenderEmail, subject, body);
+        }
+
+        public async Task SendSupportRequestEmail(string fromEmail, string name, string message)
+        {
+            var subject = "New Support Request";
+            var body = $"You have a new support request:\n\nName: {name}\nEmail: {fromEmail}\nMessage:\n{message}";
+            await SendEmailAsync(_emailSettings.SenderEmail, fromEmail, subject, body, false);
+        }
+
+        public async Task SendForgotPasswordEmail(string toEmail, string token)
+        {
+            var subject = "Şifre Sıfırlama Talebi";
+            var body = $"Şifrenizi sıfırlamak için lütfen aşağıdaki kodu 1 saat içinde kullanın:\n{token}";
+            await SendEmailAsync(toEmail, _emailSettings.SenderEmail, subject, body);
         }
     }
 }

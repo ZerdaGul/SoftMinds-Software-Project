@@ -1,18 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using api.Models;
 using api.DTO;
 using api.Data;
-using System.Text.RegularExpressions;
-using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-
-using MailKit.Net.Smtp;
-using MimeKit;
-using MailKit.Security;
-using Microsoft.Extensions.Options;
 using api.Services;
 
 namespace api.Controller
@@ -23,11 +15,13 @@ namespace api.Controller
     {
         private readonly AppDBContext _context;
         private readonly EmailService _emailService;
+        private readonly PasswordService _passwordService;
 
-        public AccountController(AppDBContext context, EmailService emailService)
+        public AccountController(AppDBContext context, EmailService emailService, PasswordService passwordService)
         {
             _context = context;
             _emailService = emailService;
+            _passwordService = passwordService;
         }
 
         [HttpPost("register")]
@@ -44,13 +38,7 @@ namespace api.Controller
                 return BadRequest("A user with this email already exists.");
             }
 
-            byte[] salt = RandomNumberGenerator.GetBytes(128 / 8); // 128-bit salt
-            string hashedPassword = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: model.Password,
-                salt: salt,
-                prf: KeyDerivationPrf.HMACSHA256,
-                iterationCount: 100000,
-                numBytesRequested: 256 / 8));
+            var (hashedPassword, salt) = _passwordService.HashPassword(model.Password);
 
             var user = new Users
             {
@@ -59,7 +47,7 @@ namespace api.Controller
                 Phone = model.Phone,
                 Country = model.Country,
                 Password_Hash = hashedPassword,
-                Password_Salt = Convert.ToBase64String(salt),
+                Password_Salt = salt,
                 Created_At = DateTime.UtcNow,
             };
 
@@ -94,11 +82,8 @@ namespace api.Controller
 
         private async Task SendVerificationEmail(Users user)
         {
-            var subject = "Email Verification";
-            var verificationLink = $"https://api.ekoinv.com/api/verify?email={user.Email}&token={Uri.EscapeDataString(user.Password_Hash)}";
-            var body = $"Please verify your email by clicking on the following link: {verificationLink}";
-
-            await _emailService.SendEmailAsync(user.Email, subject, body);
+            var verificationLink = $"https://api.ekoinv.com/api/auth/verify?email={user.Email}&token={Uri.EscapeDataString(user.Password_Hash)}";
+            await _emailService.SendVerificationEmail(user.Email, verificationLink);
         }
 
     }

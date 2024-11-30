@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using api.Data;
-using api.Models;
 using api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -16,9 +15,9 @@ builder.Services.AddDbContext<AppDBContext>(options =>
 // EmailSettings konfigürasyonunu ekle
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
-builder.Services.AddHttpContextAccessor(); // Bu satırı ekleyin
-builder.Services.AddScoped<UserService>(); // Bu satırı ekleyin
-builder.Services.AddScoped<EmailService>(); // Bu satırı ekleyin
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<EmailService>();
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -67,8 +66,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+
 app.UseRouting();
+
 app.UseCors("CorsPolicy");
+
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using api.DTO;
 using api.Data;
+using api.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
@@ -16,14 +17,16 @@ namespace api.Controller
     {
         private readonly AppDBContext _context;
         private readonly IConfiguration _configuration;
+        private readonly PasswordService _passwordService;
 
         private const int MaxFailedAccessAttempts = 5; // Maksimum başarısız giriş denemesi
         private const int LockoutDuration = 5; // Kilitlenme süresi (dakika)
 
-        public AuthController(AppDBContext context, IConfiguration configuration)
+        public AuthController(AppDBContext context, IConfiguration configuration, PasswordService passwordService)
         {
             _context = context;
             _configuration = configuration;
+            _passwordService = passwordService;
         }
 
         // POST /api/auth/login
@@ -52,16 +55,8 @@ namespace api.Controller
                 return Unauthorized($"Hesabınız {user.Lockout_End.Value.Subtract(DateTime.UtcNow).Minutes} dakika boyunca kilitli.");
             }
 
-            // Kullanıcının tuzunu kullanarak şifreyi hash'le
-            string hashed_Password = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: model.Password,
-                salt: Convert.FromBase64String(user.Password_Salt),
-                prf: KeyDerivationPrf.HMACSHA256,
-                iterationCount: 100000,
-                numBytesRequested: 256 / 8));
-
-            // Hash'lenmiş şifre ile karşılaştır
-            if (hashed_Password != user.Password_Hash)
+            // Şifreyi doğrula
+            if (!_passwordService.VerifyPassword(model.Password, user.Password_Hash, user.Password_Salt))
             {
                 user.Failed_Login_Attempts++;
                 if (user.Failed_Login_Attempts >= MaxFailedAccessAttempts)
