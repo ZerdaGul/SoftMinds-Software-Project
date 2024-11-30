@@ -22,7 +22,7 @@ namespace api.Controller
         }
 
         // POST api/forgotpassword
-        [HttpPost]
+        [HttpPost("request")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDTO model)
         {
             if (model == null || string.IsNullOrEmpty(model.Email))
