@@ -14,6 +14,7 @@ import {
     Marker,
 } from "react-simple-maps";
 import "./Dashboard.scss";
+import geography from "../../../maps/world-countries.json";
 import StockDashboard from "./StockDashboard";
 
 ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, BarElement);
@@ -52,30 +53,34 @@ const OrderAdminDashboard = () => {
     };
 
     return (
-        <div className="dashboard-content">
-            {/* Üst kısımdaki line chart */}
-            <div className="dashboard-content__chart">
-                <h2>Monthly Performance</h2>
-                <Line data={lineChartData} />
-            </div>
-
-            {/* Alt kısımda üç bölüm: Dünya haritası, toplam bakiye ve stok durumu */}
-            <div className="dashboard-content__summary">
+        <div className="container">
+            <div className="dashboard-content">                
                 {/* Dünya haritası */}
                 <div className="summary__map">
-                    <h2>Global Performance</h2>
-                    <ComposableMap>
-                        <Geographies geography="https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json">
+                    <ComposableMap
+                        projection="geoMercator"
+                        projectionConfig={{
+                            scale: 150,
+                        }}
+                        style={{ width: "100%", height: "100%" }}
+                    >
+                        <Geographies geography={geography}>
                             {({ geographies }) =>
-                                geographies.map((geo) => <Geography key={geo.rsmKey} geography={geo} />)
+                                geographies.map((geo) => (
+                                    <Geography
+                                        key={geo.rsmKey}
+                                        geography={geo}
+                                        style={{
+                                            default: { fill: "#EAEAEC", stroke: "#D6D6DA" },
+                                            hover: { fill: "#F53", stroke: "#E42" },
+                                            pressed: { fill: "#E42", stroke: "#F53" },
+                                        }}
+                                    />
+                                ))
                             }
                         </Geographies>
-                        {customersLocations.map(({ name, coordinates }) => (
-                            <Marker key={name} coordinates={coordinates}>
-                                <circle r={6} fill="#7b3370" />
-                            </Marker>
-                        ))}
                     </ComposableMap>
+
                 </div>
 
                 {/* Toplam bakiye */}
@@ -91,7 +96,7 @@ const OrderAdminDashboard = () => {
                 </div>
             </div>
             <StockDashboard/>
-        </div>
+        </div>        
     );
 };
 

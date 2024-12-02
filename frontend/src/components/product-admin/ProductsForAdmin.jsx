@@ -99,7 +99,7 @@ const ProductsForAdmin = () => {
     );
 
     return (
-        <>
+        <div className='container'>
             {modal}
             <SectorsSideMenu filter={filter} onFilter={setFilter} />
             <section className="products__page">
@@ -124,7 +124,7 @@ const ProductsForAdmin = () => {
                     onPageChange={(page) => setCurrentPage(page)}
                 />
             </section>
-        </>
+        </div>
     );
 };
 

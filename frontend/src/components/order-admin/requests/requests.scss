@@ -2,9 +2,9 @@
 
 .requests{
     height: 100%;
-    width: 100vw;
+    width: 1000px;
     padding: 30px  ;
-    margin-left: 50px;
+    margin-left: 30px;
     background-color: #F5F2F2;
     &__products {
         min-height: 800px;
@@ -16,7 +16,7 @@
         font-size: 18px;
         height: 48px;
         display: grid;
-        grid-template-columns: 440px 50px 100px 240px;
+        grid-template-columns:  9fr 1fr 2fr 220px;;
         gap: 35px;
         align-items: center;
         &-name{
@@ -53,6 +53,6 @@
     &__buttons{
         width: 100%;
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
     }
 }

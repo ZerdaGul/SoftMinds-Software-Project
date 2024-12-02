@@ -2,40 +2,40 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './sideMenu.scss';
 
-const SideMenu = ({ activeUser }) => {
+const SideMenu = ({ main_menu }) => {
     const aUser = {
         name: "Product Admin",
         email: "Padmin@ekoinv.com",
         role: "padmin"
     };
-    const getMainMenu = () => {
-        if (aUser?.role === "padmin") {
-            return [
-                { path: "/products-admin", text: "Manage Products" },
-                { path: "/product-dashboard", text: "Product Dashboard" }
-            ];
-        } else if (aUser?.role === "oadmin") {
-            return [
-                { path: "/orders-progress", text: "Orders Progress" },
-                { path: "/requests", text: "Requests" }
-            ];
-        } else if (aUser?.role === "customer") {
-            return [
-                { path: "/profile/orders", text: "My Orders" },
-                { path: "/profile/cart", text: "My Cart" }
-            ];
-        } else {
-            return [];
-        }
-    };
+    // const getMainMenu = () => {
+    //     if (aUser?.role === "padmin") {
+    //         return [
+    //             { path: "/products-admin", text: "Manage Products" },
+    //             { path: "/product-dashboard", text: "Product Dashboard" }
+    //         ];
+    //     } else if (aUser?.role === "oadmin") {
+    //         return [
+    //             { path: "/orders-progress", text: "Orders Progress" },
+    //             { path: "/requests", text: "Requests" }
+    //         ];
+    //     } else if (aUser?.role === "customer") {
+    //         return [
+    //             { path: "/profile/orders", text: "My Orders" },
+    //             { path: "/profile/cart", text: "My Cart" }
+    //         ];
+    //     } else {
+    //         return [];
+    //     }
+    // };
 
-    const mainMenu = getMainMenu();
+    // const mainMenu = getMainMenu();
 
     return (
         <aside className="side-menu">
             <div className="side-menu__title">Main Menu</div>
             <ul className="side-menu__link-wrapper">
-                {mainMenu.map(({ path, text }, index) => (
+                {main_menu.map(({ path, text }, index) => (
                     <li key={index}>
                         <NavLink
                             to={path}
