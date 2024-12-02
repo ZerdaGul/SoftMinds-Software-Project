@@ -32,6 +32,7 @@ import ProductDashboard from "../../dashboard/ProductDashboard";
 import SectorPage from "../../pages/SectorPage";
 import SolutionPage from "../../pages/SolutionPage";
 import ConsultancyPage from "../../pages/ConsultancyPage";
+import OrderAdminDashboard from '../order-admin/dashboard/Dashboard';
 
 const App = () => {
 	const [activeUser, setActiveUser] = useState(null); // Stores the current active user
@@ -124,7 +125,7 @@ const App = () => {
 					
 				</Route> */}
 					<Route path='/profile/*' element={<OrderAdminPage />}>
-						<Route path='dashboard'></Route>
+						<Route path='dashboard' element={<OrderAdminDashboard/>}></Route>
 						<Route path='orders-progress' element={<OrdersProgress />}></Route>
 						<Route path='requests' element={<Requests />}></Route>
 						<Route path='my-profile' element={<ProfileForm initialValues={activeUser} />}></Route>
