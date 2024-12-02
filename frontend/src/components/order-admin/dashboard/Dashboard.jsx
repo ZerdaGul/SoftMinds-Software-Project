@@ -14,6 +14,7 @@ import {
     Marker,
 } from "react-simple-maps";
 import "./Dashboard.scss";
+import StockDashboard from "./StockDashboard";
 
 ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, BarElement);
 
@@ -89,6 +90,7 @@ const OrderAdminDashboard = () => {
                     <Line data={barChartData} />
                 </div>
             </div>
+            <StockDashboard/>
         </div>
     );
 };
