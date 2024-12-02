@@ -45,6 +45,16 @@ const sectors = [
     },
 ];
 
+const LearnMoreButton = () => {
+    return (
+        <button className="button">
+            <Link to="/sectors" className="button__link">
+                Learn more
+            </Link>
+        </button>
+    );
+};
+
 function HomePage() {
     return (
         <div className="home-page">
@@ -52,7 +62,9 @@ function HomePage() {
             <section className="hero">
                 <div className="container hero-content">
                     <h1>Innovative Solutions to Empower Businesses</h1>
-                    <button className="button">Learn more</button>
+                    <Link to="/sectors" className="button">
+                        Learn More
+                    </Link>
                 </div>
             </section>
 
@@ -107,7 +119,7 @@ function HomePage() {
 
             <ContactForm/>
 
-            
+
         </div>
     );
 }

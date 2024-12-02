@@ -1,87 +1,99 @@
-import React, { useEffect, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import './sideMenu.scss';
 
-// import cart from '../../assets/icons/profile/cart.svg';
-import contacts from '../../assets/icons/profile/contacts.svg';
-import settings from '../../assets/icons/profile/settings.svg';
-import user from '../../assets/icons/profile/user.svg';
-import "./sideMenu.scss"
+const SideMenu = ({ activeUser }) => {
+    const aUser = {
+        name: "Product Admin",
+        email: "Padmin@ekoinv.com",
+        role: "padmin"
+    };
+    const getMainMenu = () => {
+        if (aUser?.role === "padmin") {
+            return [
+                { path: "/products-admin", text: "Manage Products" },
+                { path: "/product-dashboard", text: "Product Dashboard" }
+            ];
+        } else if (aUser?.role === "oadmin") {
+            return [
+                { path: "/orders-progress", text: "Orders Progress" },
+                { path: "/requests", text: "Requests" }
+            ];
+        } else if (aUser?.role === "customer") {
+            return [
+                { path: "/profile/orders", text: "My Orders" },
+                { path: "/profile/cart", text: "My Cart" }
+            ];
+        } else {
+            return [];
+        }
+    };
 
-const account_menu = [
-    {
-      path: "/profile/my-profile",
-      icon: user, // Make sure to import the user icon
-      alt: "user",
-      text: "My Profile"
-    },
-    {
-      path: "/profile/contacts",
-      icon: contacts, // Make sure to import the contacts icon
-      alt: "contacts",
-      text: "Contacts"
-    },
-    {
-      path: "/profile/settings",
-      icon: settings, // Make sure to import the settings icon
-      alt: "settings",
-      text: "Settings"
-    }
-  ];
-  
+    const mainMenu = getMainMenu();
 
-const SideMenu = ({main_menu}) => {
-    const [newRequest, setNewRequest] = useState(0);
-    useEffect(()=> {
-        main_menu.forEach(({text}) => {
-            if(text === 'Requests') {
-                //load requests
-                //temporarly:
-                setNewRequest(2)
-            }
-        })
-    },[])
+    return (
+        <aside className="side-menu">
+            <div className="side-menu__title">Main Menu</div>
+            <ul className="side-menu__link-wrapper">
+                {mainMenu.map(({ path, text }, index) => (
+                    <li key={index}>
+                        <NavLink
+                            to={path}
+                            className="side-menu__link"
+                            style={({ isActive }) => ({
+                                backgroundColor: isActive ? '#F5F2F2' : 'inherit'
+                            })}
+                        >
+                            {text}
+                        </NavLink>
+                    </li>
+                ))}
+            </ul>
 
-    
-  return (
-    <aside className='side-menu'>
-    <div className="side-menu__title">Main menu</div>
-    <ul className="side-menu__link-wrapper">
-        {main_menu.map(({ path, icon, alt, text }, index) => {
-        return (
-            <li key={`${text}-${index}`}> {/* Unique key using text and index */}
-            <NavLink className='side-menu__link' to={path}
-                style={({ isActive }) => ({ backgroundColor: isActive ? '#F5F2F2' : 'inherit' })}>
-                <img src={icon} alt={alt}></img>
-                {text}
-                {newRequest && text === "Requests" && <div className="indicator">{newRequest}</div>}
-            </NavLink>
-            </li>
-        );
-        })}
-    </ul>
-    
-    <div className="side-menu__title">Account</div>
-    <ul className="side-menu__link-wrapper">
-        {account_menu.map(({ path, icon, alt, text }, index) => {
-        return (
-            <li key={`${text}-${index}`}> {/* Unique key using text and index */}
-            <NavLink className='side-menu__link' to={path}
-                style={({ isActive }) => ({ backgroundColor: isActive ? '#F5F2F2' : 'inherit' })}>
-                <img src={icon} alt={alt}></img>
-                {text}
-            </NavLink>
-            </li>
-        );
-        })}
-    </ul>
+            <div className="side-menu__title">Account</div>
+            <ul className="side-menu__link-wrapper">
+                <li>
+                    <NavLink
+                        to="/profile/my-profile"
+                        className="side-menu__link"
+                        style={({ isActive }) => ({
+                            backgroundColor: isActive ? '#F5F2F2' : 'inherit'
+                        })}
+                    >
+                        My Profile
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink
+                        to="/profile/contacts"
+                        className="side-menu__link"
+                        style={({ isActive }) => ({
+                            backgroundColor: isActive ? '#F5F2F2' : 'inherit'
+                        })}
+                    >
+                        Contacts
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink
+                        to="/profile/settings"
+                        className="side-menu__link"
+                        style={({ isActive }) => ({
+                            backgroundColor: isActive ? '#F5F2F2' : 'inherit'
+                        })}
+                    >
+                        Settings
+                    </NavLink>
+                </li>
+            </ul>
 
-    <div className="side-menu__user">
-        <img src="" alt="" className="side-menu__user-pic" />
-        <p className="side-menu__user-name"></p>
-        <p className="side-menu__user-email"></p>
-    </div>
-    </aside>
-  )
-}
+            <div className="side-menu__user">
+                <img src="" alt="" className="side-menu__user-pic" />
+                <p className="side-menu__user-name">{aUser?.name || "Guest"}</p>
+                <p className="side-menu__user-email">{aUser?.email || "Not logged in"}</p>
+            </div>
+        </aside>
+    );
+};
 
-export default SideMenu
+export default SideMenu;

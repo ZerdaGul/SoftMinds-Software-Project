@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 
@@ -26,13 +26,14 @@ import FAQPage from '../FAQPage/FAQPage';
 import AboutUs from "../../pages/AboutUs";
 import Footer from '../footer/Footer';
 import ContactForm from '../contact-form/ContactForm';
-import ProductsForAdmin from "../../pages/ProductsForAdmin";
+import ProductsForAdmin from "../../components/product-admin/ProductsForAdmin";
 import CardForm from "../forms/CardForm";
-import ProductDashboard from "../../dashboard/ProductDashboard";
+import ProductDashboard from '../../components/product-admin/dashboard/ProductDashboard'
 import SectorPage from "../../pages/SectorPage";
 import SolutionPage from "../../pages/SolutionPage";
 import ConsultancyPage from "../../pages/ConsultancyPage";
 import OrderAdminDashboard from '../order-admin/dashboard/Dashboard';
+
 
 const App = () => {
 	const [activeUser, setActiveUser] = useState(null); // Stores the current active user
@@ -91,14 +92,24 @@ const App = () => {
         setActiveUser(null); // Clear active user
         saveUserToLocalStorage(null); // Clear localStorage
     };
+	const ScrollToTop = () => {
+		const { pathname } = useLocation();
 
+		useEffect(() => {
+			window.scrollTo(0, 0); // Sayfanın en üstüne kaydır
+		}, [pathname]); // Rota değişikliklerinde çalışır
+
+		return null; // Görünür bir bileşen olmadığı için null döner
+	};
     
 
 
 
 	return (
 		<Router>
-			<Navbar isLoggedIn={isLoggedIn}  setIsLoggedIn={setIsLoggedIn} onLogout={handleLogout} />
+			<ScrollToTop />
+			<Navbar isLoggedIn={isLoggedIn}  setIsLoggedIn={setIsLoggedIn} onLogout={handleLogout} activeUser={activeUser} />
+			
 			<main>
 				<Routes>
 					<Route path='/' element={<HomePage />}></Route>
@@ -112,6 +123,9 @@ const App = () => {
 					<Route path='/faq' element={<FAQPage/>}></Route>
 					<Route path='/forgot-password-request' element={<ForgotPasswordRequest />}></Route>
 					<Route path='/create-password' element={<CreatePasswordForm />}></Route>
+					<Route path='/product-dashboard' element={<ProductDashboard />}></Route>
+					<Route path='/products-admin' element={<ProductsForAdmin/>}></Route>
+					<Route path='/profile/cart' element={CardForm}></Route>
 					{/* <Route path='/profile/*' element={<UserProfilePage />}>
 					<Route path='dashboard'></Route>
 					<Route path='orders'></Route>

@@ -1,19 +1,22 @@
-
 import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 
-import earth from '../../assets/icons/earth.svg'
-import user from '../../assets/icons/user.svg'
-import logo from '../../assets/icons/logo.png'
+import earth from '../../assets/icons/earth.svg';
+import user from '../../assets/icons/user.svg';
+import logo from '../../assets/icons/logo.png';
+import bellIcon from '../../assets/icons/bell.png'; // Bildirim ikonu
 import './Navbar.scss';
 import { LogOut } from '../../services/AuthService';
 import ConfirmModal from '../modals/ConfirmModal';
+import NotificationModal from '../modals/NotificationModal'; // Bildirim modalı
 
-const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout }) => {
+const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout, activeUser }) => {
     const navigate = useNavigate();
     const [showLogoutModal, setShowLogoutModal] = useState(false);
+    const [showNotificationModal, setShowNotificationModal] = useState(false); // Bildirim modalı kontrolü
 
+    // Çıkış işlemi
     const handleLogout = async () => {
         try {
             await LogOut(); // Backend çıkış işlemi
@@ -27,9 +30,56 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout }) => {
         }
     };
 
-
     const confirmLogout = () => setShowLogoutModal(true);
-    const closeModal = () => setShowLogoutModal(false);
+    const closeLogoutModal = () => setShowLogoutModal(false);
+
+    // Bildirim modalını açma
+    const openNotificationModal = () => setShowNotificationModal(true);
+    const closeNotificationModal = () => setShowNotificationModal(false);
+
+    const orders = [
+        { id: 1, status: 'approved' },
+        { id: 2, status: 'rejected' },
+        { id: 3, status: 'pending' },
+    ];
+
+    const renderNotificationButton = () => {
+        if (activeUser) {
+            const approvedOrders = orders.filter(order => order.status === 'approved');
+            const rejectedOrders = orders.filter(order => order.status === 'rejected');
+
+            return (
+                <li>
+                    <button className="navbar-notification" onClick={openNotificationModal}>
+                        <img src={bellIcon} alt="Notifications" />
+                        {/* Bildirim sayısını göster */}
+                        {/* {lowStockProducts?.length > 0 && (
+                            <span className="notification-badge">{lowStockProducts.length}</span>
+                        )} */}
+                        {/* {orders.length > 0 && (
+                            <div className="order-notifications">
+                                <div className="close-button" onClick={closeNotificationModal}>
+                                    Close
+                                </div>
+                                {approvedOrders.map(order => (
+                                    <div key={order.id} className="order-item approved">
+                                        Order #{order.id} has been approved.
+                                    </div>
+                                ))}
+                                {rejectedOrders.map(order => (
+                                    <div key={order.id} className="order-item rejected">
+                                        Order #{order.id} has been rejected.
+                                    </div>
+                                ))}
+                            </div>
+                        )} */}
+                    </button>
+                </li>
+            );
+        }
+        return null;
+    };
+
 
     return (
         <nav className="navbar">
@@ -41,27 +91,27 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout }) => {
             <ul className="navbar-links">
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                        to="/aboutUs">About Us</NavLink>
+                             to="/aboutUs">About Us</NavLink>
                 </li>
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                        to="/products">Products</NavLink>
+                             to="/products">Products</NavLink>
                 </li>
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                        to="/sectors">Sectors</NavLink>
+                             to="/sectors">Sectors</NavLink>
                 </li>
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                        to="/solutions">Solutions</NavLink>
+                             to="/solutions">Solutions</NavLink>
                 </li>
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                        to="/consultancy">Consultancy</NavLink>
+                             to="/consultancy">Consultancy</NavLink>
                 </li>
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                        to="/contactUs">Contact Us</NavLink>
+                             to="/contactUs">Contact Us</NavLink>
                 </li>
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
@@ -74,9 +124,12 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout }) => {
                 </li>
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                        to="/profile"> <img src={user} alt="user" style={{ height: "40px", width: "auto" }} />
+                             to="/profile"> <img src={user} alt="user" style={{ height: "40px", width: "auto" }} />
                     </NavLink>
                 </li>
+                {/* Bildirim butonu */}
+                {renderNotificationButton()}
+                {/* Kullanıcı giriş/çıkış */}
                 <li>
                     {isLoggedIn ? (
                         <Link onClick={confirmLogout}>Log Out</Link>
@@ -91,14 +144,25 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout }) => {
                 <span className="bar"></span>
             </div>
 
+            {/* Çıkış Modalı */}
             {showLogoutModal &&
                 createPortal(
                     <ConfirmModal
                         title={"Do you want to log out?"}
                         buttonConfirmText={"Yes"}
                         buttonCloseText={'No'}
-                        onClose={closeModal}
+                        onClose={closeLogoutModal}
                         onConfirm={handleLogout} />,
+                    document.body
+                )}
+
+            {/* Bildirim Modalı */}
+            {showNotificationModal &&
+                createPortal(
+                    <NotificationModal
+                        // lowStockProducts={lowStockProducts}
+                        onClose={closeNotificationModal}
+                    />,
                     document.body
                 )}
         </nav>

@@ -191,3 +191,20 @@ export const DeleteProduct = async (id) => {
     }
   }
 };
+
+export const EditProduct = async (id, updatedData) => {
+  try {
+    const response = await axios.put(`${api}products/${id}`, updatedData, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data); // API hatalarını yönet
+    } else {
+      throw new Error("An unknown error occurred."); // Diğer hatalar için
+    }
+  }
+};

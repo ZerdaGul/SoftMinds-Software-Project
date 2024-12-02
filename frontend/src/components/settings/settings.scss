@@ -1,25 +1,54 @@
 @import '../../style/style.scss';
 
-.settings{
-    width:920px;
+.settings {
+    width: 920px;
     display: flex;
-    align-items:center;
-    
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 40px;
+    text-align: left;
+
+    &__list {
+        width: 100%;
+    }
+
+    &__item {
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     &__action {
         font-weight: 700;
         color: $dark;
         font-size: 18px;
-        margin-top: 20px;
+        margin-top: 10px;
+        margin-left: 30px;
+        text-align: left;
+
         &-delete {
             color: $red;
         }
-        &:hover{
+
+        &:hover {
             color: $orange;
         }
     }
+
     &__descr {
         font-size: 14px;
         margin-top: 10px;
+        margin-left: 40px;
         color: $dark;
+        text-align: center;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .settings {
+        padding-left: 20px;
+        align-items: flex-start;
     }
 }

@@ -196,7 +196,7 @@ const UpdateProfile = ({ initialValues,  }) => {
                     :
                     <div className="form__wrapper">
                         <a href='#' className="form__pages back" onClick={() => setPage(1)}>
-                            <img src={back} alt="arrow-back" />
+                            <img src={back} alt="arrow-back"/>
                             Back to updates
                         </a>
                         <div className="input__wrapper">

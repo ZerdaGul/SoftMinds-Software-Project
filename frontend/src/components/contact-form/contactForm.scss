@@ -1,16 +1,15 @@
 @import '../../style/style.scss';
 @import '../../components/forms/form.scss';
 
-.contact{
-    &__form{
+.contact {
+    &__form {
         max-width: 880px;
-        margin:0 auto;
+        margin: 0 auto;
         padding-top: 50px;
         text-align: left;
-
-
     }
-    &__wrapper{
+
+    &__wrapper {
         margin-top: 30px;
         display: grid;
         grid-template-columns: 335px 500px;
@@ -32,8 +31,11 @@
     grid-column: 1/2;
 }
 
-#email{
-    grid-column: 1/2;
+#name,
+#email {
+    grid-column: 1 / 2;
+    display: flex;
+    flex-direction: column; /* Label ve input yukarıdan aşağı hizalanır */
 }
 
 #message{
