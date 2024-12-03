@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 
+import { LoadProducts } from "../../../services/ProductService";
 import './stockDashboard.scss';
 
 const stocksData = [
@@ -67,15 +68,35 @@ const stocksData = [
   
 
 function StockDashboard() {
-  const [stocks, setStocks] = useState(stocksData);
+  const [stocks, setStocks] = useState([]);
   const [lowStockOnly, setLowStockOnly] = useState(false);
 
+  const [currentPage, setCurrentPage] = useState(1);
+	const [totalPages, setTotalPages] = useState();
+	const [error, setError] = useState(false);
+	const [errorMessage, setErrorMessage] = useState('');
+  const [showModal, setShowModal] = useState(false);
+
   useEffect(() => {
-    fetch("/api/dashboard/stocks")
-      .then((response) => response.json())
-      .then((data) => setStocks(data))
-      .catch((error) => console.error("Error fetching stock data:", error));
-  }, []);
+    updateStocks();
+  }, [currentPage]);
+
+  const onError = (error) => {
+      setError(true);  
+      setShowModal(true);
+      setErrorMessage(error.message)      
+  }
+
+
+  const updateStocks = async () => {
+      try {
+        const data = await LoadProducts({pageNumber:currentPage});
+        setStocks(stocks => [...stocks, ...data.products]);
+        setTotalPages(data.totalPages);
+    } catch (error) {
+        onError(error); // Handle error
+    }
+  }
 
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
@@ -94,7 +115,7 @@ function StockDashboard() {
   };
 
   const filteredStocks = lowStockOnly
-    ? stocks.filter((stock) => stock.low_stock_indicator)
+    ? stocks.filter((stock) => stock.stock < 10)
     : stocks;
 
   return (
@@ -131,11 +152,11 @@ function StockDashboard() {
         </thead>
         <tbody>
           {filteredStocks.map((stock) => (
-            <tr key={stock.product_id}>
-              <td>{stock.product_id}</td>
+            <tr key={stock.id}>
+              <td>{stock.id}</td>
               <td>{stock.name}</td>
-              <td>{stock.stock_quantity}</td>
-              <td>{stock.low_stock_indicator ? "Yes 🔴" : "No"}</td>
+              <td>{stock.stock}</td>
+              <td>{stock.stock < 10 ? "Yes 🔴" : "No"}</td>
             </tr>
           ))}
         </tbody>

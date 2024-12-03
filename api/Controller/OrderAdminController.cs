@@ -66,5 +66,12 @@ namespace api.Controllers
         }
 
         
-}
+        [HttpGet("get-orders")]
+        public async Task<IActionResult> GetOrders()
+        {
+            var orders = await _context.Orders.ToListAsync();
+            return Ok(orders);
+        }
+        
+    }
 }

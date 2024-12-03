@@ -125,7 +125,7 @@ const App = () => {
 					<Route path='/forgot-password-request' element={<ForgotPasswordRequest />}></Route>
 					<Route path='/create-password' element={<CreatePasswordForm />}></Route>
 					<Route path='/profile/cart' element={CardForm}></Route>
-					{"custohhkjmer" === "customer" && 
+					{"activeUser.role" === "customer" && 
 						<Route path='/profile/*' element={<UserProfilePage />}>
 							<Route path='dashboard'></Route>
 							<Route path='orders'></Route>
@@ -139,7 +139,7 @@ const App = () => {
 							
 						</Route> 
 					}
-					{"padmgfcin" === "padmin" && 
+					{"activeUser.role" === "padmin" && 
 					<>
 						<Route path='/products-admin' element={<ProductsForAdmin />}></Route>
 						<Route path='/profile/*' element={<ProductAdminPage />}>
