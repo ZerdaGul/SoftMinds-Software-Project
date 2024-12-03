@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const api = "http://localhost:5115/api/"
+const api = "https://api.ekoinv.com/api/"
 
 export const LoadProducts = async (data) => {
   try {
@@ -80,7 +80,7 @@ export const LoadSectors = async (data) => {
 
 export const AddToCart = async (data) => {
   try {
-    const response = await axios.get(`${api}Cart`, {
+    const response = await axios.get(`${api}cart`, {
       params: data,
       headers: {
         'Content-Type': 'application/json'

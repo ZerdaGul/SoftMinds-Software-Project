@@ -21,6 +21,7 @@ public class Users
     public string? ResetToken { get; set; }
     public DateTime? ResetTokenExpires { get; set; }
     public string Role { get; set; } = "customer"; // Kullanıcı rolü
+    
     // Relationships
     public List<Orders> Orders { get; set; } = []; // Orders listesi, boş olabilir
     public List<Comments> Comments { get; set; } = [];// boş olabilir

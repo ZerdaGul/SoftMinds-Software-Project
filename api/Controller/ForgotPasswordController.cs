@@ -1,16 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using api.DTO;
 using api.Data;
-using System.ComponentModel.DataAnnotations;
+using api.Services;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
-using System.Text;
-using System.Net.Mail;
-using System.Net;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using api.Models;
+using api.DTO;
 
 namespace api.Controller
 {
@@ -19,63 +11,44 @@ namespace api.Controller
     public class ForgotPasswordController : ControllerBase
     {
         private readonly AppDBContext _context;
-        private readonly IOptions<EmailSettings> _emailSettings;
+        private readonly EmailService _emailService;
+        private readonly PasswordService _passwordService;
 
-        public ForgotPasswordController(AppDBContext context, IOptions<EmailSettings> emailSettings)
+        public ForgotPasswordController(AppDBContext context, EmailService emailService, PasswordService passwordService)
         {
             _context = context;
-            _emailSettings = emailSettings;
+            _emailService = emailService;
+            _passwordService = passwordService;
         }
 
-        // POST /api/forgotpassword/request
+        // POST api/forgotpassword
         [HttpPost("request")]
-        public async Task<IActionResult> RequestPasswordReset([FromBody] ForgotPasswordRequestDTO model)
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDTO model)
         {
             if (model == null || string.IsNullOrEmpty(model.Email))
             {
-                return BadRequest("E-posta alanı gereklidir.");
-            }
-
-            // Email validation
-            var emailValidator = new EmailAddressAttribute();
-            if (!emailValidator.IsValid(model.Email))
-            {
-                return BadRequest("Geçersiz email adresi.");
+                return BadRequest("Invalid email data.");
             }
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
             if (user == null)
             {
-                return NotFound("Kullanıcı bulunamadı.");
+                return NotFound("User not found.");
             }
 
             // Generate reset token
             var token = GenerateResetToken();
             user.ResetToken = token;
-            user.ResetTokenExpires = DateTime.UtcNow.AddHours(1);
+            user.ResetTokenExpires = DateTime.UtcNow.AddHours(1); // Token expires in 1 hour
             await _context.SaveChangesAsync();
 
             // Send email
-            var mailMessage = new MailMessage
-            {
-                From = new MailAddress(_emailSettings.Value.SenderEmail),
-                Subject = "Şifre Sıfırlama Talebi",
-                Body = $"Şifrenizi sıfırlamak için lütfen aşağıdaki kodu kullanın:\n{token}",
-                IsBodyHtml = false,
-            };
-            mailMessage.To.Add(model.Email);
+            await _emailService.SendForgotPasswordEmail(user.Email, token);
 
-            using (var smtpClient = new SmtpClient(_emailSettings.Value.SmtpServer, _emailSettings.Value.SmtpPort))
-            {
-                smtpClient.Credentials = new NetworkCredential(_emailSettings.Value.SmtpUsername, _emailSettings.Value.SmtpPassword);
-                smtpClient.EnableSsl = true;
-                await smtpClient.SendMailAsync(mailMessage);
-            }
-
-            return Ok("Şifre sıfırlama kodu e-posta adresinize gönderildi.");
+            return Ok(new { message = "Şifre sıfırlama talimatları e-posta ile gönderildi." });
         }
 
-        // POST /api/forgotpassword/reset
+        // POST api/forgotpassword/reset
         [HttpPost("reset")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDTO model)
         {
@@ -91,16 +64,9 @@ namespace api.Controller
             }
 
             // Hash new password
-            byte[] salt = RandomNumberGenerator.GetBytes(128 / 8);
-            string hashed_Password = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: model.NewPassword,
-                salt: salt,
-                prf: KeyDerivationPrf.HMACSHA256,
-                iterationCount: 100000,
-                numBytesRequested: 256 / 8));
-
-            user.Password_Hash = hashed_Password;
-            user.Password_Salt = Convert.ToBase64String(salt);
+            var (hashedPassword, salt) = _passwordService.HashPassword(model.NewPassword);
+            user.Password_Hash = hashedPassword;
+            user.Password_Salt = salt;
             user.ResetToken = null;
             user.ResetTokenExpires = null;
             await _context.SaveChangesAsync();

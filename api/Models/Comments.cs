@@ -1,4 +1,6 @@
 
+using System.Text.Json.Serialization;
+
 namespace api.Models;
 
 public class Comments
@@ -9,8 +11,11 @@ public class Comments
     public required string Text { get; set; } = null!;
     public DateTime Created_At { get; set; }
 
-    public required Users User { get; set; } = null!;
-    public required Products Product { get; set; } = null!;
+    [JsonIgnore]
+    public Users? User { get; set; }
+    
+    [JsonIgnore]
+    public Products? Product { get; set; }
 
 }
 

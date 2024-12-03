@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using api.Data;
-using api.Models;
+using api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -15,9 +15,13 @@ builder.Services.AddDbContext<AppDBContext>(options =>
 // EmailSettings konfigürasyonunu ekle
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<PasswordService>();
+
 // Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddHttpContextAccessor(); // Bu satırı ekleyin
 
 var jwtKey = builder.Configuration["Jwt:Key"];
 if (string.IsNullOrEmpty(jwtKey))
@@ -43,7 +47,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", builder =>
     {
-        builder.WithOrigins("http://localhost:3000") // React uygulamasının adresi
+        builder.WithOrigins("https://ekoinv.com", "https://api.ekoinv.com") // React uygulamasının adresi
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -63,8 +67,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+
 app.UseRouting();
+
 app.UseCors("CorsPolicy");
+
 app.UseAuthentication();
 app.UseAuthorization();
 

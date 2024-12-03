@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using api.DTO;
 using api.Data;
+using api.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace api.Controller
 {
@@ -16,14 +16,16 @@ namespace api.Controller
     {
         private readonly AppDBContext _context;
         private readonly IConfiguration _configuration;
+        private readonly PasswordService _passwordService;
 
         private const int MaxFailedAccessAttempts = 5; // Maksimum başarısız giriş denemesi
         private const int LockoutDuration = 5; // Kilitlenme süresi (dakika)
 
-        public AuthController(AppDBContext context, IConfiguration configuration)
+        public AuthController(AppDBContext context, IConfiguration configuration, PasswordService passwordService)
         {
             _context = context;
             _configuration = configuration;
+            _passwordService = passwordService;
         }
 
         // POST /api/auth/login
@@ -41,22 +43,19 @@ namespace api.Controller
                 return Unauthorized("Geçersiz email");
             }
 
+            if (user.Is_Email_Verified == false)
+            {
+                return Unauthorized("Email adresiniz doğrulanmamış. Lütfen email adresinizi doğrulayın.");
+            }
+
             // Hesap kilitli mi kontrol et
             if (user.Lockout_End.HasValue && user.Lockout_End.Value > DateTime.UtcNow)
             {
                 return Unauthorized($"Hesabınız {user.Lockout_End.Value.Subtract(DateTime.UtcNow).Minutes} dakika boyunca kilitli.");
             }
 
-            // Kullanıcının tuzunu kullanarak şifreyi hash'le
-            string hashed_Password = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: model.Password,
-                salt: Convert.FromBase64String(user.Password_Salt),
-                prf: KeyDerivationPrf.HMACSHA256,
-                iterationCount: 100000,
-                numBytesRequested: 256 / 8));
-
-            // Hash'lenmiş şifre ile karşılaştır
-            if (hashed_Password != user.Password_Hash)
+            // Şifreyi doğrula
+            if (!_passwordService.VerifyPassword(model.Password, user.Password_Hash, user.Password_Salt))
             {
                 user.Failed_Login_Attempts++;
                 if (user.Failed_Login_Attempts >= MaxFailedAccessAttempts)
@@ -95,15 +94,14 @@ namespace api.Controller
                 signingCredentials: creds);
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-            // Set the token as a cookie
-            var cookieOptions = new CookieOptions
+
+            Response.Cookies.Append("AuthToken", tokenString, new CookieOptions
             {
                 HttpOnly = true,
-                Secure = false,
+                Secure = true,
                 SameSite = SameSiteMode.None,
-                Expires = DateTime.Now.AddDays(1)
-            };
-            Response.Cookies.Append("AuthToken", tokenString, cookieOptions);
+                Expires = DateTime.Now.AddHours(1)
+            });
 
             return Ok(new { token = tokenString });
         }
@@ -112,10 +110,14 @@ namespace api.Controller
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-            Response.Cookies.Delete("AuthToken");
+            Response.Cookies.Delete("AuthToken", new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
+            });
             return Ok(new { message = "Çıkış başarılı." });
         }
-
 
         // GET /api/auth/active-session
         [HttpGet("active-session")]
@@ -152,8 +154,34 @@ namespace api.Controller
                 user.Email,
                 user.Name,
                 user.Country,
-                user.Phone
+                user.Phone,
+                user.Role
             });
+        }
+
+        // GET /api/auth/verify
+        [HttpGet("verify")]
+        public async Task<IActionResult> VerifyEmail(string email, string token)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (user == null)
+            {
+                return NotFound("Kullanıcı bulunamadı.");
+            }
+
+            // Token doğrulaması
+            var decodedToken = Uri.UnescapeDataString(token);
+            if (user.Password_Hash != decodedToken)
+            {
+                return BadRequest("Geçersiz doğrulama token'ı.");
+            }
+
+            // Kullanıcıyı doğrula
+            user.Is_Email_Verified = true;
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return Ok("Doğrulama tamamlandı.");
         }
     }
 }
