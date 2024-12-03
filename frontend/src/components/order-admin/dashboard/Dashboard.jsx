@@ -56,43 +56,45 @@ const OrderAdminDashboard = () => {
         <div className="container">
             <div className="dashboard-content">                
                 {/* Dünya haritası */}
-                <div className="summary__map">
-                    <ComposableMap
-                        projection="geoMercator"
-                        projectionConfig={{
-                            scale: 150,
-                        }}
-                        style={{ width: "100%", height: "100%" }}
-                    >
-                        <Geographies geography={geography}>
-                            {({ geographies }) =>
-                                geographies.map((geo) => (
-                                    <Geography
-                                        key={geo.rsmKey}
-                                        geography={geo}
-                                        style={{
-                                            default: { fill: "#EAEAEC", stroke: "#D6D6DA" },
-                                            hover: { fill: "#F53", stroke: "#E42" },
-                                            pressed: { fill: "#E42", stroke: "#F53" },
-                                        }}
-                                    />
-                                ))
-                            }
-                        </Geographies>
-                    </ComposableMap>
+                <div className="dashboard__summary">
+                    <div id="map"className="summary__map">
+                        <ComposableMap
+                            projection="geoMercator"
+                            projectionConfig={{
+                                scale: 150,
+                            }}
+                            style={{ width: "100%", height: "100%" }}
+                        >
+                            <Geographies geography={geography}>
+                                {({ geographies }) =>
+                                    geographies.map((geo) => (
+                                        <Geography
+                                            key={geo.rsmKey}
+                                            geography={geo}
+                                            style={{
+                                                default: { fill: "#EAEAEC", stroke: "#D6D6DA" },
+                                                hover: { fill: "#F53", stroke: "#E42" },
+                                                pressed: { fill: "#E42", stroke: "#F53" },
+                                            }}
+                                        />
+                                    ))
+                                }
+                            </Geographies>
+                        </ComposableMap>
 
-                </div>
+                    </div>
 
-                {/* Toplam bakiye */}
-                <div className="summary__balance">
-                    <h2>Total Balance</h2>
-                    <p>$2,548.00</p>
-                </div>
+                    {/* Toplam bakiye */}
+                    <div id='balance' className="summary__balance">
+                        <h2>Total Balance</h2>
+                        <p>$2,548.00</p>
+                    </div>
 
-                {/* Stok durumu */}
-                <div className="summary__bar">
-                    <h2>Product Stock</h2>
-                    <Line data={barChartData} />
+                    {/* Stok durumu */}
+                    <div id='bar'className="summary__bar">
+                        <h2>Product Stock</h2>
+                        <Line data={barChartData} />
+                    </div>
                 </div>
             </div>
             <StockDashboard/>

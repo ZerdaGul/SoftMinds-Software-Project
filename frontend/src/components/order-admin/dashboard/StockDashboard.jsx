@@ -77,24 +77,34 @@ function StockDashboard() {
       .catch((error) => console.error("Error fetching stock data:", error));
   }, []);
 
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+
+    if (query === "") {
+      // Reset to the original stock data if the search field is cleared
+      setStocks(stocksData);
+    } else {
+      // Filter based on the search query
+      setStocks(
+        stocksData.filter((stock) =>
+          stock.name.toLowerCase().includes(query)
+        )
+      );
+    }
+  };
+
   const filteredStocks = lowStockOnly
     ? stocks.filter((stock) => stock.low_stock_indicator)
     : stocks;
 
   return (
-    <div>
+    <div className="stock-dashboard">
         <h1 className="stock-dashboard__title">Stock Dashboard</h1>
         <div className="stock-dashboard__search">
             <input
                 type="text"
                 placeholder="Search products..."
-                onChange={(e) =>
-                    setStocks((prev) =>
-                    prev.filter((stock) =>
-                        stock.name.toLowerCase().includes(e.target.value.toLowerCase())
-                        )
-                    )
-                }
+                onChange={handleSearch}
             />
         </div>
         <div className="stock-dashboard__filter">
