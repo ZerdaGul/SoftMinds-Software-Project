@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const api = "https://api.ekoinv.com/api/"
+// const api = "https://api.ekoinv.com/api/"
+const api = "http://localhost:5115/api/"
 
 export const AcceptOrder = async (data) => {
     try {
