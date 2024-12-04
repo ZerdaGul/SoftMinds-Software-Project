@@ -1,6 +1,7 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
+import { CSSTransition, SwitchTransition } from 'react-transition-group';
 
 
 import './App.css';
@@ -22,19 +23,25 @@ import OrderAdminPage from '../../pages/OrderAdminPage';
 import OrdersProgress from '../order-admin/orders-progress/OrdersProgress';
 import Requests from '../order-admin/requests/Requests';
 import HomePage from "../../pages/HomePage";
+import FAQPage from '../FAQPage/FAQPage';
 import AboutUs from "../../pages/AboutUs";
 import Footer from '../footer/Footer';
-import ProductsForAdmin from "../../pages/ProductsForAdmin";
+import ContactForm from '../contact-form/ContactForm';
+import ProductsForAdmin from "../../components/product-admin/ProductsForAdmin";
 import CardForm from "../forms/CardForm";
-import ProductDashboard from "../../dashboard/ProductDashboard";
+import ProductDashboard from '../../components/product-admin/dashboard/ProductDashboard'
 import SectorPage from "../../pages/SectorPage";
 import SolutionPage from "../../pages/SolutionPage";
 import ConsultancyPage from "../../pages/ConsultancyPage";
+import OrderAdminDashboard from '../order-admin/dashboard/Dashboard';
+import ProductAdminPage from '../../pages/ProductAdminPage';
+
 
 const App = () => {
 	const [activeUser, setActiveUser] = useState(null); // Stores the current active user
     const [isLoggedOut, setIsLoggedOut] = useState(false); // Tracks logout state
 	const [isLoggedIn, setIsLoggedIn] = useState(false);	// Tracks login state
+	const location = useLocation();
 
 	// Load user information on app initialization
     useEffect(() => {
@@ -42,7 +49,7 @@ const App = () => {
         if (storedUser) {
             console.log('User found in localStorage:', storedUser);
             setActiveUser(storedUser);
-        } else if (!isLoggedOut) {
+        } else {
             loadUserFromServer(); // Fetch from server if no stored user and not logged out
         } 
     }, [isLoggedIn, isLoggedOut]);
@@ -88,16 +95,33 @@ const App = () => {
         setActiveUser(null); // Clear active user
         saveUserToLocalStorage(null); // Clear localStorage
     };
+	const ScrollToTop = () => {
+		const { pathname } = useLocation();
 
+		useEffect(() => {
+			window.scrollTo(0, 0); // Sayfanın en üstüne kaydır
+		}, [pathname]); // Rota değişikliklerinde çalışır
+
+		return null; // Görünür bir bileşen olmadığı için null döner
+	};
     
 
 
 
 	return (
-		<Router>
-			<Navbar isLoggedIn={isLoggedIn}  setIsLoggedIn={setIsLoggedIn} onLogout={handleLogout} />
+		<>
+			<ScrollToTop />
+			<Navbar isLoggedIn={isLoggedIn}  setIsLoggedIn={setIsLoggedIn} onLogout={handleLogout} activeUser={activeUser} />
 			<main>
-				<Routes>
+			<SwitchTransition>
+			<CSSTransition
+          key={location.key} // Her sayfa için benzersiz bir anahtar
+          classNames="fade" // CSS sınıfı adını burada belirtiyoruz
+          timeout={300} // Geçiş süresi (ms)
+          unmountOnExit // Sayfa DOM'dan kaldırılır
+        >
+			<div>
+			<Routes location={location}>
 					<Route path='/' element={<HomePage />}></Route>
 					<Route path='/aboutUs' element={<AboutUs />}></Route>
 					<Route path='/products' element={<ProductsPage />}></Route>
@@ -105,45 +129,109 @@ const App = () => {
 					<Route path='/sectors' element={<SectorPage />}></Route>
 					<Route path='/solutions' element={<SolutionPage />}></Route>
 					<Route path='/consultancy' element={<ConsultancyPage />}></Route>
-					<Route path='/contactUs'></Route>
+					<Route path='/contactUs' element={<ContactForm/>}></Route>
+					<Route path='/faq' element={<FAQPage/>}></Route>
 					<Route path='/forgot-password-request' element={<ForgotPasswordRequest />}></Route>
 					<Route path='/create-password' element={<CreatePasswordForm />}></Route>
-					{/* <Route path='/profile/*' element={<UserProfilePage />}>
-					<Route path='dashboard'></Route>
-					<Route path='orders'></Route>
-					<Route path='cart'></Route>
-					<Route path='my-profile' element={<ProfileForm initialValues={activeUser} />}></Route>
-					<Route path='contacts'></Route>
-					<Route path='settings/*' element={<Settings initialValues={activeUser}/>}>
-						<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser}/>} />
-					</Route>
-					<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
-					
-				</Route> */}
-					<Route path='/profile/*' element={<OrderAdminPage />}>
-						<Route path='dashboard'></Route>
-						<Route path='orders-progress' element={<OrdersProgress />}></Route>
-						<Route path='requests' element={<Requests />}></Route>
-						<Route path='my-profile' element={<ProfileForm initialValues={activeUser} />}></Route>
-						<Route path='orders-progress'></Route>
-						<Route path='requests'></Route>
-						<Route path='my-profile' element={<ProfileForm initialValues={activeUser || {}} />}></Route>
-						<Route path='contacts'></Route>
-						<Route path='settings/*' element={<Settings initialValues={activeUser} />}>
-							<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser} />} />
-						</Route>
-						<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
+					<Route path='/profile/cart' element={CardForm}></Route>
+					{"activeUser.role" === "customer" && 
+						<Route path='/profile/*' element={<UserProfilePage />}>
+							<Route path='dashboard'></Route>
+							<Route path='orders'></Route>
+							<Route path='cart'></Route>
+							<Route path='my-profile' element={<ProfileForm initialValues={activeUser} />}></Route>
+							<Route path='contacts'></Route>
+							<Route path='settings/*' element={<Settings initialValues={activeUser}/>}>
+								<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser}/>} />
+							</Route>
+							<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
+							
+						</Route> 
+					}
+					{"activeUser.role" === "padmin" && 
+					<>
+						<Route path='/products-admin' element={<ProductsForAdmin />}></Route>
+						<Route path='/profile/*' element={<ProductAdminPage />}>
+							<Route path='dashboard' element={<ProductDashboard/>}></Route>
+							<Route path='my-profile' element={<ProfileForm initialValues={activeUser || {}} />}></Route>
+							<Route path='contacts'></Route>
+							<Route path='settings/*' element={<Settings initialValues={activeUser} />}>
+								<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser} />} />
+							</Route>
+							<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
 
-					</Route>
+						</Route>
+					</>
+					} 
+					{"oadmin" === "oadmin" && 
+						<Route path='/profile/*' element={<OrderAdminPage />}>
+							<Route path='dashboard' element={<OrderAdminDashboard/>}></Route>
+							<Route path='orders-progress' element={<OrdersProgress />}></Route>
+							<Route path='requests' element={<Requests />}></Route>
+							<Route path='my-profile' element={<ProfileForm initialValues={activeUser || {}} />}></Route>
+							<Route path='contacts'></Route>
+							<Route path='settings/*' element={<Settings initialValues={activeUser} />}>
+								<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser} />} />
+							</Route>
+							<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
+
+						</Route>
+					}
 					<Route path='/registration' element={<SignInPage />}></Route>
 					<Route path='/login' element={<LogInForm setIsLoggedIn={setIsLoggedIn} />}></Route>
 				</Routes>
-			</main>
+				</div>
 			{/* Footer Section */}
+			</CSSTransition>
+			</SwitchTransition>
+			</main>
 			<Footer />
-		</Router>
-
+			</>
 	);
 }
 
 export default App;
+
+{/* {activeUser.role === "customer" && 
+						<Route path='/profile/*' element={<UserProfilePage />}>
+							<Route path='dashboard'></Route>
+							<Route path='orders'></Route>
+							<Route path='cart'></Route>
+							<Route path='my-profile' element={<ProfileForm initialValues={activeUser} />}></Route>
+							<Route path='contacts'></Route>
+							<Route path='settings/*' element={<Settings initialValues={activeUser}/>}>
+								<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser}/>} />
+							</Route>
+							<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
+							
+						</Route> 
+					}
+					{activeUser.role === "padmin" && 
+					<>
+						<Route path='product-admin' element={<ProductsForAdmin />}></Route>
+						<Route path='/profile/*' element={<ProductAdminPage />}>
+							<Route path='dashboard' element={<ProductDashboard/>}></Route>
+							<Route path='my-profile' element={<ProfileForm initialValues={activeUser || {}} />}></Route>
+							<Route path='contacts'></Route>
+							<Route path='settings/*' element={<Settings initialValues={activeUser} />}>
+								<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser} />} />
+							</Route>
+							<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
+
+						</Route>
+					</>
+					} 
+					{activeUser.role === "oadmin" && 
+						<Route path='/profile/*' element={<OrderAdminPage />}>
+							<Route path='dashboard' element={<OrderAdminDashboard/>}></Route>
+							<Route path='orders-progress' element={<OrdersProgress />}></Route>
+							<Route path='requests' element={<Requests />}></Route>
+							<Route path='my-profile' element={<ProfileForm initialValues={activeUser || {}} />}></Route>
+							<Route path='contacts'></Route>
+							<Route path='settings/*' element={<Settings initialValues={activeUser} />}>
+								<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser} />} />
+							</Route>
+							<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
+
+						</Route>
+					} */}

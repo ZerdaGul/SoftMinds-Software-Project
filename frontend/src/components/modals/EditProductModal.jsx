@@ -1,17 +1,29 @@
 import React, { useState } from 'react';
 import './AddEditProductModal.scss';
+import { EditProduct } from '../../services/ProductService'; // API işlevini içe aktar
 
 export const EditProductModal = ({ product, onClose, onProductUpdated }) => {
     const [name, setName] = useState(product.name);
     const [price, setPrice] = useState(product.price);
     const [description, setDescription] = useState(product.description);
-    const [sectors, setSectors] = useState(product.sectors);
-    const [photos, setPhotos] = useState(product.photos);
+    const [sectors, setSectors] = useState(product.sectors || []);
+    const [photos, setPhotos] = useState(product.photos || []);
+    const [loading, setLoading] = useState(false); // Yüklenme durumunu takip etmek için
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const updatedProduct = { ...product, name, price, description, sectors, photos };
-        onProductUpdated(updatedProduct);
-        onClose();
+
+        try {
+            setLoading(true);
+            const response = await EditProduct(product.id, updatedProduct); // API'ye gönderim
+            onProductUpdated(response); // Güncellenen ürünü geri gönder
+            onClose(); // Modalı kapat
+        } catch (error) {
+            console.error('Error updating product:', error.message);
+            alert('An error occurred while updating the product. Please try again.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handlePhotoUpload = (e) => {
@@ -68,7 +80,13 @@ export const EditProductModal = ({ product, onClose, onProductUpdated }) => {
                         ))}
                     </div>
                 </form>
-                <button className="submit-button" onClick={handleSubmit}>Update product</button>
+                <button
+                    className="submit-button"
+                    onClick={handleSubmit}
+                    disabled={loading}
+                >
+                    {loading ? 'Updating...' : 'Update product'}
+                </button>
             </div>
         </div>
     );

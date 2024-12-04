@@ -12,7 +12,7 @@
 
     &__control {
         display: grid;
-        grid-template-columns: 220px 1fr minmax(332px 370px);
+        grid-template-columns: 220px 1fr minmax(332px, 370px);
     }
 
     &__list {
@@ -23,3 +23,4 @@
 
     }
 }
+

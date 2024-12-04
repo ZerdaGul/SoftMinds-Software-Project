@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const api = "https://api.ekoinv.com/api/"
+const api = "http://localhost:5115/api/"
 
 export const LoadProducts = async (data) => {
   try {
@@ -188,6 +188,23 @@ export const DeleteProduct = async (id) => {
       throw new Error(error.response.data); // Ensure error.response.data exists
     } else {
       throw new Error("An unknown error occurred."); // Catch other errors
+    }
+  }
+};
+
+export const EditProduct = async (id, updatedData) => {
+  try {
+    const response = await axios.put(`${api}products/${id}`, updatedData, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data); // API hatalarını yönet
+    } else {
+      throw new Error("An unknown error occurred."); // Diğer hatalar için
     }
   }
 };

@@ -45,6 +45,16 @@ const sectors = [
     },
 ];
 
+const LearnMoreButton = () => {
+    return (
+        <button className="button">
+            <Link to="/sectors" className="button__link">
+                Learn more
+            </Link>
+        </button>
+    );
+};
+
 function HomePage() {
     return (
         <div className="home-page">
@@ -52,7 +62,9 @@ function HomePage() {
             <section className="hero">
                 <div className="container hero-content">
                     <h1>Innovative Solutions to Empower Businesses</h1>
-                    <button className="button">Learn more</button>
+                    <Link to="/sectors" className="button">
+                        Learn More
+                    </Link>
                 </div>
             </section>
 
@@ -81,7 +93,11 @@ function HomePage() {
                             return(
                             <div key={sector} className="sector-card">
                                 <img className='sector-img' src={picture} alt={sector} />
-                                <div className="sector-name">{sector}</div>
+                                <div >
+                                <Link to="/sectors" className="sector-name" >
+                                    {sector}
+                                </Link>
+                                </div>
                             </div>
                             )
                         })}
@@ -101,13 +117,13 @@ function HomePage() {
                         develop sustainable projects for the future by offering our clients
                         the most innovative and efficient solutions.
                     </div>
-                    <Link to='/aboutUs' className="read-more">Learn more <img src={forward} alt="arrow-froward" /></Link>
+                    <Link to='/aboutUs' className="read-more">Learn more →</Link>
                 </div>
             </section>
 
             <ContactForm/>
 
-            
+
         </div>
     );
 }

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useLocation } from 'react-router-dom';
-import SectorsSideMenu from '../components/sectors-side-menu/SectorsSideMenu';
-import AdminProductCard from '../components/product-card/AdminProductCard';
-import './productsPage.scss';
-import { LoadProducts, DeleteProduct } from '../services/ProductService';
-import { EditProductModal } from '../components/modals/EditProductModal';
-import { AddProductModal } from '../components/modals/AddProductModal';
-import InfoModal from '../components/modals/InfoModal';
-import Pagination from '../components/pagination/Pagination';
+import SectorsSideMenu from '../sectors-side-menu/SectorsSideMenu';
+import AdminProductCard from './AdminProductCard';
+import '../../pages/productsPage.scss';
+import { LoadProducts, DeleteProduct } from '../../services/ProductService';
+import { EditProductModal } from '../modals/EditProductModal';
+import { AddProductModal } from '../modals/AddProductModal';
+import InfoModal from '../modals/InfoModal';
+import Pagination from '../pagination/Pagination';
 
 const ProductsForAdmin = () => {
     const location = useLocation();
@@ -79,10 +79,10 @@ const ProductsForAdmin = () => {
                         title="Delete Product"
                         subtitle="Are you sure you want to delete this product?"
                         onConfirm={() => {
-                            handleDeleteProduct(deleteProductId);
-                            setDeleteProductId(null);
+                            handleDeleteProduct(deleteProductId); // Silme işlemi
+                            setDeleteProductId(null); // Modal kapatılır
                         }}
-                        onClose={() => setDeleteProductId(null)}
+                        onClose={() => setDeleteProductId(null)} // Modal kapatılır
                     />,
                     document.body
                 )}
@@ -99,7 +99,7 @@ const ProductsForAdmin = () => {
     );
 
     return (
-        <>
+        <div className='container'>
             {modal}
             <SectorsSideMenu filter={filter} onFilter={setFilter} />
             <section className="products__page">
@@ -124,7 +124,7 @@ const ProductsForAdmin = () => {
                     onPageChange={(page) => setCurrentPage(page)}
                 />
             </section>
-        </>
+        </div>
     );
 };
 

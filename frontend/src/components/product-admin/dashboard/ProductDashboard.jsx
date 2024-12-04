@@ -1,5 +1,7 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
+import geography from "../../../maps/world-countries.json";
+
 import {
     Chart as ChartJS,
     LineElement,
@@ -63,19 +65,30 @@ const ProductDashboard = () => {
             <div className="dashboard-content__summary">
                 {/* Dünya haritası */}
                 <div className="summary__map">
-                    <h2>Global Performance</h2>
-                    <ComposableMap>
-                        <Geographies geography="https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json">
+                    <ComposableMap
+                        projection="geoMercator"
+                        projectionConfig={{
+                            scale: 150,
+                        }}
+                        style={{ width: "100%", height: "100%" }}
+                    >
+                        <Geographies geography={geography}>
                             {({ geographies }) =>
-                                geographies.map((geo) => <Geography key={geo.rsmKey} geography={geo} />)
+                                geographies.map((geo) => (
+                                    <Geography
+                                        key={geo.rsmKey}
+                                        geography={geo}
+                                        style={{
+                                            default: { fill: "#EAEAEC", stroke: "#D6D6DA" },
+                                            hover: { fill: "#F53", stroke: "#E42" },
+                                            pressed: { fill: "#E42", stroke: "#F53" },
+                                        }}
+                                    />
+                                ))
                             }
                         </Geographies>
-                        {customersLocations.map(({ name, coordinates }) => (
-                            <Marker key={name} coordinates={coordinates}>
-                                <circle r={6} fill="#7b3370" />
-                            </Marker>
-                        ))}
                     </ComposableMap>
+
                 </div>
 
                 {/* Toplam bakiye */}

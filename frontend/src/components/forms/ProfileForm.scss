@@ -1,122 +1,116 @@
-@import '../../style/style.scss';
-
 .profile-form {
-  background-color: #F5F2F2;
-  border-radius: 24px;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  margin-left: 250px;
+  margin-top: 20px;
+  max-width: 700px;
   padding: 20px;
-  width: 450px; /* Varsayılan genişliği yüzde olarak ayarla */
-  max-width: 600px; /* Maksimum genişlik sınırı */
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-  align-items: center;
-  border: 1px solid #e0e0e0;
-  text-align: center;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 
   .profile-header {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+    display: flex; /* Yan yana hizalama */
+    align-items: center; /* Dikey olarak ortalama */
     margin-bottom: 20px;
-    width: 100%;
-    justify-content: left;
-    margin-top: 15px;
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 10px;
 
     .profile-picture-wrapper {
-      position: relative;
-
-      .profile-picture {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        object-fit: cover;
-      }
+      width: 80px; /* Profil resmi boyutu */
+      height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-right: 10px; /* Resim ile içerik arasına boşluk */
     }
 
     .profile-info {
-      text-align: left;
+      display: flex;
+      flex-direction: column;
+      margin-left: 10px;
+      margin-right: 10px;
 
       h2 {
-        margin: 0;
         font-size: 20px;
         color: #571846;
+        margin: 0;
       }
 
       p {
+        font-size: 14px;
+        color: #888;
         margin: 5px 0;
-        color: #666;
+      }
+    }
+
+    .edit-button {
+      margin-left: auto; /* En sağa hizala */
+      padding: 8px 16px;
+      font-size: 14px;
+      background-color: #ff5733;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #e04a2b;
       }
     }
   }
 
-  .form__wrapper {
+  label {
+    font-weight: bold;
+    color: #571846;
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  input,
+  textarea {
     width: 100%;
-    .input__wrapper {
-      margin-bottom: 15px;
-      text-align: left;
-      width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #d1d1d1;
+    border-radius: 4px;
+    margin-bottom: 15px;
+  }
 
-      .form__label {
-        font-size: 14px;
-        font-weight: 500;
-        color: #571846;
-        margin-bottom: 5px;
-        display: block;
-      }
+  .form__group {
+    margin-bottom: 20px;
+  }
 
-      .form__input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        font-size: 14px;
-        color: #333;
-        background-color: #fff;
+  .form__actions {
+    display: flex;
+    justify-content: flex-end;
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #571846;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #ff5733;
       }
     }
   }
 }
 
-/* Responsive Düzenlemeler */
+/* Mobil düzenlemeler */
 @media (max-width: 768px) {
   .profile-form {
-    padding: 15px; /* Mobil cihazlar için daha küçük padding */
-    .profile-header {
-      flex-direction: column; /* Dar ekranlarda üst üste yerleştir */
-      align-items: center; /* Profil resmini ortala */
-    }
-
-    .profile-picture-wrapper .profile-picture {
-      width: 70px;
-      height: 70px;
-    }
-
-    .form__wrapper {
-      .input__wrapper {
-        .form__input {
-          font-size: 13px; /* Daha küçük yazı boyutu */
-        }
-      }
-    }
+    margin-left: 0; /* Mobilde tam genişlik */
+    max-width: 100%;
+    padding: 15px;
   }
-}
 
-@media (max-width: 480px) {
-  .profile-form {
-    padding: 10px;
-    .profile-header {
-      gap: 10px; /* Daha az boşluk */
-      .profile-info h2 {
-        font-size: 18px; /* Daha küçük başlık boyutu */
-      }
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
 
-      .profile-info p {
-        font-size: 12px; /* Daha küçük alt metin boyutu */
-      }
+    .edit-button {
+      margin-left: 0;
+      margin-top: 10px;
     }
   }
 }
