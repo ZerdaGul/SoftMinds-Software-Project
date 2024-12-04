@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const api = "http://localhost:5115/api/"
+const api = "https://api.ekoinv.com/api/"
 
 export const RegisterUser = async (data) => {
   try {

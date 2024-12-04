@@ -37,7 +37,6 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout, activeUser }) => {
     const openNotificationModal = () => setShowNotificationModal(true);
     const closeNotificationModal = () => setShowNotificationModal(false);
 
-    
     const lowStockProducts=[];
 
     const renderNotificationButton = () => {

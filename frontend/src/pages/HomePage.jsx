@@ -7,7 +7,6 @@ import itsTrafficImg from '../assets/img/ITS.png';
 import securitySurveillanceImg from '../assets/img/Security.png';
 import ironSteelImg from '../assets/img/IronSteel.webp';
 import packagingImg from '../assets/img/Packaging.jpg';
-import forward from '../assets/icons/arrow-forward-red.svg'
 import './HomePage.scss';
 import ContactForm from '../components/contact-form/ContactForm';
 import React, { useEffect, useState } from "react";
@@ -44,16 +43,6 @@ const sectors = [
         picture: packagingImg,
     },
 ];
-
-const LearnMoreButton = () => {
-    return (
-        <button className="button">
-            <Link to="/sectors" className="button__link">
-                Learn more
-            </Link>
-        </button>
-    );
-};
 
 
 function HomePage() {
