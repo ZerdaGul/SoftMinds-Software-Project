@@ -20,7 +20,7 @@ Content-Type: application/json
 
 {
   "productId": 8,
-  "quantity": 5
+  "quantity": 4
 }
 
 ### Remove item from cart
@@ -42,3 +42,6 @@ Content-Type: application/json
 
 ### Get Product Comments
 GET {{api_HostAddress}}/api/products/8/comments
+
+### Get Orders
+GET {{api_HostAddress}}/api/orders

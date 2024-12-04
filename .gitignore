@@ -16,3 +16,4 @@ api/bin/
 
 # Configuration files
 config.json
+api/api.http
