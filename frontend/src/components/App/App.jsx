@@ -99,10 +99,10 @@ const App = () => {
 		const { pathname } = useLocation();
 
 		useEffect(() => {
-			window.scrollTo(0, 0); // Sayfanın en üstüne kaydır
-		}, [pathname]); // Rota değişikliklerinde çalışır
+			window.scrollTo(0, 0);
+		}, [pathname]); 
 
-		return null; // Görünür bir bileşen olmadığı için null döner
+		return null; 
 	};
     
 
@@ -115,10 +115,10 @@ const App = () => {
 			<main>
 			<SwitchTransition>
 			<CSSTransition
-          key={location.key} // Her sayfa için benzersiz bir anahtar
-          classNames="fade" // CSS sınıfı adını burada belirtiyoruz
-          timeout={300} // Geçiş süresi (ms)
-          unmountOnExit // Sayfa DOM'dan kaldırılır
+          key={location.key} 
+          classNames="fade" 
+          timeout={300} 
+          unmountOnExit 
         >
 			<div>
 			<Routes location={location}>

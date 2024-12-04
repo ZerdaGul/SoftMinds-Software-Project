@@ -1,5 +1,6 @@
 import React from 'react';
 import './AboutUs.scss';
+import { Link } from 'react-router-dom';
 
 function AboutUs() {
     return (
@@ -39,7 +40,12 @@ function AboutUs() {
                     best
                     service to our clients by closely following innovations and developments in the sector.
                 </p>
-                <a href="/sectors" className="link">More about our products &rarr;</a>
+                
+                <div className="link">
+                    <Link to="/sectors">
+                     More about our products →
+                    </Link>
+                </div>
             </section>
 
             {/* Our Vision Section */}
