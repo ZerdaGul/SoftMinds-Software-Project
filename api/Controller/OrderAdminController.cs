@@ -65,6 +65,18 @@ namespace api.Controllers
             return Ok("Sipariş başarıyla reddedildi.");
         }
 
-        
+
+        [HttpGet("orders")]
+        public async Task<IActionResult> GetAllOrders()
+        {
+            var orders = await _context.Orders
+                .Include(o => o.User)
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+                .ToListAsync();
+
+            return Ok(orders);
+        }
+
 }
 }
