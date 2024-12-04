@@ -103,7 +103,7 @@ namespace api.Controller
                 Expires = DateTime.Now.AddHours(1)
             });
 
-            return Ok(new { token = tokenString });
+            return Ok(new { Token = tokenString });
         }
 
         // POST /api/auth/logout
