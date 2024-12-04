@@ -93,7 +93,11 @@ function HomePage() {
                             return(
                             <div key={sector} className="sector-card">
                                 <img className='sector-img' src={picture} alt={sector} />
-                                <div className="sector-name">{sector}</div>
+                                <div >
+                                <Link to="/sectors" className="sector-name" >
+                                    {sector}
+                                </Link>
+                                </div>
                             </div>
                             )
                         })}
@@ -113,7 +117,7 @@ function HomePage() {
                         develop sustainable projects for the future by offering our clients
                         the most innovative and efficient solutions.
                     </div>
-                    <Link to='/aboutUs' className="read-more">Learn more <img src={forward} alt="arrow-froward" /></Link>
+                    <Link to='/aboutUs' className="read-more">Learn more →</Link>
                 </div>
             </section>
 

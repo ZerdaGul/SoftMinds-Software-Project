@@ -98,6 +98,13 @@
         justify-content: space-between;
         color: $dark;
         background-color: rgba($color: #fff, $alpha: .8);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+
+        &:hover {
+          transform: scale(1.05); 
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+          background-color: #eaeaea;
+        }
       }
       &-img{
         height: 165px;
@@ -109,6 +116,10 @@
         font-weight: 700;
         height: 100px;
         padding: 25px;
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        text-align: center; 
       }
     }
   }
@@ -141,6 +152,7 @@
       text-decoration: none;
       font-size: 24px;
       height: 40px;
+      font-weight: bold;
 
       img{
         margin-left: 10px;

@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
+import { CSSTransition, SwitchTransition } from 'react-transition-group';
 
 
 import './App.css';
@@ -40,6 +41,7 @@ const App = () => {
 	const [activeUser, setActiveUser] = useState(null); // Stores the current active user
     const [isLoggedOut, setIsLoggedOut] = useState(false); // Tracks logout state
 	const [isLoggedIn, setIsLoggedIn] = useState(false);	// Tracks login state
+	const location = useLocation();
 
 	// Load user information on app initialization
     useEffect(() => {
@@ -107,12 +109,19 @@ const App = () => {
 
 
 	return (
-		<Router>
+		<>
 			<ScrollToTop />
 			<Navbar isLoggedIn={isLoggedIn}  setIsLoggedIn={setIsLoggedIn} onLogout={handleLogout} activeUser={activeUser} />
-			
 			<main>
-				<Routes>
+			<SwitchTransition>
+			<CSSTransition
+          key={location.key} // Her sayfa için benzersiz bir anahtar
+          classNames="fade" // CSS sınıfı adını burada belirtiyoruz
+          timeout={300} // Geçiş süresi (ms)
+          unmountOnExit // Sayfa DOM'dan kaldırılır
+        >
+			<div>
+			<Routes location={location}>
 					<Route path='/' element={<HomePage />}></Route>
 					<Route path='/aboutUs' element={<AboutUs />}></Route>
 					<Route path='/products' element={<ProductsPage />}></Route>
@@ -171,11 +180,13 @@ const App = () => {
 					<Route path='/registration' element={<SignInPage />}></Route>
 					<Route path='/login' element={<LogInForm setIsLoggedIn={setIsLoggedIn} />}></Route>
 				</Routes>
-			</main>
+				</div>
 			{/* Footer Section */}
+			</CSSTransition>
+			</SwitchTransition>
+			</main>
 			<Footer />
-		</Router>
-
+			</>
 	);
 }
 
