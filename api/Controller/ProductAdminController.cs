@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.StaticFiles;
 using System.IO;
 using System.Globalization;
 
-namespace api.Controllers
+namespace api.Controller
 {
     [Route("api/")]
     [ApiController]
