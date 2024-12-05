@@ -37,42 +37,16 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout, activeUser }) => {
     const openNotificationModal = () => setShowNotificationModal(true);
     const closeNotificationModal = () => setShowNotificationModal(false);
 
-    const orders = [
-        { id: 1, status: 'approved' },
-        { id: 2, status: 'rejected' },
-        { id: 3, status: 'pending' },
-    ];
     const lowStockProducts=[];
 
     const renderNotificationButton = () => {
         if (true) {
-            const approvedOrders = orders.filter(order => order.status === 'approved');
-            const rejectedOrders = orders.filter(order => order.status === 'rejected');
-
             return (
                 <li>
                     <button className="navbar-notification" onClick={openNotificationModal}>
                         <img src={bellIcon} alt="Notifications" />
-                        {/* Bildirim sayısını göster */}
                         {lowStockProducts?.length > 0 && (
                             <span className="notification-badge">{lowStockProducts.length}</span>
-                        )}
-                        {orders.length > 0 && (
-                            <div className="order-notifications">
-                                <div className="close-button" onClick={closeNotificationModal}>
-                                    Close
-                                </div>
-                                {approvedOrders.map(order => {
-                                    <div key={order.id} className="order-item approved">
-                                        Order #{order.id} has been approved.
-                                    </div>
-                                })}
-                                {rejectedOrders.map(order => (
-                                    <div key={order.id} className="order-item rejected">
-                                        Order #{order.id} has been rejected.
-                                    </div>
-                                ))}
-                            </div>
                         )}
                     </button>
                 </li>

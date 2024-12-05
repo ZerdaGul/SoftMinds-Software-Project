@@ -99,10 +99,10 @@ const App = () => {
 		const { pathname } = useLocation();
 
 		useEffect(() => {
-			window.scrollTo(0, 0); // Sayfanın en üstüne kaydır
-		}, [pathname]); // Rota değişikliklerinde çalışır
+			window.scrollTo(0, 0);
+		}, [pathname]); 
 
-		return null; // Görünür bir bileşen olmadığı için null döner
+		return null; 
 	};
     
 
@@ -115,10 +115,10 @@ const App = () => {
 			<main>
 			<SwitchTransition>
 			<CSSTransition
-          key={location.key} // Her sayfa için benzersiz bir anahtar
-          classNames="fade" // CSS sınıfı adını burada belirtiyoruz
-          timeout={300} // Geçiş süresi (ms)
-          unmountOnExit // Sayfa DOM'dan kaldırılır
+          key={location.key} 
+          classNames="fade" 
+          timeout={300} 
+          unmountOnExit 
         >
 			<div>
 			<Routes location={location}>
@@ -133,12 +133,11 @@ const App = () => {
 					<Route path='/faq' element={<FAQPage/>}></Route>
 					<Route path='/forgot-password-request' element={<ForgotPasswordRequest />}></Route>
 					<Route path='/create-password' element={<CreatePasswordForm />}></Route>
-					<Route path='/profile/cart' element={CardForm}></Route>
-					{"activeUser.role" === "customer" && 
+					{activeUser?.role === "customer" && 
 						<Route path='/profile/*' element={<UserProfilePage />}>
 							<Route path='dashboard'></Route>
 							<Route path='orders'></Route>
-							<Route path='cart'></Route>
+							<Route path='cart' element={<CardForm />}></Route>
 							<Route path='my-profile' element={<ProfileForm initialValues={activeUser} />}></Route>
 							<Route path='contacts'></Route>
 							<Route path='settings/*' element={<Settings initialValues={activeUser}/>}>
@@ -148,7 +147,7 @@ const App = () => {
 							
 						</Route> 
 					}
-					{"activeUser.role" === "padmin" && 
+					{activeUser?.role === "padmin" && 
 					<>
 						<Route path='/products-admin' element={<ProductsForAdmin />}></Route>
 						<Route path='/profile/*' element={<ProductAdminPage />}>
@@ -163,7 +162,7 @@ const App = () => {
 						</Route>
 					</>
 					} 
-					{"oadmin" === "oadmin" && 
+					{activeUser?.role === "oadmin" && 
 						<Route path='/profile/*' element={<OrderAdminPage />}>
 							<Route path='dashboard' element={<OrderAdminDashboard/>}></Route>
 							<Route path='orders-progress' element={<OrdersProgress />}></Route>
