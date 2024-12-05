@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './sideMenu.scss';
 
-const SideMenu = ({ main_menu }) => {
+const SideMenu = ({ main_menu, requestsNotification }) => {
     const aUser = {
         name: "Product Admin",
         email: "Padmin@ekoinv.com",
@@ -45,6 +45,8 @@ const SideMenu = ({ main_menu }) => {
                             })}
                         >
                             {text}
+                            {requestsNotification>0 && text==='Requests' &&
+                                <div className="indicator">{requestsNotification}</div> }
                         </NavLink>
                     </li>
                 ))}

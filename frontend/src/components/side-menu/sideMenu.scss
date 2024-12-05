@@ -33,6 +33,7 @@
 
     &__link {
         color: #571846;
+        position: relative;
         padding: 12px 20px;
         font-size: 16px;
         font-weight: 500;
@@ -56,6 +57,8 @@
     }
 
     .indicator {
+        position: absolute;
+        right: 10px;
         width: 24px;
         height: 24px;
         font-size: 14px;

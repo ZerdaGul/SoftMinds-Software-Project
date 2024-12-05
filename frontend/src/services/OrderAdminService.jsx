@@ -41,9 +41,9 @@ export const AcceptOrder = async (data) => {
     }
   }
 
-  export const GetOrders = async () => {
+  export const GetRequestedOrders = async () => {
     try {
-      const response = await axios.get(`${api}get-orders`, {
+      const response = await axios.get(`${api}requested-orders`, {
         headers: {
           'Content-Type': 'application/json'
         },
