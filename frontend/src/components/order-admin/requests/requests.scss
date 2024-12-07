@@ -23,6 +23,10 @@
             width: 100%;
             text-align: left;
             position: relative;
+            cursor: pointer;
+            &:active{
+                text-decoration: underline;
+            }
         }
         &-amount{
             position: relative;
