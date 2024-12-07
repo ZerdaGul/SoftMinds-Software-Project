@@ -98,7 +98,6 @@ namespace api.Controller
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddDays(1),  // Token süresi 1 gün
                 signingCredentials: creds);
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
