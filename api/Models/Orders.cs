@@ -14,7 +14,6 @@ namespace api.Models
         [JsonIgnore]
         public Users? User { get; set; }
         
-        [JsonIgnore]
         public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>(); //should not be empty.
     }
 }

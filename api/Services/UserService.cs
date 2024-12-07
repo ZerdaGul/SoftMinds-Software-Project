@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
+using api.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -11,11 +12,13 @@ namespace api.Services
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IConfiguration _configuration;
+        private readonly AppDBContext _context;
 
-        public UserService(IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
+        public UserService(IHttpContextAccessor httpContextAccessor, IConfiguration configuration, AppDBContext context)
         {
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
+            _context = context;
         }
 
         public int? GetCurrentUserId()
@@ -54,6 +57,25 @@ namespace api.Services
 
                 var userId = userIdClaim.Value;
                 return int.Parse(userId);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public string? GetRole()
+        {
+            try
+            {
+                var userId = GetCurrentUserId();
+                if (userId == null)
+                {
+                    return null;
+                }
+
+                var user = _context.Users.Find(userId);
+                return user?.Role;
             }
             catch
             {

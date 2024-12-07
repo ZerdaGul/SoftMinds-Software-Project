@@ -19,7 +19,6 @@ const ProductsPage = () => {
 	const navigate = useNavigate();
   	const location = useLocation();
 
-	// Initialize state from location or set default values
 	const [filter, setFilter] = useState( location.state?.filter || 'All');
 	const [sortBy, setSortBy] = useState(location.state?.sortBy || '');
 	const [sortOrder, setSortOrder] = useState(location.state?.sortOrder || '');
@@ -54,7 +53,7 @@ const ProductsPage = () => {
             const data = await LoadProducts({sector: filter, sortOrder, sortBy, pageNumber:currentPage});
             onLoaded(data);
         } catch (error) {
-            onError(error); // Handle error
+            onError(error);
         }
     };
 
@@ -68,7 +67,6 @@ const ProductsPage = () => {
 	}
 
 	const handleProductClick = (productId) => {
-		// Navigate to the single product page, preserving state
 		navigate(`/products/${productId}`, {
 			state: { filter, sortBy, sortOrder, currentPage },
 		});
