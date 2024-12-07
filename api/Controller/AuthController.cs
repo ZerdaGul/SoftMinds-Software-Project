@@ -72,6 +72,14 @@ namespace api.Controller
             user.Lockout_End = null;
             await _context.SaveChangesAsync();
 
+            // Mevcut AuthToken çerezini sil
+            Response.Cookies.Delete("AuthToken", new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
+            });
+
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
