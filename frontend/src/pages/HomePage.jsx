@@ -53,7 +53,7 @@ function HomePage() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch("http://localhost:5000/api/homepage/featured-products");
+                const response = await fetch("https://api.ekoinv.com/api/homepage/featured-products");
                 if (!response.ok) {
                     throw new Error("Something went wrong while fetching products");
                 }
