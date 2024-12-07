@@ -50,7 +50,7 @@ const App = () => {
             console.log('User found in localStorage:', storedUser);
             setActiveUser(storedUser);
         } else {
-            loadUserFromServer(); // Fetch from server if no stored user and not logged out
+            loadUserFromServer();
         } 
     }, [isLoggedIn, isLoggedOut]);
 
@@ -68,6 +68,7 @@ const App = () => {
         }
     };
 
+	
     // Fetch user info from the server
     const loadUserFromServer = async () => {
         console.log('Fetching user from the server...');

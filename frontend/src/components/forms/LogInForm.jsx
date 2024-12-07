@@ -29,8 +29,8 @@ const LogInForm = ({ setIsLoggedIn }) => {
         try {
             const user = await LogIn(values);
             console.log("User logged in")
-            setIsLoggedIn(true) // Kullanıcı durumunu günceller
-            navigate('/'); // Giriş yaptıktan sonra ana sayfaya yönlendir
+            setIsLoggedIn(true) 
+            navigate('/'); 
         } catch (err) {
             onError(err.message);
         } finally {
