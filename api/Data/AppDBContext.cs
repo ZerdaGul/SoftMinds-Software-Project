@@ -12,6 +12,7 @@ namespace api.Data
         public required DbSet<Orders> Orders { get; set; }
         public required DbSet<OrderItem> OrderItems { get; set; }
         public required DbSet<Comments> Comments { get; set; }
+        public required DbSet<Questions> Questions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,6 +24,7 @@ namespace api.Data
             modelBuilder.Entity<Orders>().ToTable("orders");
             modelBuilder.Entity<OrderItem>().ToTable("orderitems");
             modelBuilder.Entity<Comments>().ToTable("comments");
+            modelBuilder.Entity<Questions>().ToTable("questions");
 
             // Ek olarak, her tabloya özel ilişkiler veya yapılandırmalar ekle
             // Örnek: modelBuilder.Entity<Product>().Property(p => p.Name).HasMaxLength(100);
