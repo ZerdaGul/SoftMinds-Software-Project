@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.StaticFiles;
 using System.IO;
 using System.Globalization;
 
-namespace api.Controller
+namespace api.Controllers
 {
     [Route("api/")]
     [ApiController]
@@ -26,7 +26,7 @@ namespace api.Controller
         [HttpPost("add-product")]
         public async Task<IActionResult> AddProduct([FromBody] ProductAdminDTO model)
         {
-
+            
             // Model null veya gerekli alanlar boş ise hata döndür
             if (model == null || string.IsNullOrEmpty(model.ProductName) || string.IsNullOrEmpty(model.Description) ||
                 model.Price == 0 || model.Stock == 0 || string.IsNullOrEmpty(model.Sector))
@@ -65,7 +65,7 @@ namespace api.Controller
                 return BadRequest("Bu isimde bir ürün zaten var.");
             }
 
-
+            
 
             // Ürünü veritabanına ekle
             var product = new Products
@@ -138,7 +138,7 @@ namespace api.Controller
         [HttpPost("delete-product")]
         public async Task<IActionResult> DeleteProduct([FromBody] ProductAdminDTO model)
         {
-
+           
 
             // Ürünü veritabanında bul
             var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == model.Id);
@@ -157,7 +157,7 @@ namespace api.Controller
         [HttpGet("get-products")]
         public async Task<IActionResult> GetProducts()
         {
-            var products = await _context.Products.ToListAsync();
+            var products = await _context.Products.Where(p => p.Stock > 0).ToListAsync();
             return Ok(products);
         }
 
@@ -170,186 +170,191 @@ namespace api.Controller
                 return NotFound("Ürün bulunamadı.");
             }
 
+            if(product.Stock <= 0)
+            {
+                return BadRequest("Ürün stokta yok.");
+            }
+
             return Ok(product);
         }
 
-        /*
-             [HttpPost("add-image")]
-             public async Task<IActionResult> AddImage([FromForm] ImageModel model)
-             {
-                 // Validate model
-                 if (model == null || model.Id == Guid.Empty || model.Image == null)
-                 {
-                     return BadRequest("All fields are required.");
-                 }
+       /*
+            [HttpPost("add-image")]
+            public async Task<IActionResult> AddImage([FromForm] ImageModel model)
+            {
+                // Validate model
+                if (model == null || model.Id == Guid.Empty || model.Image == null)
+                {
+                    return BadRequest("All fields are required.");
+                }
 
-                 // Validate file extension
-                 var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-                 var fileExtension = Path.GetExtension(model.Image.FileName).ToLowerInvariant();
+                // Validate file extension
+                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                var fileExtension = Path.GetExtension(model.Image.FileName).ToLowerInvariant();
 
-                 if (!allowedExtensions.Contains(fileExtension))
-                 {
-                     return BadRequest("Invalid image format. Allowed formats are .jpg, .jpeg, .png, .gif.");
-                 }
+                if (!allowedExtensions.Contains(fileExtension))
+                {
+                    return BadRequest("Invalid image format. Allowed formats are .jpg, .jpeg, .png, .gif.");
+                }
 
-                 // Validate content type
-                 var allowedContentTypes = new[] { "image/jpeg", "image/png", "image/gif" };
-                 if (!allowedContentTypes.Contains(model.Image.ContentType))
-                 {
-                     return BadRequest("Invalid image content type.");
-                 }
+                // Validate content type
+                var allowedContentTypes = new[] { "image/jpeg", "image/png", "image/gif" };
+                if (!allowedContentTypes.Contains(model.Image.ContentType))
+                {
+                    return BadRequest("Invalid image content type.");
+                }
 
-                 // Find product in the database
-                 var product = await _context.Products.FindAsync(model.Id);
-                 if (product == null)
-                 {
-                     return NotFound("Product not found.");
-                 }
+                // Find product in the database
+                var product = await _context.Products.FindAsync(model.Id);
+                if (product == null)
+                {
+                    return NotFound("Product not found.");
+                }
 
-                 // Ensure the images directory exists
-                 var imagesDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
-                 if (!Directory.Exists(imagesDir))
-                 {
-                     Directory.CreateDirectory(imagesDir);
-                 }
+                // Ensure the images directory exists
+                var imagesDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+                if (!Directory.Exists(imagesDir))
+                {
+                    Directory.CreateDirectory(imagesDir);
+                }
 
-                 // Generate a unique filename to prevent overwriting and security issues
-                  fileExtension = Path.GetExtension(model.Image.FileName);
-                 var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+                // Generate a unique filename to prevent overwriting and security issues
+                 fileExtension = Path.GetExtension(model.Image.FileName);
+                var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
 
-                 // Combine the images directory and unique filename to create the full path
-                 var filePath = Path.Combine(imagesDir, uniqueFileName);
+                // Combine the images directory and unique filename to create the full path
+                var filePath = Path.Combine(imagesDir, uniqueFileName);
 
-                 // Save the image to disk
-                 try
-                 {
-                     using (var stream = new FileStream(filePath, FileMode.Create))
-                     {
-                         await model.Image.CopyToAsync(stream);
-                     }
-                 }
-                 catch (Exception ex)
-                 {
-                     // Log the exception (ex)
-                     return StatusCode(StatusCodes.Status500InternalServerError, "Error saving the image.");
-                 }
+                // Save the image to disk
+                try
+                {
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await model.Image.CopyToAsync(stream);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception (ex)
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error saving the image.");
+                }
 
-                 // Save the image filename to the database
-                 product.Image = uniqueFileName;
-                 await _context.SaveChangesAsync();
+                // Save the image filename to the database
+                product.Image = uniqueFileName;
+                await _context.SaveChangesAsync();
 
-                 return Ok("Image added successfully.");
-             }
+                return Ok("Image added successfully.");
+            }
 
-             [HttpPost("delete-image")]
-             public async Task<IActionResult> DeleteImage([FromBody] DeleteImageModel model)
-             {
-                 // Validate model
-                 if (model == null || model.Id == Guid.Empty)
-                 {
-                     return BadRequest("Product ID is required.");
-                 }
+            [HttpPost("delete-image")]
+            public async Task<IActionResult> DeleteImage([FromBody] DeleteImageModel model)
+            {
+                // Validate model
+                if (model == null || model.Id == Guid.Empty)
+                {
+                    return BadRequest("Product ID is required.");
+                }
 
-                 // Find the product in the database
-                 var product = await _context.Products.FindAsync(model.Id);
-                 if (product == null)
-                 {
-                     return NotFound("Product not found.");
-                 }
+                // Find the product in the database
+                var product = await _context.Products.FindAsync(model.Id);
+                if (product == null)
+                {
+                    return NotFound("Product not found.");
+                }
 
-                 if (string.IsNullOrEmpty(product.Image))
-                 {
-                     return BadRequest("Product does not have an image to delete.");
-                 }
+                if (string.IsNullOrEmpty(product.Image))
+                {
+                    return BadRequest("Product does not have an image to delete.");
+                }
 
-                 // Get the image file path
-                 var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", product.Image);
+                // Get the image file path
+                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", product.Image);
 
-                 // Delete the image from disk
-                 try
-                 {
-                     if (System.IO.File.Exists(imagePath))
-                     {
-                         System.IO.File.Delete(imagePath);
-                     }
-                 }
-                 catch (Exception ex)
-                 {
-                     // Log the exception (ex)
-                     return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting the image.");
-                 }
+                // Delete the image from disk
+                try
+                {
+                    if (System.IO.File.Exists(imagePath))
+                    {
+                        System.IO.File.Delete(imagePath);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception (ex)
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting the image.");
+                }
 
-                 // Remove the image filename from the database
-                 product.Image = null;
-                 await _context.SaveChangesAsync();
+                // Remove the image filename from the database
+                product.Image = null;
+                await _context.SaveChangesAsync();
 
-                 return Ok("Image deleted successfully.");
-             }
+                return Ok("Image deleted successfully.");
+            }
 
-             [HttpGet("get-image")]
-             public async Task<IActionResult> GetImage([FromQuery] Guid id)
-             {
-                 // Validate the id
-                 if (id == Guid.Empty)
-                 {
-                     return BadRequest("Product ID is required.");
-                 }
+            [HttpGet("get-image")]
+            public async Task<IActionResult> GetImage([FromQuery] Guid id)
+            {
+                // Validate the id
+                if (id == Guid.Empty)
+                {
+                    return BadRequest("Product ID is required.");
+                }
 
-                 // Find the product in the database
-                 var product = await _context.Products.FindAsync(id);
-                 if (product == null)
-                 {
-                     return NotFound("Product not found.");
-                 }
+                // Find the product in the database
+                var product = await _context.Products.FindAsync(id);
+                if (product == null)
+                {
+                    return NotFound("Product not found.");
+                }
 
-                 if (string.IsNullOrEmpty(product.Image))
-                 {
-                     return NotFound("Image not found.");
-                 }
+                if (string.IsNullOrEmpty(product.Image))
+                {
+                    return NotFound("Image not found.");
+                }
 
-                 // Get the image file path
-                 var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", product.Image);
+                // Get the image file path
+                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", product.Image);
 
-                 // Check if the file exists
-                 if (!System.IO.File.Exists(imagePath))
-                 {
-                     return NotFound("Image file not found on the server.");
-                 }
+                // Check if the file exists
+                if (!System.IO.File.Exists(imagePath))
+                {
+                    return NotFound("Image file not found on the server.");
+                }
 
-                 // Get the content type
-                 var contentType = GetContentType(imagePath);
+                // Get the content type
+                var contentType = GetContentType(imagePath);
 
-                 // Return the image file
-                 try
-                 {
-                     var memory = new MemoryStream();
-                     using (var stream = new FileStream(imagePath, FileMode.Open))
-                     {
-                         await stream.CopyToAsync(memory);
-                     }
-                     memory.Position = 0;
-                     return File(memory, contentType, Path.GetFileName(imagePath));
-                 }
-                 catch (Exception ex)
-                 {
-                     // Log the exception (ex)
-                     return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving the image.");
-                 }
-             }
+                // Return the image file
+                try
+                {
+                    var memory = new MemoryStream();
+                    using (var stream = new FileStream(imagePath, FileMode.Open))
+                    {
+                        await stream.CopyToAsync(memory);
+                    }
+                    memory.Position = 0;
+                    return File(memory, contentType, Path.GetFileName(imagePath));
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception (ex)
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving the image.");
+                }
+            }
 
-             // Helper method to get the content type based on file extension
-             private string GetContentType(string path)
-             {
-                 var provider = new FileExtensionContentTypeProvider();
-                 if (!provider.TryGetContentType(path, out string contentType))
-                 {
-                     contentType = "application/octet-stream";
-                 }
-                 return contentType;
-             }
+            // Helper method to get the content type based on file extension
+            private string GetContentType(string path)
+            {
+                var provider = new FileExtensionContentTypeProvider();
+                if (!provider.TryGetContentType(path, out string contentType))
+                {
+                    contentType = "application/octet-stream";
+                }
+                return contentType;
+            }
+        
 
-
-         */
+        */
 
         [HttpPost("update-stock")]
         public async Task<IActionResult> UpdateStock([FromBody] ProductAdminDTO model)
@@ -417,7 +422,7 @@ namespace api.Controller
         }
 
 
-        [HttpGet("get-income")]
+       [HttpGet("get-income")]
         public async Task<IActionResult> GetIncome([FromQuery] string startDate, [FromQuery] string endDate)
         {
             // Define the expected date format
@@ -465,11 +470,11 @@ namespace api.Controller
             return Ok(income);
         }
 
-        // Model classes
+// Model classes
         public class ImageModel
         {
             public Guid Id { get; set; }
-            public required IFormFile Image { get; set; }
+            public IFormFile Image { get; set; }
         }
 
         public class DeleteImageModel
@@ -477,5 +482,5 @@ namespace api.Controller
             public Guid Id { get; set; }
         }
 
-    }
+}
 }
