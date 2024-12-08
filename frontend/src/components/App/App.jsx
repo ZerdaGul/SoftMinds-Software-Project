@@ -49,13 +49,15 @@ useEffect(() => {
         if (storedUser) {
             console.log('User found in localStorage:', storedUser);
             setActiveUser(storedUser);
-        } 
-        
+        }
     }, []);
     useEffect(() => {
-        
-        loadUserFromServer(); // Fetch from server 
-    }, [isLoggedIn);
+        if(!isLoggedOut) {
+			loadUserFromServer(); // Fetch from server 
+		} else {
+			setIsLoggedOut(false);
+		}
+    }, [isLoggedIn]);
 
 const getUserFromLocalStorage = () => {
         const storedUser = localStorage.getItem('current-user');

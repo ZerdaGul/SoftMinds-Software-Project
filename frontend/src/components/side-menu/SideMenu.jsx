@@ -2,12 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './sideMenu.scss';
 
-const SideMenu = ({ main_menu }) => {
-    const aUser = {
-        name: "Product Admin",
-        email: "Padmin@ekoinv.com",
-        role: "padmin"
-    };
+const SideMenu = ({ main_menu, aUser }) => {
     // const getMainMenu = () => {
     //     if (aUser?.role === "padmin") {
     //         return [
