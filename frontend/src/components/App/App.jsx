@@ -44,21 +44,20 @@ const App = () => {
 	const location = useLocation();
 
 	// Load user information on app initialization
-    useEffect(() => {
+useEffect(() => {
         const storedUser = getUserFromLocalStorage();
         if (storedUser) {
             console.log('User found in localStorage:', storedUser);
             setActiveUser(storedUser);
-        } else {
-		if(isLoggedOut){
-			setActiveUser(storedUser)
-		} else{
-            		loadUserFromServer(); // Fetch from server if no stored user and not logged out
-		}
         } 
-    }, [isLoggedIn, isLoggedOut]);
+        
+    }, []);
+    useEffect(() => {
+        
+        loadUserFromServer(); // Fetch from server 
+    }, [isLoggedIn);
 
-	const getUserFromLocalStorage = () => {
+const getUserFromLocalStorage = () => {
         const storedUser = localStorage.getItem('current-user');
         return storedUser ? JSON.parse(storedUser) : null;
     };
