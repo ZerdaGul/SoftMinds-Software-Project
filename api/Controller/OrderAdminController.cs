@@ -104,6 +104,23 @@ namespace api.Controller
             return Ok("Sipariş başarıyla tamamlandı.");
         }
 
+        [HttpGet("requested-orders")]
+        public async Task<IActionResult> GetRequestedOrders()
+        {
+            if (_userService.GetRole() != "oadmin")
+            {
+                return Forbid("You are not authorized to perform this action.");
+            }
+            var orders = await _context.Orders
+                .Where(o => o.State == "Requested")
+                .Include(o => o.User)
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+                .ToListAsync();
+
+            return Ok(orders);
+        }
+
         [HttpGet("orders")]
         public async Task<IActionResult> GetAllOrders()
         {
