@@ -96,6 +96,7 @@ const App = () => {
         setActiveUser(null); // Clear active user
         saveUserToLocalStorage(null); // Clear localStorage
     };
+	
 	const ScrollToTop = () => {
 		const { pathname } = useLocation();
 
