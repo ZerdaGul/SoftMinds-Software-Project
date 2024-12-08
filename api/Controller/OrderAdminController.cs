@@ -24,9 +24,14 @@ namespace api.Controllers
         [HttpPost("accept-order")]
         public async Task<IActionResult> AcceptOrder([FromBody] OrderModel model)
         {
-            if (model == null || string.IsNullOrEmpty(model.OrderId))
+            if (model == null )
             {
                 return BadRequest("Sipariş ID'si gereklidir.");
+            }
+
+            if (model.OrderId <= 0)
+            {
+                return BadRequest("Geçersiz sipariş ID'si.");
             }
 
             var order = await _context.Orders.FindAsync(model.OrderId);
@@ -44,9 +49,14 @@ namespace api.Controllers
         [HttpPost("reject-order")]
         public async Task<IActionResult> RejectOrder([FromBody] OrderModel model)
         {
-            if (model == null || string.IsNullOrEmpty(model.OrderId))
+            if (model == null )
             {
                 return BadRequest("Sipariş ID'si gereklidir.");
+            }
+
+            if (model.OrderId <= 0)
+            {
+                return BadRequest("Geçersiz sipariş ID'si.");
             }
 
             var order = await _context.Orders.FindAsync(model.OrderId);
@@ -64,9 +74,14 @@ namespace api.Controllers
         [HttpPost("complete-order")]
         public async Task<IActionResult> CompleteOrder([FromBody] OrderModel model)
         {
-            if (model == null || string.IsNullOrEmpty(model.OrderId))
+            if (model == null)
             {
                 return BadRequest("Sipariş ID'si gereklidir.");
+            }
+
+            if (model.OrderId <= 0)
+            {
+                return BadRequest("Geçersiz sipariş ID'si.");
             }
 
             var order = await _context.Orders.FindAsync(model.OrderId);
