@@ -35,6 +35,7 @@ import SolutionPage from "../../pages/SolutionPage";
 import ConsultancyPage from "../../pages/ConsultancyPage";
 import OrderAdminDashboard from '../order-admin/dashboard/Dashboard';
 import ProductAdminPage from '../../pages/ProductAdminPage';
+import UnauthorizedPage from '../../pages/unauthorized-page/UnauthorizedPage';
 
 
 const App = () => {
@@ -138,6 +139,9 @@ const getUserFromLocalStorage = () => {
 					<Route path='/faq' element={<FAQPage/>}></Route>
 					<Route path='/forgot-password-request' element={<ForgotPasswordRequest />}></Route>
 					<Route path='/create-password' element={<CreatePasswordForm />}></Route>
+					{activeUser === null &&
+						<Route path="/unauthorized" element={<UnauthorizedPage/>}></Route>	
+					}
 					{activeUser?.role === "customer" && 
 						<Route path='/profile/*' element={<UserProfilePage />}>
 							<Route path='dashboard'></Route>

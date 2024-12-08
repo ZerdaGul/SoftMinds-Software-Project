@@ -98,8 +98,9 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout, activeUser }) => {
                     </NavLink>
                 </li>
                 <li>
+                    
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                             to="/profile"> <img src={user} alt="user" style={{ height: "40px", width: "auto" }} />
+                             to={activeUser ? "/profile": "/unauthorized"}> <img src={user} alt="user" style={{ height: "40px", width: "auto" }} />
                     </NavLink>
                 </li>
                 {/* Bildirim butonu */}

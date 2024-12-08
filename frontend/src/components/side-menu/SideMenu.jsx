@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './sideMenu.scss';
 
-const SideMenu = ({ main_menu, requestsNotification }) => {
+const SideMenu = ({ main_menu, requestsNotification, activeUser }) => {
     
 
     return (
@@ -65,8 +65,8 @@ const SideMenu = ({ main_menu, requestsNotification }) => {
 
             <div className="side-menu__user">
                 <img src="" alt="" className="side-menu__user-pic" />
-                <p className="side-menu__user-name">{aUser?.name || "Guest"}</p>
-                <p className="side-menu__user-email">{aUser?.email || "Not logged in"}</p>
+                <p className="side-menu__user-name">{activeUser?.name || "Guest"}</p>
+                <p className="side-menu__user-email">{activeUser?.email || "Not logged in"}</p>
             </div>
         </aside>
     );
