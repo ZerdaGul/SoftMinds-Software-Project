@@ -9,53 +9,7 @@ import { RejectOrder } from '../../../services/OrderAdminService';
 
 import './requests.scss';
 
-    // const orders = [
-    //     {
-    //       id: 1,
-    //       order_Date: "2024-12-01T14:20:00",
-    //       total_Price: 1200.50,
-    //       orderItems: [
-    //         { id: 101, productId: 5, quantity: 2, total_Price: 400.00 },
-    //         { id: 102, productId: 7, quantity: 3, total_Price: 800.50 }
-    //       ]
-    //     },
-    //     {
-    //       id: 2,
-    //       order_Date: "2024-12-02T16:45:00",
-    //       total_Price: 3000.00,
-    //       orderItems: [
-    //         { id: 201, productId: 12, quantity: 1, total_Price: 1500.00 },
-    //         { id: 202, productId: 3, quantity: 5, total_Price: 1500.00 }
-    //       ]
-    //     },
-    //     {
-    //       id: 3,
-    //       order_Date: "2024-12-03T10:15:00",
-    //       total_Price: 750.00,
-    //       orderItems: [
-    //         { id: 301, productId: 6, quantity: 2, total_Price: 500.00 },
-    //         { id: 302, productId: 4, quantity: 1, total_Price: 250.00 }
-    //       ]
-    //     },
-    //     {
-    //       id: 4,
-    //       order_Date: "2024-12-04T09:30:00",
-    //       total_Price: 5000.00,
-    //       orderItems: [
-    //         { id: 401, productId: 8, quantity: 10, total_Price: 5000.00 }
-    //       ]
-    //     },
-    //     {
-    //       id: 5,
-    //       order_Date: "2024-12-05T18:00:00",
-    //       total_Price: 3200.00,
-    //       orderItems: [
-    //         { id: 501, productId: 9, quantity: 2, total_Price: 1200.00 },
-    //         { id: 502, productId: 15, quantity: 4, total_Price: 2000.00 }
-    //       ]
-    //     }
-    //   ];
-      
+    
       
 const Requests = () => {
     
