@@ -86,7 +86,6 @@ namespace api.Controller
 
             var product = await _context.Products
                 .Include(p => p.Comments)
-                .Include(p => p.Reviews) // Include reviews
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (product == null)
@@ -104,7 +103,6 @@ namespace api.Controller
                 product.Sector,
                 Availability = product.Stock > 0 ? "In Stock" : "Out of Stock", // Check stock status
                 Comments = product.Comments.Select(c => new { c.Text, c.Created_At }),
-                Reviews = product.Reviews.Select(r => new { r.Rating, r.ReviewText }) // Include reviews in response
             };
 
             stopwatch.Stop();

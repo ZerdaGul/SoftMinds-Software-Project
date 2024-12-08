@@ -1,43 +1,44 @@
 using api.Data;
-using api.Models;
 using api.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Security.Claims; // For accessing claims
+using api.Services;
 
-namespace api.Controllers
+namespace api.Controller
 {
     [Route("api/")]
     [ApiController]
     public class OrderAdminController : ControllerBase
     {
         private readonly AppDBContext _context;
+        private readonly UserService _userService;
 
-        public OrderAdminController(AppDBContext context)
+        public OrderAdminController(AppDBContext context, UserService userService)
         {
             _context = context;
+            _userService = userService;
         }
 
-        [HttpPost("accept-order")]
+       [HttpPost("accept-order")]
         public async Task<IActionResult> AcceptOrder([FromBody] OrderModel model)
         {
-            if (model == null )
+            if (_userService.GetRole() != "oadmin")
+            {
+                return Forbid("You are not authorized to perform this action.");
+            }
+
+            if (model == null || model.OrderId <= 0)
             {
                 return BadRequest("Sipariş ID'si gereklidir.");
             }
 
-            if (model.OrderId <= 0)
-            {
-                return BadRequest("Geçersiz sipariş ID'si.");
-            }
+            var order = await _context.Orders
+                .Where(o => o.Id == model.OrderId && o.State == "Requested")
+                .FirstOrDefaultAsync();
 
-            var order = await _context.Orders.FindAsync(model.OrderId);
             if (order == null)
             {
-                return NotFound("Sipariş bulunamadı.");
+                return NotFound("Sipariş bulunamadı veya sipariş durumu 'Requested' değil.");
             }
 
             order.State = "Accepted";
@@ -46,23 +47,27 @@ namespace api.Controllers
             return Ok("Sipariş başarıyla kabul edildi.");
         }
 
+
         [HttpPost("reject-order")]
         public async Task<IActionResult> RejectOrder([FromBody] OrderModel model)
         {
-            if (model == null )
+            if (_userService.GetRole() != "oadmin")
+            {
+                return Forbid("You are not authorized to perform this action.");
+            }
+
+            if (model == null || model.OrderId <= 0)
             {
                 return BadRequest("Sipariş ID'si gereklidir.");
             }
 
-            if (model.OrderId <= 0)
-            {
-                return BadRequest("Geçersiz sipariş ID'si.");
-            }
+            var order = await _context.Orders
+                .Where(o => o.Id == model.OrderId && o.State == "Requested")
+                .FirstOrDefaultAsync();
 
-            var order = await _context.Orders.FindAsync(model.OrderId);
             if (order == null)
             {
-                return NotFound("Sipariş bulunamadı.");
+                return NotFound("Sipariş bulunamadı veya sipariş durumu 'Requested' değil.");
             }
 
             order.State = "Rejected";
@@ -74,20 +79,23 @@ namespace api.Controllers
         [HttpPost("complete-order")]
         public async Task<IActionResult> CompleteOrder([FromBody] OrderModel model)
         {
-            if (model == null)
+            if (_userService.GetRole() != "oadmin")
+            {
+                return Forbid("You are not authorized to perform this action.");
+            }
+
+            if (model == null || model.OrderId <= 0)
             {
                 return BadRequest("Sipariş ID'si gereklidir.");
             }
 
-            if (model.OrderId <= 0)
-            {
-                return BadRequest("Geçersiz sipariş ID'si.");
-            }
+            var order = await _context.Orders
+                .Where(o => o.Id == model.OrderId && o.State == "Requested")
+                .FirstOrDefaultAsync();
 
-            var order = await _context.Orders.FindAsync(model.OrderId);
             if (order == null)
             {
-                return NotFound("Sipariş bulunamadı.");
+                return NotFound("Sipariş bulunamadı veya sipariş durumu 'Requested' değil.");
             }
 
             order.State = "Done";
@@ -155,18 +163,12 @@ namespace api.Controllers
         [HttpGet("my-orders")]
         public async Task<IActionResult> GetMyOrders()
         {
-            // Retrieve the user ID from the active session (via claims)
-            var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            // Retrieve the user ID using the UserService
+            var userIdInt = _userService.GetCurrentUserId();
 
-            if (string.IsNullOrEmpty(userIdStr))
+            if (userIdInt == null)
             {
                 return Unauthorized("Kullanıcı kimliği bulunamadı.");
-            }
-
-            // Convert the string userId to an integer
-            if (!int.TryParse(userIdStr, out int userIdInt))
-            {
-                return BadRequest("Geçersiz kullanıcı kimliği formatı.");
             }
 
             var myOrders = await _context.Orders
