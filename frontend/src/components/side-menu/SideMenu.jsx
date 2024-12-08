@@ -3,33 +3,7 @@ import { NavLink } from 'react-router-dom';
 import './sideMenu.scss';
 
 const SideMenu = ({ main_menu, requestsNotification }) => {
-    const aUser = {
-        name: "Product Admin",
-        email: "Padmin@ekoinv.com",
-        role: "padmin"
-    };
-    // const getMainMenu = () => {
-    //     if (aUser?.role === "padmin") {
-    //         return [
-    //             { path: "/products-admin", text: "Manage Products" },
-    //             { path: "/product-dashboard", text: "Product Dashboard" }
-    //         ];
-    //     } else if (aUser?.role === "oadmin") {
-    //         return [
-    //             { path: "/orders-progress", text: "Orders Progress" },
-    //             { path: "/requests", text: "Requests" }
-    //         ];
-    //     } else if (aUser?.role === "customer") {
-    //         return [
-    //             { path: "/profile/orders", text: "My Orders" },
-    //             { path: "/profile/cart", text: "My Cart" }
-    //         ];
-    //     } else {
-    //         return [];
-    //     }
-    // };
-
-    // const mainMenu = getMainMenu();
+    
 
     return (
         <aside className="side-menu">

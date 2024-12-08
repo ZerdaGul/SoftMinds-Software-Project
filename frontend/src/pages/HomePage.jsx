@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Link } from 'react-router-dom';
 
 import smartCityImg from '../assets/img/SmartCity.png';
@@ -7,10 +7,9 @@ import itsTrafficImg from '../assets/img/ITS.png';
 import securitySurveillanceImg from '../assets/img/Security.png';
 import ironSteelImg from '../assets/img/IronSteel.webp';
 import packagingImg from '../assets/img/Packaging.jpg';
-import forward from '../assets/icons/arrow-forward-red.svg'
 import './HomePage.scss';
 import ContactForm from '../components/contact-form/ContactForm';
-
+import React, { useEffect, useState } from "react";
 
 const sectors = [
     {
@@ -45,17 +44,31 @@ const sectors = [
     },
 ];
 
-const LearnMoreButton = () => {
-    return (
-        <button className="button">
-            <Link to="/sectors" className="button__link">
-                Learn more
-            </Link>
-        </button>
-    );
-};
 
 function HomePage() {
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await fetch("https://api.ekoinv.com/api/homepage/featured-products");
+                if (!response.ok) {
+                    throw new Error("Something went wrong while fetching products");
+                }
+                const data = await response.json();
+                setProducts(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+    
+        fetchProducts();
+    }, []);
+
     return (
         <div className="home-page">
             {/* Hero Section */}
@@ -70,19 +83,22 @@ function HomePage() {
 
             {/* New Products Section */}
             <section className="new-products">
-                <h2>New Products</h2>
-                <div className="products">
-                    {[...Array(3)].map((_, index) => (
-                        <div key={index} className="product-card">
-                            <img src="https://via.placeholder.com/150" alt="Product" />
-                            <div className="product-details">
-                                <h3>Product Name</h3>
-                                <p>$25.55</p>
-                            </div>
+            <h2>Featured Products</h2>
+            <div className="products">
+                {products.map((product) => (
+                    <div key={product.id} className="product-card">
+                        <img
+                            src="https://via.placeholder.com/150" // Placeholder image
+                            alt={product.name}
+                        />
+                        <div className="product-details">
+                            <h3>{product.name}</h3>
+                            <p>${product.price.toFixed(2)}</p>
                         </div>
-                    ))}
-                </div>
-            </section>
+                    </div>
+                ))}
+            </div>
+        </section>
 
             {/* Sectors Section */}
             <section className="sectors" id='sectors'>
@@ -93,7 +109,11 @@ function HomePage() {
                             return(
                             <div key={sector} className="sector-card">
                                 <img className='sector-img' src={picture} alt={sector} />
-                                <div className="sector-name">{sector}</div>
+                                <div >
+                                <Link to="/sectors" className="sector-name" >
+                                    {sector}
+                                </Link>
+                                </div>
                             </div>
                             )
                         })}
@@ -113,7 +133,7 @@ function HomePage() {
                         develop sustainable projects for the future by offering our clients
                         the most innovative and efficient solutions.
                     </div>
-                    <Link to='/aboutUs' className="read-more">Learn more <img src={forward} alt="arrow-froward" /></Link>
+                    <Link to='/aboutUs' className="read-more">Learn more →</Link>
                 </div>
             </section>
 

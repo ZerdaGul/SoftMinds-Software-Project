@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
+import { CSSTransition, SwitchTransition } from 'react-transition-group';
 
 
 import './App.css';
@@ -40,19 +41,25 @@ const App = () => {
 	const [activeUser, setActiveUser] = useState(null); // Stores the current active user
     const [isLoggedOut, setIsLoggedOut] = useState(false); // Tracks logout state
 	const [isLoggedIn, setIsLoggedIn] = useState(false);	// Tracks login state
+	const location = useLocation();
 
 	// Load user information on app initialization
-    useEffect(() => {
+useEffect(() => {
         const storedUser = getUserFromLocalStorage();
         if (storedUser) {
             console.log('User found in localStorage:', storedUser);
             setActiveUser(storedUser);
-        } else {
-            loadUserFromServer(); // Fetch from server if no stored user and not logged out
-        } 
-    }, [isLoggedIn, isLoggedOut]);
+        }
+    }, []);
+    useEffect(() => {
+        if(!isLoggedOut) {
+			loadUserFromServer(); // Fetch from server 
+		} else {
+			setIsLoggedOut(false);
+		}
+    }, [isLoggedIn]);
 
-	const getUserFromLocalStorage = () => {
+const getUserFromLocalStorage = () => {
         const storedUser = localStorage.getItem('current-user');
         return storedUser ? JSON.parse(storedUser) : null;
     };
@@ -97,22 +104,29 @@ const App = () => {
 		const { pathname } = useLocation();
 
 		useEffect(() => {
-			window.scrollTo(0, 0); // Sayfanın en üstüne kaydır
-		}, [pathname]); // Rota değişikliklerinde çalışır
+			window.scrollTo(0, 0);
+		}, [pathname]); 
 
-		return null; // Görünür bir bileşen olmadığı için null döner
+		return null; 
 	};
     
 
 
 
 	return (
-		<Router>
+		<>
 			<ScrollToTop />
 			<Navbar isLoggedIn={isLoggedIn}  setIsLoggedIn={setIsLoggedIn} onLogout={handleLogout} activeUser={activeUser} />
-			
 			<main>
-				<Routes>
+			<SwitchTransition>
+			<CSSTransition
+          key={location.key} 
+          classNames="fade" 
+          timeout={300} 
+          unmountOnExit 
+        >
+			<div>
+			<Routes location={location}>
 					<Route path='/' element={<HomePage />}></Route>
 					<Route path='/aboutUs' element={<AboutUs />}></Route>
 					<Route path='/products' element={<ProductsPage />}></Route>
@@ -124,12 +138,11 @@ const App = () => {
 					<Route path='/faq' element={<FAQPage/>}></Route>
 					<Route path='/forgot-password-request' element={<ForgotPasswordRequest />}></Route>
 					<Route path='/create-password' element={<CreatePasswordForm />}></Route>
-					<Route path='/profile/cart' element={CardForm}></Route>
-					{"activeUser.role" === "customer" && 
+					{activeUser?.role === "customer" && 
 						<Route path='/profile/*' element={<UserProfilePage />}>
 							<Route path='dashboard'></Route>
 							<Route path='orders'></Route>
-							<Route path='cart'></Route>
+							<Route path='cart' element={<CardForm />}></Route>
 							<Route path='my-profile' element={<ProfileForm initialValues={activeUser} />}></Route>
 							<Route path='contacts'></Route>
 							<Route path='settings/*' element={<Settings initialValues={activeUser}/>}>
@@ -139,7 +152,7 @@ const App = () => {
 							
 						</Route> 
 					}
-					{"activeUser.role" === "padmin" && 
+					{activeUser?.role === "padmin" && 
 					<>
 						<Route path='/products-admin' element={<ProductsForAdmin />}></Route>
 						<Route path='/profile/*' element={<ProductAdminPage />}>
@@ -154,7 +167,7 @@ const App = () => {
 						</Route>
 					</>
 					} 
-					{"oadmin" === "oadmin" && 
+					{activeUser?.role === "oadmin" && 
 						<Route path='/profile/*' element={<OrderAdminPage />}>
 							<Route path='dashboard' element={<OrderAdminDashboard/>}></Route>
 							<Route path='orders-progress' element={<OrdersProgress />}></Route>
@@ -171,11 +184,13 @@ const App = () => {
 					<Route path='/registration' element={<SignInPage />}></Route>
 					<Route path='/login' element={<LogInForm setIsLoggedIn={setIsLoggedIn} />}></Route>
 				</Routes>
-			</main>
+				</div>
 			{/* Footer Section */}
+			</CSSTransition>
+			</SwitchTransition>
+			</main>
 			<Footer />
-		</Router>
-
+			</>
 	);
 }
 

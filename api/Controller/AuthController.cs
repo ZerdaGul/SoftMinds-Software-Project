@@ -72,6 +72,14 @@ namespace api.Controller
             user.Lockout_End = null;
             await _context.SaveChangesAsync();
 
+            // Mevcut AuthToken çerezini sil
+            Response.Cookies.Delete("AuthToken", new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
+            });
+
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
@@ -90,7 +98,6 @@ namespace api.Controller
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddDays(1),  // Token süresi 1 gün
                 signingCredentials: creds);
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
@@ -103,7 +110,7 @@ namespace api.Controller
                 Expires = DateTime.Now.AddHours(1)
             });
 
-            return Ok(new { token = tokenString });
+            return Ok(new { Token = tokenString });
         }
 
         // POST /api/auth/logout

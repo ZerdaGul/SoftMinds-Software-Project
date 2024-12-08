@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.StaticFiles;
 using System.IO;
 using System.Globalization;
 
-namespace api.Controllers
+namespace api.Controller
 {
     [Route("api/")]
     [ApiController]
@@ -157,7 +157,7 @@ namespace api.Controllers
         [HttpGet("get-products")]
         public async Task<IActionResult> GetProducts()
         {
-            var products = await _context.Products.ToListAsync();
+            var products = await _context.Products.Where(p => p.Stock > 0).ToListAsync();
             return Ok(products);
         }
 
@@ -168,6 +168,11 @@ namespace api.Controllers
             if (product == null)
             {
                 return NotFound("Ürün bulunamadı.");
+            }
+
+            if(product.Stock <= 0)
+            {
+                return BadRequest("Ürün stokta yok.");
             }
 
             return Ok(product);
