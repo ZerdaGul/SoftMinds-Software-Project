@@ -35,6 +35,7 @@ import SolutionPage from "../../pages/SolutionPage";
 import ConsultancyPage from "../../pages/ConsultancyPage";
 import OrderAdminDashboard from '../order-admin/dashboard/Dashboard';
 import ProductAdminPage from '../../pages/ProductAdminPage';
+import CustomerOrders from '../customer-orders/CustomerOrders';
 import UnauthorizedPage from '../../pages/unauthorized-page/UnauthorizedPage';
 
 
@@ -145,7 +146,7 @@ const getUserFromLocalStorage = () => {
 					{activeUser?.role === "customer" && 
 						<Route path='/profile/*' element={<UserProfilePage />}>
 							<Route path='dashboard'></Route>
-							<Route path='orders'></Route>
+							<Route path='orders' element={<CustomerOrders userId={activeUser.id}/>}></Route>
 							<Route path='cart' element={<CardForm />}></Route>
 							<Route path='my-profile' element={<ProfileForm initialValues={activeUser} />}></Route>
 							<Route path='contacts'></Route>

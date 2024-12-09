@@ -1,9 +1,12 @@
-import React from 'react';
-
+import React, {useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 import { GetOrdersHistory } from '../../services/ProductService';
+import InfoModal from '../modals/InfoModal';
+import OrderDetailsModal from '../order-admin/order-details/OrderDetailsModal';
 import "./customerOrders.scss";
 const CustomerOrders = ({userId}) => {
-    const [inhistoryOrders, setInhistoryOrders] = useState({});
+    const [inProgressOrders, setInhistoryOrders] = useState({});
     const [doneOrders, setDoneOrders] = useState({});
     const [rejectedOrders, setRejectedOrders] = useState({});
     const [showDetails, setShowDetails] = useState(false);
