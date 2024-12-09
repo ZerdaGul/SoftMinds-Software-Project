@@ -80,6 +80,7 @@ const Requests = () => {
                     <OrderDetailsModal
                         order={orderToShow}
                         onClose={() => setShowDetails(false)}
+                        showActions={true}
                         onAccept={handleAction}
                         onReject={handleAction}
                     />, 

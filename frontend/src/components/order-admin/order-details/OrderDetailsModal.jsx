@@ -6,7 +6,7 @@ import close from '../../../assets/icons/close-dark.svg';
 const OrderDetailsModal = ({ order, onClose, onAccept, onReject }) => {
   if (!order) return null; // Return null if no order data is provided
 
-  const { id, order_Date, total_Price, orderItems } = order;
+  const { id, order_Date, total_Price, orderItems, showActions } = order;
 
   return (
     <div className="overlay">
@@ -48,22 +48,25 @@ const OrderDetailsModal = ({ order, onClose, onAccept, onReject }) => {
             </table>
             </div>
             <div className="requests__buttons">
-            <button
-                onClick={(e) => {
-                onReject(e, order, "reject");
-                }}
-                className="button button__small button__small-white"
-            >
-                Reject
-            </button>
-            <button
-                onClick={(e) => {
-                onAccept(e, order, "accept");
-                }}
-                className="button button__small"
-            >
-                Accept
-            </button>
+            {showActions ? 
+                <>
+                    <button
+                        onClick={(e) => {
+                        onReject(e, order, "reject");
+                        }}
+                        className="button button__small button__small-white"
+                    >
+                        Reject
+                    </button>
+                    <button
+                        onClick={(e) => {
+                        onAccept(e, order, "accept");
+                        }}
+                        className="button button__small"
+                    >
+                        Accept
+                    </button>
+                </> : null}
             </div>
                 <button onClick={onClose} className="modal__close">
                     <img src={close} alt="close" />
