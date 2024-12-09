@@ -1,0 +1,38 @@
+@import '../../style/style.scss';
+
+.unauthorized{
+
+    &-page {
+        display: flex;
+        justify-content: center;
+        margin: 130px 0;
+        height: auto;
+        background-color: #f9f9f9;
+    }
+    &-container {
+        text-align: center;
+        padding: 2rem;
+        border: 1px solid #ddd;
+        background-color: #fff;
+        box-shadow: 0 4px 6px $dark-op-50;
+        border-radius: 8px;
+
+        h1 {
+            color: $red;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            margin: 0.5rem 0;
+        }
+
+        .button-group {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+
+            
+        }
+    }
+}
