@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import { createPortal } from 'react-dom';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 
-import InfoModal from '../../modals/InfoModal';
-import { GetOrdersByStatus } from '../../../services/OrderAdminService';
-import OrderDetailsModal from '../order-details/OrderDetailsModal';
-import './ordersProgress.scss';
-
-const OrdersProgress = () => {
-    const [inProgressOrders, setInProgressOrders] = useState({});
+import { GetOrdersHistory } from '../../services/ProductService';
+import "./customerOrders.scss";
+const CustomerOrders = ({userId}) => {
+    const [inhistoryOrders, setInhistoryOrders] = useState({});
     const [doneOrders, setDoneOrders] = useState({});
+    const [rejectedOrders, setRejectedOrders] = useState({});
     const [showDetails, setShowDetails] = useState(false);
     const [orderToShow, setOrderToShow] = useState({});
     const [error, setError] = useState(false);
@@ -30,9 +26,10 @@ const OrdersProgress = () => {
   
     const updateOrders = async () => {
       try {
-        const data = await GetOrdersByStatus();
+        const data = await GetOrdersHistory(userId);
+        setRejectedOrders(data.Rejected)
         setDoneOrders(data.Done);
-        setInProgressOrders(data.InProgress);
+        setInhistoryOrders(data.Inhistory);
       } catch (error) {
         onError(error); // Handle error
       }
@@ -69,45 +66,61 @@ const OrdersProgress = () => {
         </div>
     );
   return (
-    <section className='progress'>
-        <div className="progress__block">
-            <div className="progress__title">In Progress</div>
-            <ul className="progress__products">
+    <section className='history'>
+        <div className="history__block">
+            <div className="history__title">In Progress</div>
+            <ul className="history__products">
                 {inProgressOrders.map((order) => {
                     const {id, order_Date, orderItems} = order;
                     const amount = orderItems.length
                     return(
-                        <li key={id} className="progress__product">             
+                        <li key={id} className="history__product">             
                             <div
                                 onClick={()=>onOpenDetails(order)} 
-                                className="progress__product-name">{new Date(order_Date).toLocaleDateString()}</div>
-                            <div className="progress__product-amount">{amount}</div>
+                                className="history__product-name">{new Date(order_Date).toLocaleDateString()}</div>
+                            <div className="history__product-amount">{amount}</div>
                         </li>
                     )
                 })}
             </ul>
         </div>
-        <div className="progress__block">
-            <div className="progress__title">Done</div>
-            <ul className="progress__products">
+        <div className="history__block">
+            <div className="history__title">Done</div>
+            <ul className="history__products">
                 {doneOrders.map((order) => {
                     const {id, order_Date, orderItems} = order;
                     const amount = orderItems.length
                     return(
-                        <li key={id} className="progress__product">             
+                        <li key={id} className="history__product">             
                             <div
                                 onClick={()=>onOpenDetails(order)} 
-                                className="progress__product-name">{new Date(order_Date).toLocaleDateString()}</div>
-                            <div className="progress__product-amount">{amount}</div>
+                                className="history__product-name">{new Date(order_Date).toLocaleDateString()}</div>
+                            <div className="history__product-amount">{amount}</div>
                         </li>
                     )
                 })}
-            </ul> 
-               
+            </ul>      
         </div>
-        {renderModal}
+        <div className="history__block">
+            <div className="history__title">Rejected</div>
+            <ul className="history__products">
+                {rejectedOrders.map((order) => {
+                    const {id, order_Date, orderItems} = order;
+                    const amount = orderItems.length
+                    return(
+                        <li key={id} className="history__product">             
+                            <div
+                                onClick={()=>onOpenDetails(order)} 
+                                className="history__product-name">{new Date(order_Date).toLocaleDateString()}</div>
+                            <div className="history__product-amount">{amount}</div>
+                        </li>
+                    )
+                })}
+            </ul>      
+        </div>
+        {renderModal} 
     </section>
   )
 }
 
-export default OrdersProgress
+export default CustomerOrders
