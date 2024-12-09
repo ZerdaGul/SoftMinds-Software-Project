@@ -26,4 +26,6 @@ public class Users
     public List<Orders> Orders { get; set; } = []; // Orders listesi, boş olabilir
     public List<Comments> Comments { get; set; } = [];// boş olabilir
 
+    public List<Questions> Questions {get;set;}= [];
+
 }
