@@ -177,22 +177,3 @@ export const CreatePassword = async (data) => {
   }
 }
 
-export const Contact = async (data) => {
-  try {
-    const response = await axios.post(`${api}support-request`, data, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      withCredentials: true
-    })
-    return response.data;
-  } catch (error) {
-    console.log(error)
-    if (error.response) {
-
-      throw new Error(error); // Ensure error.response.data exists
-    } else {
-      throw new Error("An unknown error occurred."); // Catch other errors
-    }
-  }
-}

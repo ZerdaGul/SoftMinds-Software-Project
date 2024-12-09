@@ -37,6 +37,7 @@ import OrderAdminDashboard from '../order-admin/dashboard/Dashboard';
 import ProductAdminPage from '../../pages/ProductAdminPage';
 import CustomerOrders from '../customer-orders/CustomerOrders';
 import UnauthorizedPage from '../../pages/unauthorized-page/UnauthorizedPage';
+import QuestionsListCustomer from '../questions-list-customer/QuestionsListCustomer';
 
 
 const App = () => {
@@ -136,7 +137,9 @@ const getUserFromLocalStorage = () => {
 					<Route path='/sectors' element={<SectorPage />}></Route>
 					<Route path='/solutions' element={<SolutionPage />}></Route>
 					<Route path='/consultancy' element={<ConsultancyPage />}></Route>
-					<Route path='/contactUs' element={<ContactForm/>}></Route>
+
+					{/*contactUs must be available to authed users, if not - redirect to unauthorized page */}
+					<Route path='/contactUs' element={<QuestionsListCustomer/>}></Route>
 					<Route path='/faq' element={<FAQPage/>}></Route>
 					<Route path='/forgot-password-request' element={<ForgotPasswordRequest />}></Route>
 					<Route path='/create-password' element={<CreatePasswordForm />}></Route>

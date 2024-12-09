@@ -5,48 +5,21 @@
     &__form {
         max-width: 880px;
         margin: 0 auto;
-        padding-top: 50px;
         text-align: left;
     }
 
     &__wrapper {
         margin-top: 30px;
         display: grid;
-        grid-template-columns: 335px 500px;
-        grid-template-rows: repeat(3, 70px);
-        gap: 40px;
     }    
 
 }
 
-.form{
-    &__wrapper{
-        display: flex;
-        flex-direction: column;
-    }
-    
-    
-}
-#name {
-    grid-column: 1/2;
-}
-
-#name,
-#email {
-    grid-column: 1 / 2;
-    display: flex;
-    flex-direction: column; /* Label ve input yukarıdan aşağı hizalanır */
-}
 
 #message{
     
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    grid-column: 2/3;
-    grid-row: 1/3;
     .form__input{
-        height: 150px;
+        height: 100px;
         width: 100%;
         padding: 10px 15px;
         font-size: 16px;
@@ -58,6 +31,5 @@
 
 #button{
     margin: 0;
-    grid-column: 1/3;
-    justify-self: center;
+    justify-self: end;
 }
