@@ -37,6 +37,8 @@ import OrderAdminDashboard from '../order-admin/dashboard/Dashboard';
 import ProductAdminPage from '../../pages/ProductAdminPage';
 import CustomerOrders from '../customer-orders/CustomerOrders';
 import UnauthorizedPage from '../../pages/unauthorized-page/UnauthorizedPage';
+import QuestionsListCustomer from '../questions-list-customer/QuestionsListCustomer';
+import QuestionsList from '../product-admin/questions-list/QuestionsList';
 
 
 const App = () => {
@@ -136,7 +138,9 @@ const getUserFromLocalStorage = () => {
 					<Route path='/sectors' element={<SectorPage />}></Route>
 					<Route path='/solutions' element={<SolutionPage />}></Route>
 					<Route path='/consultancy' element={<ConsultancyPage />}></Route>
-					<Route path='/contactUs' element={<ContactForm/>}></Route>
+
+					{/*contactUs must be available to authed users, if not - redirect to unauthorized page */}
+					<Route path='/contactUs' element={<QuestionsListCustomer/>}></Route>
 					<Route path='/faq' element={<FAQPage/>}></Route>
 					<Route path='/forgot-password-request' element={<ForgotPasswordRequest />}></Route>
 					<Route path='/create-password' element={<CreatePasswordForm />}></Route>
@@ -162,6 +166,7 @@ const getUserFromLocalStorage = () => {
 						<Route path='/products-admin' element={<ProductsForAdmin />}></Route>
 						<Route path='/profile/*' element={<ProductAdminPage />}>
 							<Route path='dashboard' element={<ProductDashboard/>}></Route>
+							<Route path='questions' element={<QuestionsList/>}></Route>
 							<Route path='my-profile' element={<ProfileForm initialValues={activeUser || {}} />}></Route>
 							<Route path='contacts'></Route>
 							<Route path='settings/*' element={<Settings initialValues={activeUser} />}>
@@ -194,6 +199,7 @@ const getUserFromLocalStorage = () => {
 			</CSSTransition>
 			</SwitchTransition>
 			</main>
+			{activeUser?.role === "customer" && <ContactForm/>}
 			<Footer />
 			</>
 	);

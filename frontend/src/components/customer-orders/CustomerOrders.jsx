@@ -6,9 +6,9 @@ import InfoModal from '../modals/InfoModal';
 import OrderDetailsModal from '../order-admin/order-details/OrderDetailsModal';
 import "./customerOrders.scss";
 const CustomerOrders = ({userId}) => {
-    const [inProgressOrders, setInhistoryOrders] = useState({});
-    const [doneOrders, setDoneOrders] = useState({});
-    const [rejectedOrders, setRejectedOrders] = useState({});
+    const [inProgressOrders, setInhistoryOrders] = useState([]);
+    const [doneOrders, setDoneOrders] = useState([]);
+    const [rejectedOrders, setRejectedOrders] = useState([]);
     const [showDetails, setShowDetails] = useState(false);
     const [orderToShow, setOrderToShow] = useState({});
     const [error, setError] = useState(false);

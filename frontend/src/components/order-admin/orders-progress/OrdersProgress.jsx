@@ -8,8 +8,8 @@ import OrderDetailsModal from '../order-details/OrderDetailsModal';
 import './ordersProgress.scss';
 
 const OrdersProgress = () => {
-    const [inProgressOrders, setInProgressOrders] = useState({});
-    const [doneOrders, setDoneOrders] = useState({});
+    const [inProgressOrders, setInProgressOrders] = useState([]);
+    const [doneOrders, setDoneOrders] = useState([]);
     const [showDetails, setShowDetails] = useState(false);
     const [orderToShow, setOrderToShow] = useState({});
     const [error, setError] = useState(false);
