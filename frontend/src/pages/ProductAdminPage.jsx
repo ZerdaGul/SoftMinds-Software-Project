@@ -18,6 +18,12 @@ const links=[
         alt: 'products',
         icon: orders
     },
+    {
+      path: '/questions',
+      text: 'questions',
+      alt: 'questions',
+      icon: orders
+    },
   
 ]
 

@@ -86,7 +86,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout, activeUser }) => {
                 </li>
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                             to="/contactUs">Contact Us</NavLink>
+                             to={activeUser ? "/contactUs": "/unauthorized"}>Contact Us</NavLink>
                 </li>
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}

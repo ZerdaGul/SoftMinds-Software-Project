@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom';
-import ContactForm from '../contact-form/ContactForm';
-import { GetQuestionsCustomer } from '../../services/QuestionsService';
-import InfoModal from '../modals/InfoModal';
 
-import './questionsListCustomer.scss'
 
-  
+import './questionsList.scss'
+import { GetQuestionsAdmin } from '../../../services/QuestionsService';
+import AnswerModal from './AnswerModal';
+import InfoModal from '../../modals/InfoModal';
 
-const QuestionsListCustomer = () => {
+
+
+const QuestionsList = () => {
     const [answeredQ, setAnsweredQ] = useState([]);
     const [unansweredQ, setUnansweredQ] = useState([]);
+    const [showAnswerModal, setShowAnswerModal] = useState(false);
+    const [qToAnswer, setQToAnswer] = useState({});
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [showModal, setShowModal] = useState(false);
@@ -28,7 +31,7 @@ const QuestionsListCustomer = () => {
 
       const loadQuestions = async() => {
         try {
-          const q = await GetQuestionsCustomer();
+          const q = await GetQuestionsAdmin();
           setAnsweredQ(q.answered);
           setUnansweredQ(q.unanswered);
         } catch (error) {
@@ -36,8 +39,20 @@ const QuestionsListCustomer = () => {
         }
       }
 
+    const handleAnswer = (Id, Question_Text, Created_At) => {
+      setShowAnswerModal(true);
+      setQToAnswer({Id, Question_Text, Created_At});
+    }
 
-      const modal = <div>
+    const modal = <div>
+                        {showAnswerModal && createPortal(
+                            <AnswerModal 
+                            question={qToAnswer}
+                            onClose={() => {    
+                                setShowAnswerModal(false)
+                                }}/>,
+                            document.body
+                        )}
                         {showModal && error && createPortal(
                             <InfoModal 
                             title={"Error"}
@@ -51,13 +66,12 @@ const QuestionsListCustomer = () => {
   return (
     <div className="container">
         <div className="questions">
-            <ContactForm/>
             {unansweredQ.length > 0 && <div className="questions__block">
                 <div className="questions__title">Unanswered</div>
                 <ul className="questions__list">
                     {unansweredQ.map(({Id, Question_Text, Created_At}) => {
                         return (
-                            <li key={Id} className="questions__item">
+                            <li style={{cursor: "pointer"}} onClick={()=>handleAnswer(Id, Question_Text, Created_At)} key={Id} className="questions__item">
                                 <div className="questions__item-q">
                                     <div id="date" className="questions__date">{Created_At}</div>
                                     <div className="questions__text">{Question_Text}</div>
@@ -69,7 +83,7 @@ const QuestionsListCustomer = () => {
                     }                
                 </ul>
             </div>}
-            {answeredQ.length > 0 &&<div className="questions__block">
+            {answeredQ.length > 0 && <div className="questions__block">
                 <div className="questions__title">Answered</div>
                 <ul className="questions__list">
                     {answeredQ.map(({Id, Question_Text, Created_At, Answer_Text, Answered_At}) => {
@@ -99,4 +113,4 @@ const QuestionsListCustomer = () => {
   )
 }
 
-export default QuestionsListCustomer
+export default QuestionsList

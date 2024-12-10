@@ -31,7 +31,13 @@ export const GetQuestionsCustomer = async () => {
           'Content-Type': 'application/json'
         },
       })
-      return response.data;
+      const allQuestions = response.data;
+
+        // Sort questions into answered and unanswered arrays
+        const answered = allQuestions.filter(question => question.Answer_Text);
+        const unanswered = allQuestions.filter(question => !question.Answer_Text);
+
+        return { answered, unanswered };
     } catch (error) {
       console.log(error)
       if (error.response) {
@@ -74,7 +80,13 @@ export const GetQuestionsCustomer = async () => {
           'Content-Type': 'application/json'
         },
       })
-      return response.data;
+      const allQuestions = response.data;
+
+        // Sort questions into answered and unanswered arrays
+        const answered = allQuestions.filter(question => question.Answer_Text);
+        const unanswered = allQuestions.filter(question => !question.Answer_Text);
+
+        return { answered, unanswered };
     } catch (error) {
       console.log(error)
       if (error.response) {
