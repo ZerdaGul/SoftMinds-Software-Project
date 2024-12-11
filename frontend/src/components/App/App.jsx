@@ -199,7 +199,6 @@ const getUserFromLocalStorage = () => {
 			</CSSTransition>
 			</SwitchTransition>
 			</main>
-			{activeUser?.role === "customer" && <ContactForm/>}
 			<Footer />
 			</>
 	);

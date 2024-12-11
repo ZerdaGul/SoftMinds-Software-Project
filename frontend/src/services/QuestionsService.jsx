@@ -10,7 +10,14 @@ export const GetQuestionsCustomer = async () => {
           'Content-Type': 'application/json'
         },
       })
-      return response.data;
+      const allQuestions = response.data;
+
+        // Sort questions into answered and unanswered arrays
+        const answered = allQuestions.filter(question => question.Answer_Text);
+        const unanswered = allQuestions.filter(question => !question.Answer_Text);
+
+        return { answered, unanswered };
+      
     } catch (error) {
       console.log(error)
       if (error.response) {
@@ -24,20 +31,14 @@ export const GetQuestionsCustomer = async () => {
 
   export const SendQuestionsCustomer = async (data) => {
     try {
-      const response = await axios.get(`${api}questions/customer`,
+      const response = await axios.post(`${api}/questions/customer`,
       data,
       {
         headers: {
           'Content-Type': 'application/json'
         },
       })
-      const allQuestions = response.data;
-
-        // Sort questions into answered and unanswered arrays
-        const answered = allQuestions.filter(question => question.Answer_Text);
-        const unanswered = allQuestions.filter(question => !question.Answer_Text);
-
-        return { answered, unanswered };
+      return response.data;
     } catch (error) {
       console.log(error)
       if (error.response) {
@@ -54,12 +55,18 @@ export const GetQuestionsCustomer = async () => {
 
   export const GetQuestionsAdmin = async () => {
     try {
-      const response = await axios.get(`${api}admin`, {
+      const response = await axios.get(`${api}questions/admin`, {
         headers: {
           'Content-Type': 'application/json'
         },
       })
-      return response.data;
+      const allQuestions = response.data;
+
+      // Sort questions into answered and unanswered arrays
+      const answered = allQuestions.filter(question => question.Answer_Text);
+      const unanswered = allQuestions.filter(question => !question.Answer_Text);
+
+      return { answered, unanswered };
     } catch (error) {
       console.log(error)
       if (error.response) {
@@ -73,20 +80,15 @@ export const GetQuestionsCustomer = async () => {
 
   export const SendAnswerAdmin = async (data) => {
     try {
-      const response = await axios.get(`${api}admin/answer`,
+      const response = await axios.post(`${api}questions/admin/answer`,
       data,
       {
         headers: {
           'Content-Type': 'application/json'
         },
       })
-      const allQuestions = response.data;
-
-        // Sort questions into answered and unanswered arrays
-        const answered = allQuestions.filter(question => question.Answer_Text);
-        const unanswered = allQuestions.filter(question => !question.Answer_Text);
-
-        return { answered, unanswered };
+      
+        return response.data;
     } catch (error) {
       console.log(error)
       if (error.response) {
