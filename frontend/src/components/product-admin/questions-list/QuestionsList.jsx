@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom';
 
 
-import './questionsList.scss'
+import './questionsList.scss';
 import { GetQuestionsAdmin } from '../../../services/QuestionsService';
 import AnswerModal from './AnswerModal';
 import InfoModal from '../../modals/InfoModal';

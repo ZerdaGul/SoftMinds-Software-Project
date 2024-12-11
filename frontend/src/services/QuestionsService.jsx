@@ -31,7 +31,7 @@ export const GetQuestionsCustomer = async () => {
 
   export const SendQuestionsCustomer = async (data) => {
     try {
-      const response = await axios.post(`${api}/questions/customer`,
+      const response = await axios.post(`${api}questions/customer`,
       data,
       {
         headers: {

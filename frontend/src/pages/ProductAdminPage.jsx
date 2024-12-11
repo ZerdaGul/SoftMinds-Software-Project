@@ -19,8 +19,8 @@ const links=[
         icon: orders
     },
     {
-      path: '/questions',
-      text: 'questions',
+      path: '/profile/questions',
+      text: 'Questions',
       alt: 'questions',
       icon: orders
     },
