@@ -19,7 +19,7 @@ namespace api.Controller
             _userService = userService;
         }
 
-       [HttpPost("accept-order")]
+        [HttpPost("accept-order")]
         public async Task<IActionResult> AcceptOrder([FromBody] OrderModel model)
         {
             if (_userService.GetRole() != "oadmin")
@@ -33,6 +33,8 @@ namespace api.Controller
             }
 
             var order = await _context.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
                 .Where(o => o.Id == model.OrderId && o.State == "Requested")
                 .FirstOrDefaultAsync();
 
@@ -41,11 +43,32 @@ namespace api.Controller
                 return NotFound("Sipariş bulunamadı veya sipariş durumu 'Requested' değil.");
             }
 
+            // Siparişin durumunu Accepted yap
             order.State = "Accepted";
+
+            // Siparişteki ürünlerin stoklarını güncelle
+            foreach (var orderItem in order.OrderItems)
+            {
+                var product = orderItem.Product;
+                if (product == null)
+                {
+                    return NotFound($"Product with ID {orderItem.ProductId} not found.");
+                }
+
+                if (product.Stock < orderItem.Quantity)
+                {
+                    return BadRequest($"Product with ID {product.Id} has insufficient stock.");
+                }
+
+                product.Stock -= orderItem.Quantity; // Stok düşürme
+                _context.Products.Update(product);
+            }
+
             await _context.SaveChangesAsync();
 
-            return Ok("Sipariş başarıyla kabul edildi.");
+            return Ok("Sipariş başarıyla kabul edildi ve stoklar güncellendi.");
         }
+
 
 
         [HttpPost("reject-order")]
