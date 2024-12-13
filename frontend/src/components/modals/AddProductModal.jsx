@@ -1,30 +1,16 @@
 import React, { useState } from 'react';
 import './AddEditProductModal.scss';
-
-import { FaCheck, FaTimes } from 'react-icons/fa'; // Font Awesome'dan tik ve çarpı ikonları
+import { FaCheck, FaTimes } from 'react-icons/fa'; // Tik ve çarpı ikonları
+import { AddProduct } from '../../services/ProductService'; // API çağrısı için servis
 
 export const AddProductModal = ({ onClose, onProductAdded }) => {
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [description, setDescription] = useState('');
-    const [selectedSectors, setSelectedSectors] = useState([]);
+    const [stock, setStock] = useState('');
+    const [sector, setSector] = useState(''); // Tek bir string olarak sektör
     const [photos, setPhotos] = useState([]);
-
-    const allSectors = ['Smart City', 'Energy', 'ITS & Traffic', 'Security & Surveillance', 'Iron & Steel', 'Packaging'];
-
-    const handleSectorToggle = (sector) => {
-        if (selectedSectors.includes(sector)) {
-            setSelectedSectors(selectedSectors.filter((s) => s !== sector));
-        } else {
-            setSelectedSectors([...selectedSectors, sector]);
-        }
-    };
-
-    const handleSubmit = () => {
-        const newProduct = { name, price, description, sectors: selectedSectors, photos };
-        onProductAdded(newProduct);
-        onClose();
-    };
+    const [error, setError] = useState('');
 
     const handlePhotoUpload = (e) => {
         const files = Array.from(e.target.files);
@@ -36,19 +22,63 @@ export const AddProductModal = ({ onClose, onProductAdded }) => {
         setPhotos(updatedPhotos);
     };
 
+    const handleSubmit = async () => {
+        // Form doğrulama
+        if (!name || !price || !description || !stock || !sector) {
+            setError('Tüm alanları doldurmanız gerekmektedir.');
+            return;
+        }
+
+        if (isNaN(price) || price <= 0) {
+            setError('Geçerli bir fiyat girin.');
+            return;
+        }
+
+        if (isNaN(stock) || stock <= 0) {
+            setError('Geçerli bir stok değeri girin.');
+            return;
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append('ProductName', name);
+            formData.append('Price', price);
+            formData.append('Description', description);
+            formData.append('Stock', stock);
+            formData.append('Sector', sector); // Tek bir string olarak sektör
+
+            // Fotoğraf ekleme
+            if (photos.length > 0) {
+                formData.append('Photo', photos[0]); // İlk fotoğrafı gönder
+                formData.append('ContentType', photos[0].type); // Fotoğraf MIME türü
+            }
+
+            // API'ye form verisini gönder
+            await AddProduct(formData);
+
+            onProductAdded(); // Ürün listesi güncellenir
+            onClose(); // Modal kapatılır
+        } catch (err) {
+            setError('Ürün eklenirken bir hata oluştu. Lütfen tekrar deneyin.');
+        }
+    };
+
     return (
         <div className="overlay">
             <div className="modal-content">
-                <button className="close-button" onClick={onClose}>X</button>
+                <button className="close-button" onClick={onClose}>
+                    X
+                </button>
                 <h2>Add Product</h2>
                 <form>
+                    {error && <p className="error-message">{error}</p>}
                     <div className="form-group">
                         <label>Name</label>
                         <input
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            placeholder="Enter name of product"
+                            placeholder="Enter product name"
                         />
                     </div>
                     <div className="form-group">
@@ -57,7 +87,7 @@ export const AddProductModal = ({ onClose, onProductAdded }) => {
                             type="number"
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
-                            placeholder="Set price"
+                            placeholder="Set product price"
                         />
                     </div>
                     <div className="form-group">
@@ -69,28 +99,26 @@ export const AddProductModal = ({ onClose, onProductAdded }) => {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Pick Sectors</label>
-                        <div className="sector-buttons">
-                            {allSectors.map((sector) => (
-                                <button
-                                    key={sector}
-                                    type="button"
-                                    className={`sector-button ${selectedSectors.includes(sector) ? 'selected' : ''}`}
-                                    onClick={() => handleSectorToggle(sector)}
-                                >
-                                    {sector}{' '}
-                                    {selectedSectors.includes(sector) ? (
-                                        <FaCheck className="icon" />
-                                    ) : (
-                                        <FaTimes className="icon" />
-                                    )}
-                                </button>
-                            ))}
-                        </div>
+                        <label>Stock</label>
+                        <input
+                            type="number"
+                            value={stock}
+                            onChange={(e) => setStock(e.target.value)}
+                            placeholder="Set stock amount"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Sector</label>
+                        <input
+                            type="text"
+                            value={sector}
+                            onChange={(e) => setSector(e.target.value)}
+                            placeholder="Enter sector (e.g., 'Smart City, Energy')"
+                        />
                     </div>
                     <div className="form-group">
                         <label>Add Photos</label>
-                        <input type="file" multiple onChange={handlePhotoUpload} />
+                        <input type="file" accept="image/*" onChange={handlePhotoUpload} />
                         <div className="photo-preview">
                             {photos.map((photo, index) => (
                                 <div key={index} className="photo-item">
@@ -101,7 +129,9 @@ export const AddProductModal = ({ onClose, onProductAdded }) => {
                         </div>
                     </div>
                 </form>
-                <button className="submit-button" onClick={handleSubmit}>Add new product</button>
+                <button className="submit-button" onClick={handleSubmit}>
+                    Add Product
+                </button>
             </div>
         </div>
     );

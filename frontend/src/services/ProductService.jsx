@@ -229,3 +229,20 @@ export const GetOrdersHistory = async (userId) => {
     }
   }
 }
+
+export const AddProduct = async (data) => {
+  try {
+    const response = await axios.post(`${api}add-product`, data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data); // API'den gelen hatayı işleyin
+    } else {
+      throw new Error("An unknown error occurred."); // Diğer hatalar için
+    }
+  }
+};
