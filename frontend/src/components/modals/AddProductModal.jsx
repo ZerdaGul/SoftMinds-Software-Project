@@ -1,33 +1,85 @@
 import React, { useState } from 'react';
 import './AddEditProductModal.scss';
-import { FaCheck, FaTimes } from 'react-icons/fa'; // Tik ve çarpı ikonları
-import { AddProduct } from '../../services/ProductService'; // API çağrısı için servis
+import { AddProduct } from '../../services/ProductService';
+import defaultPhoto from '../../assets/product-pic-default.jpg';
 
 export const AddProductModal = ({ onClose, onProductAdded }) => {
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [description, setDescription] = useState('');
     const [stock, setStock] = useState('');
-    const [sector, setSector] = useState(''); // Tek bir string olarak sektör
-    const [photos, setPhotos] = useState([]);
+    const [sector, setSector] = useState('');
+    const [photo, setPhoto] = useState(null);
+    const [photoType, setPhotoType] = useState('');
+    const [photoSize, setPhotoSize] = useState(0);
     const [error, setError] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handlePhotoUpload = (e) => {
-        const files = Array.from(e.target.files);
-        setPhotos([...photos, ...files]);
+    const sectors = [
+        'Smart City',
+        'Energy',
+        'ITS & Traffic',
+        'Security & Surveillance',
+        'Iron & Steel',
+        'Packaging',
+    ];
+
+    const handleSectorSelect = (selectedSector) => {
+        setSector(selectedSector);
     };
 
-    const handleRemovePhoto = (index) => {
-        const updatedPhotos = photos.filter((_, i) => i !== index);
-        setPhotos(updatedPhotos);
+    const handlePhotoUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setPhoto(file);
+            setPhotoType(file.type); // Fotoğraf türü
+            setPhotoSize(file.size); // Fotoğraf boyutu
+        }
+    };
+
+    const handleRemovePhoto = () => {
+        setPhoto(null);
+        setPhotoType('');
+        setPhotoSize(0);
+    };
+
+    const resetForm = () => {
+        setName('');
+        setPrice('');
+        setDescription('');
+        setStock('');
+        setSector('');
+        setPhoto(null);
+        setPhotoType('');
+        setPhotoSize(0);
+        setError('');
     };
 
     const handleSubmit = async () => {
-        // Form doğrulama
         if (!name || !price || !description || !stock || !sector) {
             setError('Tüm alanları doldurmanız gerekmektedir.');
             return;
         }
+
+        const formData = new FormData();
+
+        formData.append('ProductName', name);
+        formData.append('Description', description);
+        formData.append('Price', price);
+        formData.append('Stock', stock);
+        formData.append('Sector', sector);
+        formData.append('Photo', photo);
+
+        console.log([...formData.entries()]);
+
+        if (photo) {
+            let contentType = photo.type; // photo.type yerine doğru değer alınır
+            formData.append('PhotoType', contentType);
+        }else {
+            const defaultBlob = new Blob([], { type: "image/jpeg" }); // Boş bir Blob oluştur
+            formData.append("Photo", defaultBlob);
+            formData.append("PhotoType", "image/jpeg"); // Varsayılan tür
+        }        
 
         if (isNaN(price) || price <= 0) {
             setError('Geçerli bir fiyat girin.');
@@ -39,27 +91,19 @@ export const AddProductModal = ({ onClose, onProductAdded }) => {
             return;
         }
 
+        setIsSubmitting(true);
+        setError('');
+
         try {
-            const formData = new FormData();
-            formData.append('ProductName', name);
-            formData.append('Price', price);
-            formData.append('Description', description);
-            formData.append('Stock', stock);
-            formData.append('Sector', sector); // Tek bir string olarak sektör
-
-            // Fotoğraf ekleme
-            if (photos.length > 0) {
-                formData.append('Photo', photos[0]); // İlk fotoğrafı gönder
-                formData.append('ContentType', photos[0].type); // Fotoğraf MIME türü
-            }
-
-            // API'ye form verisini gönder
             await AddProduct(formData);
-
-            onProductAdded(); // Ürün listesi güncellenir
-            onClose(); // Modal kapatılır
+            onProductAdded();
+            resetForm();
+            onClose();
         } catch (err) {
-            setError('Ürün eklenirken bir hata oluştu. Lütfen tekrar deneyin.');
+            console.error("Error Response:", err.response?.data || err.message);
+            setError(err.response?.data?.message || 'Ürün eklenirken bir hata oluştu.');
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -108,29 +152,40 @@ export const AddProductModal = ({ onClose, onProductAdded }) => {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Sector</label>
-                        <input
-                            type="text"
-                            value={sector}
-                            onChange={(e) => setSector(e.target.value)}
-                            placeholder="Enter sector (e.g., 'Smart City, Energy')"
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Add Photos</label>
-                        <input type="file" accept="image/*" onChange={handlePhotoUpload} />
-                        <div className="photo-preview">
-                            {photos.map((photo, index) => (
-                                <div key={index} className="photo-item">
-                                    <img src={URL.createObjectURL(photo)} alt="preview" />
-                                    <button onClick={() => handleRemovePhoto(index)}>Remove</button>
-                                </div>
+                        <label>Select Sector</label>
+                        <div className="sector-buttons">
+                            {sectors.map((s) => (
+                                <button
+                                    key={s}
+                                    type="button"
+                                    className={`sector-button ${sector === s ? 'selected' : ''}`}
+                                    onClick={() => handleSectorSelect(s)}
+                                >
+                                    {s}
+                                </button>
                             ))}
                         </div>
+                        {sector && <p>Selected Sector: {sector}</p>}
+                    </div>
+                    <div className="form-group">
+                        <label>Photo</label>
+                        <input type="file" accept="image/*" onChange={handlePhotoUpload} />
+                        {photo && (
+                            <div className="photo-preview">
+                                <img src={URL.createObjectURL(photo)} alt="preview" />
+                                <p>Type: {photoType}</p>
+                                <p>Size: {(photoSize / 1024).toFixed(2)} KB</p>
+                                <button onClick={handleRemovePhoto}>Remove Photo</button>
+                            </div>
+                        )}
                     </div>
                 </form>
-                <button className="submit-button" onClick={handleSubmit}>
-                    Add Product
+                <button
+                    className="submit-button"
+                    onClick={handleSubmit}
+                    disabled={isSubmitting}
+                >
+                    {isSubmitting ? 'Submitting...' : 'Add Product'}
                 </button>
             </div>
         </div>

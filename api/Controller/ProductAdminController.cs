@@ -23,117 +23,132 @@ namespace api.Controller
             _context = context;
         }
 
-        [HttpPost("add-product")]
-        public async Task<IActionResult> AddProduct([FromBody] ProductAdminDTO model)
+[HttpPost("add-product")]
+public async Task<IActionResult> AddProduct([FromBody] ProductAdminDTO model)
+{
+    // Model null veya gerekli alanlar boş ise hata döndür
+    if (model == null || string.IsNullOrEmpty(model.ProductName) || string.IsNullOrEmpty(model.Description) ||
+        model.Price == 0 || model.Stock == 0 || string.IsNullOrEmpty(model.Sector))
+    {
+        return BadRequest("Tüm alanlar gereklidir.");
+    }
+
+    // Ürün adı kontrolü: Sadece harf ve boşluk karakteri
+    if (!System.Text.RegularExpressions.Regex.IsMatch(model.ProductName, @"^[a-zA-Z\s]+$"))
+    {
+        return BadRequest("Ürün adı yalnızca harflerden ve boşluk karakterlerinden oluşmalıdır.");
+    }
+
+    // Ürün fiyatı kontrolü
+    if (model.Price <= 0)
+    {
+        return BadRequest("Geçersiz fiyat.");
+    }
+
+    // Ürün stok kontrolü
+    if (model.Stock <= 0)
+    {
+        return BadRequest("Geçersiz stok.");
+    }
+
+    // Ürün sektörü kontrolü
+    if (!System.Text.RegularExpressions.Regex.IsMatch(model.Sector, @"^[a-zA-Z\s]+$"))
+    {
+        return BadRequest("Sektör yalnızca harflerden ve boşluk karakterlerinden oluşmalıdır.");
+    }
+
+    // Ürün adı benzersiz mi kontrol et
+    var existingProduct = await _context.Products.FirstOrDefaultAsync(p => p.Name == model.ProductName);
+    if (existingProduct != null)
+    {
+        return BadRequest("Bu isimde bir ürün zaten var.");
+    }
+
+    // Ürünü veritabanına ekle
+    var product = new Products
+    {
+        Name = model.ProductName,
+        Description = model.Description,
+        Price = model.Price,
+        Stock = model.Stock,
+        Sector = model.Sector,
+        Photo = model.Photo,
+        ContentType = model.ContentType
+    };
+
+    
+
+    await _context.Products.AddAsync(product);
+    await _context.SaveChangesAsync();
+
+    return Ok("Ürün başarıyla eklendi.");
+}
+
+[HttpPost("update-product")]
+public async Task<IActionResult> UpdateProduct([FromBody] ProductAdminDTO model)
+{
+    // Model null veya gerekli alanlar boş ise hata döndür
+    if (model == null || string.IsNullOrEmpty(model.ProductName) || string.IsNullOrEmpty(model.Description) ||
+        model.Price == 0 || model.Stock == 0 || string.IsNullOrEmpty(model.Sector))
+    {
+        return BadRequest("Tüm alanlar gereklidir.");
+    }
+
+    // Ürün adı kontrolü: Sadece harf ve boşluk karakteri
+    if (!System.Text.RegularExpressions.Regex.IsMatch(model.ProductName, @"^[a-zA-Z\s]+$"))
+    {
+        return BadRequest("Ürün adı yalnızca harflerden ve boşluk karakterlerinden oluşmalıdır.");
+    }
+
+    // Ürün fiyatı kontrolü
+    if (model.Price <= 0)
+    {
+        return BadRequest("Geçersiz fiyat.");
+    }
+
+    // Ürün stok kontrolü
+    if (model.Stock <= 0)
+    {
+        return BadRequest("Geçersiz stok.");
+    }
+
+    // Ürün sektörü kontrolü
+    if (!System.Text.RegularExpressions.Regex.IsMatch(model.Sector, @"^[a-zA-Z\s]+$"))
+    {
+        return BadRequest("Sektör yalnızca harflerden ve boşluk karakterlerinden oluşmalıdır.");
+    }
+
+    // Ürünü veritabanında bul
+    var product = await _context.Products.FirstOrDefaultAsync(p => p.Name == model.ProductName);
+    if (product == null)
+    {
+        return NotFound("Ürün bulunamadı.");
+    }
+
+    // Ürünü güncelle
+    product.Description = model.Description;
+    product.Price = model.Price;
+    product.Stock = model.Stock;
+    product.Sector = model.Sector;
+
+    // Fotoğraf güncelleme (isteğe bağlı)
+    if (model.Photo != null && model.Photo.Length > 0)
+    {
+        var validContentTypes = new[] { "image/jpeg", "image/png" };
+        if (string.IsNullOrEmpty(model.ContentType) || !validContentTypes.Contains(model.ContentType.ToLower()))
         {
-            
-            // Model null veya gerekli alanlar boş ise hata döndür
-            if (model == null || string.IsNullOrEmpty(model.ProductName) || string.IsNullOrEmpty(model.Description) ||
-                model.Price == 0 || model.Stock == 0 || string.IsNullOrEmpty(model.Sector))
-            {
-                return BadRequest("Tüm alanlar gereklidir.");
-            }
-
-            // Ürün adı kontrolü: Sadece harf ve boşluk karakteri
-            if (!System.Text.RegularExpressions.Regex.IsMatch(model.ProductName, @"^[a-zA-Z\s]+$"))
-            {
-                return BadRequest("Ürün adı yalnızca harflerden ve boşluk karakterlerinden oluşmalıdır.");
-            }
-
-            // Ürün fiyatı kontrolü
-            if (model.Price <= 0)
-            {
-                return BadRequest("Geçersiz fiyat.");
-            }
-
-            // Ürün stok kontrolü
-            if (model.Stock <= 0)
-            {
-                return BadRequest("Geçersiz stok.");
-            }
-
-            // Ürün sektörü kontrolü
-            if (!System.Text.RegularExpressions.Regex.IsMatch(model.Sector, @"^[a-zA-Z\s]+$"))
-            {
-                return BadRequest("Sektör yalnızca harflerden ve boşluk karakterlerinden oluşmalıdır.");
-            }
-
-            // Ürün adı benzersiz mi kontrol et
-            var existingProduct = await _context.Products.FirstOrDefaultAsync(p => p.Name == model.ProductName);
-            if (existingProduct != null)
-            {
-                return BadRequest("Bu isimde bir ürün zaten var.");
-            }
-
-            
-
-            // Ürünü veritabanına ekle
-            var product = new Products
-            {
-                Name = model.ProductName,
-                Description = model.Description,
-                Price = model.Price,
-                Stock = model.Stock,
-                Sector = model.Sector
-            };
-
-            await _context.Products.AddAsync(product);
-            await _context.SaveChangesAsync();
-
-            return Ok("Ürün başarıyla eklendi.");
+            return BadRequest("Geçersiz fotoğraf türü. Sadece JPG veya PNG kabul edilir.");
         }
 
-        [HttpPost("update-product")]
-        public async Task<IActionResult> UpdateProduct([FromBody] ProductAdminDTO model)
-        {
-            // Model null veya gerekli alanlar boş ise hata döndür
-            if (model == null || string.IsNullOrEmpty(model.ProductName) || string.IsNullOrEmpty(model.Description) ||
-                model.Price == 0 || model.Stock == 0 || string.IsNullOrEmpty(model.Sector))
-            {
-                return BadRequest("Tüm alanlar gereklidir.");
-            }
+        product.Photo = model.Photo;
+        product.ContentType = model.ContentType;
+    }
+    // Eğer yeni fotoğraf gelmediyse önceki fotoğrafı koruyoruz. Burada ek bir işlem yapmaya gerek yok.
 
-            // Ürün adı kontrolü: Sadece harf ve boşluk karakteri
-            if (!System.Text.RegularExpressions.Regex.IsMatch(model.ProductName, @"^[a-zA-Z\s]+$"))
-            {
-                return BadRequest("Ürün adı yalnızca harflerden ve boşluk karakterlerinden oluşmalıdır.");
-            }
+    await _context.SaveChangesAsync();
 
-            // Ürün fiyatı kontrolü
-            if (model.Price <= 0)
-            {
-                return BadRequest("Geçersiz fiyat.");
-            }
-
-            // Ürün stok kontrolü
-            if (model.Stock <= 0)
-            {
-                return BadRequest("Geçersiz stok.");
-            }
-
-            // Ürün sektörü kontrolü
-            if (!System.Text.RegularExpressions.Regex.IsMatch(model.Sector, @"^[a-zA-Z\s]+$"))
-            {
-                return BadRequest("Sektör yalnızca harflerden ve boşluk karakterlerinden oluşmalıdır.");
-            }
-
-            // Ürünü veritabanında bul
-            var product = await _context.Products.FirstOrDefaultAsync(p => p.Name == model.ProductName);
-            if (product == null)
-            {
-                return NotFound("Ürün bulunamadı.");
-            }
-
-            // Ürünü güncelle
-            product.Description = model.Description;
-            product.Price = model.Price;
-            product.Stock = model.Stock;
-            product.Sector = model.Sector;
-
-            await _context.SaveChangesAsync();
-
-            return Ok("Ürün başarıyla güncellendi.");
-        }
+    return Ok("Ürün başarıyla güncellendi.");
+}
 
         [HttpPost("delete-product")]
         public async Task<IActionResult> DeleteProduct([FromBody] ProductAdminDTO model)
@@ -178,183 +193,108 @@ namespace api.Controller
             return Ok(product);
         }
 
-       /*
+       
             [HttpPost("add-image")]
-            public async Task<IActionResult> AddImage([FromForm] ImageModel model)
-            {
-                // Validate model
-                if (model == null || model.Id == Guid.Empty || model.Image == null)
-                {
-                    return BadRequest("All fields are required.");
-                }
+public async Task<IActionResult> AddImage([FromBody] ProductAdminDTO model)
+{
+    // Validate model
+    if (model == null || model.Id <= 0 || model.Photo == null || model.Photo.Length == 0)
+    {
+        return BadRequest("Product ID and image are required.");
+    }
 
-                // Validate file extension
-                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-                var fileExtension = Path.GetExtension(model.Image.FileName).ToLowerInvariant();
+    // Validate ContentType
+    if (string.IsNullOrEmpty(model.ContentType))
+    {
+        return BadRequest("Content type is required.");
+    }
 
-                if (!allowedExtensions.Contains(fileExtension))
-                {
-                    return BadRequest("Invalid image format. Allowed formats are .jpg, .jpeg, .png, .gif.");
-                }
+    var validContentTypes = new[] { "image/jpeg", "image/png" };
+    if (!validContentTypes.Contains(model.ContentType.ToLower()))
+    {
+        return BadRequest("Invalid file type. Only JPG and PNG files are allowed.");
+    }
 
-                // Validate content type
-                var allowedContentTypes = new[] { "image/jpeg", "image/png", "image/gif" };
-                if (!allowedContentTypes.Contains(model.Image.ContentType))
-                {
-                    return BadRequest("Invalid image content type.");
-                }
+    // Find the product in the database
+    var product = await _context.Products.FindAsync(model.Id);
+    if (product == null)
+    {
+        return NotFound("Product not found.");
+    }
 
-                // Find product in the database
-                var product = await _context.Products.FindAsync(model.Id);
-                if (product == null)
-                {
-                    return NotFound("Product not found.");
-                }
+    // Assign the photo and content type
+    product.Photo = model.Photo;
+    product.ContentType = model.ContentType;
 
-                // Ensure the images directory exists
-                var imagesDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
-                if (!Directory.Exists(imagesDir))
-                {
-                    Directory.CreateDirectory(imagesDir);
-                }
+    await _context.SaveChangesAsync();
 
-                // Generate a unique filename to prevent overwriting and security issues
-                 fileExtension = Path.GetExtension(model.Image.FileName);
-                var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+    return Ok("Image added successfully.");
+}
 
-                // Combine the images directory and unique filename to create the full path
-                var filePath = Path.Combine(imagesDir, uniqueFileName);
+[HttpPost("delete-image")]
+public async Task<IActionResult> DeleteImage([FromBody] ProductAdminDTO model)
+{
+    // Validate model
+    if (model == null || model.Id <= 0)
+    {
+        return BadRequest("Product ID is required.");
+    }
 
-                // Save the image to disk
-                try
-                {
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await model.Image.CopyToAsync(stream);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Log the exception (ex)
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Error saving the image.");
-                }
+    // Find the product in the database
+    var product = await _context.Products.FindAsync(model.Id);
+    if (product == null)
+    {
+        return NotFound("Product not found.");
+    }
 
-                // Save the image filename to the database
-                product.Image = uniqueFileName;
-                await _context.SaveChangesAsync();
+    if (product.Photo == null || product.Photo.Length == 0)
+    {
+        return BadRequest("Product does not have an image to delete.");
+    }
 
-                return Ok("Image added successfully.");
-            }
+    // Remove the image from the database
+    product.Photo = null;
+    product.ContentType = null;
+    await _context.SaveChangesAsync();
 
-            [HttpPost("delete-image")]
-            public async Task<IActionResult> DeleteImage([FromBody] DeleteImageModel model)
-            {
-                // Validate model
-                if (model == null || model.Id == Guid.Empty)
-                {
-                    return BadRequest("Product ID is required.");
-                }
+    return Ok("Image deleted successfully.");
+}
 
-                // Find the product in the database
-                var product = await _context.Products.FindAsync(model.Id);
-                if (product == null)
-                {
-                    return NotFound("Product not found.");
-                }
+[HttpGet("get-image")]
+public async Task<IActionResult> GetImage([FromQuery] int id)
+{
+    // Validate the id
+    if (id <= 0)
+    {
+        return BadRequest("Product ID is required.");
+    }
 
-                if (string.IsNullOrEmpty(product.Image))
-                {
-                    return BadRequest("Product does not have an image to delete.");
-                }
+    // Find the product in the database
+    var product = await _context.Products.FindAsync(id);
+    if (product == null)
+    {
+        return NotFound("Product not found.");
+    }
 
-                // Get the image file path
-                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", product.Image);
+    // Check if product has a photo
+    if (product.Photo == null || product.Photo.Length == 0)
+    {
+        return NotFound("No image found for this product.");
+    }
 
-                // Delete the image from disk
-                try
-                {
-                    if (System.IO.File.Exists(imagePath))
-                    {
-                        System.IO.File.Delete(imagePath);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Log the exception (ex)
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting the image.");
-                }
+    // Return the image file from the database
+    try
+    {
+        return File(product.Photo, product.ContentType ?? "application/octet-stream");
+    }
+    catch (Exception)
+    {
+        return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving the image.");
+    }
+}
 
-                // Remove the image filename from the database
-                product.Image = null;
-                await _context.SaveChangesAsync();
 
-                return Ok("Image deleted successfully.");
-            }
 
-            [HttpGet("get-image")]
-            public async Task<IActionResult> GetImage([FromQuery] Guid id)
-            {
-                // Validate the id
-                if (id == Guid.Empty)
-                {
-                    return BadRequest("Product ID is required.");
-                }
-
-                // Find the product in the database
-                var product = await _context.Products.FindAsync(id);
-                if (product == null)
-                {
-                    return NotFound("Product not found.");
-                }
-
-                if (string.IsNullOrEmpty(product.Image))
-                {
-                    return NotFound("Image not found.");
-                }
-
-                // Get the image file path
-                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", product.Image);
-
-                // Check if the file exists
-                if (!System.IO.File.Exists(imagePath))
-                {
-                    return NotFound("Image file not found on the server.");
-                }
-
-                // Get the content type
-                var contentType = GetContentType(imagePath);
-
-                // Return the image file
-                try
-                {
-                    var memory = new MemoryStream();
-                    using (var stream = new FileStream(imagePath, FileMode.Open))
-                    {
-                        await stream.CopyToAsync(memory);
-                    }
-                    memory.Position = 0;
-                    return File(memory, contentType, Path.GetFileName(imagePath));
-                }
-                catch (Exception ex)
-                {
-                    // Log the exception (ex)
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving the image.");
-                }
-            }
-
-            // Helper method to get the content type based on file extension
-            private string GetContentType(string path)
-            {
-                var provider = new FileExtensionContentTypeProvider();
-                if (!provider.TryGetContentType(path, out string contentType))
-                {
-                    contentType = "application/octet-stream";
-                }
-                return contentType;
-            }
-        
-
-        */
 
         [HttpPost("update-stock")]
         public async Task<IActionResult> UpdateStock([FromBody] ProductAdminDTO model)
@@ -470,17 +410,7 @@ namespace api.Controller
             return Ok(income);
         }
 
-// Model classes
-        public class ImageModel
-        {
-            public Guid Id { get; set; }
-            public IFormFile Image { get; set; }
-        }
 
-        public class DeleteImageModel
-        {
-            public Guid Id { get; set; }
-        }
 
 }
 }
