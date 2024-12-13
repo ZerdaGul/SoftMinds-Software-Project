@@ -63,6 +63,17 @@ namespace api.Controller
             var products = await query
                 .Skip((pageNumber - 1) * itemsPerPage)
                 .Take(itemsPerPage)
+                .Select(p => new 
+                {
+                    p.Id,
+                    p.Name,
+                    p.Price,
+                    p.Description,
+                    p.Stock,
+                    p.Sector,
+                    Photo = p.Photo != null ? Convert.ToBase64String(p.Photo) : null,
+                    p.ContentType
+                })
                 .ToListAsync();
 
             var response = new
@@ -102,6 +113,8 @@ namespace api.Controller
                 product.Stock,
                 product.Sector,
                 Availability = product.Stock > 0 ? "In Stock" : "Out of Stock", // Check stock status
+                Photo = product.Photo != null ? Convert.ToBase64String(product.Photo) : null,
+                product.ContentType,
                 Comments = product.Comments.Select(c => new { c.Text, c.Created_At }),
             };
 
