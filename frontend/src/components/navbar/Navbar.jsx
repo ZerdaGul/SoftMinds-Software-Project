@@ -19,11 +19,12 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout, activeUser }) => {
     // Çıkış işlemi
     const handleLogout = async () => {
         try {
-            await LogOut(); // Backend çıkış işlemi
+            const response = await LogOut(); // Backend çıkış işlemi
             setIsLoggedIn(false);
             localStorage.removeItem('current-user');
             setShowLogoutModal(false);
             onLogout();
+            alert(response.message);
             navigate('/login'); // Giriş sayfasına yönlendir
         } catch (error) {
             console.error("Çıkış işlemi sırasında hata oluştu:", error);

@@ -26,17 +26,33 @@ const LogInForm = ({ setIsLoggedIn }) => {
 
     const handleSubmit = async (values) => {
         setLoading(true);
+        setError(false);
+        setErrorMessage('');
         try {
-            const user = await LogIn(values);
-            console.log("User logged in")
-            setIsLoggedIn(true) // Kullanıcı durumunu günceller
+            const user = await LogIn(values); // Backend'e istek
+            setIsLoggedIn(true); // Kullanıcı durumunu güncelle
             navigate('/'); // Giriş yaptıktan sonra ana sayfaya yönlendir
         } catch (err) {
-            onError(err.message);
+            setLoading(false);
+    
+            if (err.response) {
+                // Backend'ten gelen spesifik hata mesajı
+                setErrorMessage(err.response.data.message || 'An error occurred during login.');
+            } else if (err.request) {
+                // İstek gönderildi ama yanıt alınamadı
+                setErrorMessage('No response from the server. Please check your internet connection.');
+            } else {
+                // İstek oluşturulurken bir hata meydana geldi
+                setErrorMessage(err.message || 'Something went wrong. Please try again.');
+            }
+    
+            setError(true); // Hata durumunu güncelle
+            setShowModal(true); // Hata modalını göster
         } finally {
             setLoading(false);
         }
     };
+    
 
 
     const modal = <div>
