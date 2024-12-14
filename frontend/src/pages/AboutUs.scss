@@ -20,8 +20,10 @@
   .our-vision,
   .our-mission,
   .partners {
-    margin: 40px 120px;
-
+    margin: 40px auto;
+    max-width: 1200px; /* İçeriği ortalamak için */
+    padding: 0 20px; /* Kenarlardan boşluk bırak */
+    
     h2 {
       font-size: 1.8rem;
       color: #5e2750;
@@ -47,7 +49,6 @@
     }
   }
 
-  /* Kutucuk tasarımı */
   .our-vision,
   .our-mission {
     background: #f7f7f7;
@@ -57,9 +58,9 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 
     &:hover {
-      transform: scale(1.05); 
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-      background-color: #eaeaea; 
+      transform: scale(1.05);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      background-color: #eaeaea;
     }
   }
 
@@ -98,8 +99,8 @@
         color: #555;
       }
       &:hover {
-        transform: scale(1.05); 
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         background-color: #eaeaea;
       }
     }
@@ -109,7 +110,7 @@
 /* Media Queries */
 @media (max-width: 1024px) {
   .hero {
-    padding: 30px 0;
+    padding: 30px 20px;
 
     h1 {
       font-size: 2rem;
@@ -120,10 +121,10 @@
   .our-vision,
   .our-mission,
   .partners {
-    margin: 30px 0;
+    margin: 30px 20px;
 
     h2 {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
     }
 
     p {
@@ -143,7 +144,7 @@
 
 @media (max-width: 768px) {
   .hero {
-    padding: 20px 0;
+    padding: 20px 15px;
 
     h1 {
       font-size: 1.8rem;
@@ -154,10 +155,10 @@
   .our-vision,
   .our-mission,
   .partners {
-    margin: 20px 0;
+    margin: 20px 15px;
 
     h2 {
-      font-size: 1.3rem;
+      font-size: 1.4rem;
     }
 
     p {
@@ -177,7 +178,7 @@
 
 @media (max-width: 480px) {
   .hero {
-    padding: 15px 0;
+    padding: 15px 10px;
 
     h1 {
       font-size: 1.5rem;
@@ -188,7 +189,7 @@
   .our-vision,
   .our-mission,
   .partners {
-    margin: 15px 0;
+    margin: 15px 10px;
 
     h2 {
       font-size: 1.2rem;
