@@ -148,7 +148,7 @@ const getUserFromLocalStorage = () => {
 						<Route path="/unauthorized" element={<UnauthorizedPage/>}></Route>	
 					}
 					{activeUser?.role === "customer" && 
-						<Route path='/profile/*' element={<UserProfilePage />}>
+						<Route path='/profile/*' element={<UserProfilePage setActiveUser={activeUser}/>}>
 							<Route path='dashboard'></Route>
 							<Route path='orders' element={<CustomerOrders userId={activeUser.id}/>}></Route>
 							<Route path='cart' element={<CardForm />}></Route>
@@ -164,7 +164,7 @@ const getUserFromLocalStorage = () => {
 					{activeUser?.role === "padmin" && 
 					<>
 						<Route path='/products-admin' element={<ProductsForAdmin />}></Route>
-						<Route path='/profile/*' element={<ProductAdminPage />}>
+						<Route path='/profile/*' element={<ProductAdminPage activeUser={activeUser} />}>
 							<Route path='dashboard' element={<ProductDashboard/>}></Route>
 							<Route path='questions' element={<QuestionsList/>}></Route>
 							<Route path='my-profile' element={<ProfileForm initialValues={activeUser || {}} />}></Route>
@@ -178,7 +178,7 @@ const getUserFromLocalStorage = () => {
 					</>
 					} 
 					{activeUser?.role === "oadmin" && 
-						<Route path='/profile/*' element={<OrderAdminPage />}>
+						<Route path='/profile/*' element={<OrderAdminPage activeUser={setActiveUser} />}>
 							<Route path='dashboard' element={<OrderAdminDashboard/>}></Route>
 							<Route path='orders-progress' element={<OrdersProgress />}></Route>
 							<Route path='requests' element={<Requests />}></Route>
