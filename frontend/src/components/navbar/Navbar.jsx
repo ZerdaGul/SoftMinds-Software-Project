@@ -86,8 +86,10 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout, activeUser }) => {
                              to="/consultancy">Consultancy</NavLink>
                 </li>
                 <li>
-                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
+                    {activeUser?.role === "padmin" || activeUser?.role === "oadmin" ? null :
+                        <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
                              to={activeUser ? "/contactUs": "/unauthorized"}>Contact Us</NavLink>
+                             }
                 </li>
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
@@ -108,7 +110,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout, activeUser }) => {
                 {renderNotificationButton()}
                 {/* Kullanıcı giriş/çıkış */}
                 <li>
-                    {isLoggedIn ? (
+                    {isLoggedIn && activeUser ? (
                         <Link onClick={confirmLogout}>Log Out</Link>
                     ) : (
                         <NavLink to="/login">Log In</NavLink>
