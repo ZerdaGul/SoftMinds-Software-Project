@@ -22,15 +22,15 @@ const SectorsSideMenu = ({ onFilter, filter }) => {
 
     return (
         <>
-            {/* Sectors Butonu */}
+            {/* Sadece mobilde görünen "Sectors" butonu */}
             <button
-                className={`sectors__toggle ${isMenuOpen ? 'active' : ''}`}
+                className="sectors__toggle"
                 onClick={toggleMenu}
             >
                 Sectors
             </button>
 
-            {/* Sektör Menüsü */}
+            {/* Menü */}
             <aside className={`sectors__menu ${isMenuOpen ? 'open' : ''}`}>
                 {sectors.map((item) => {
                     const itemClasses = classNames('sectors__item', {

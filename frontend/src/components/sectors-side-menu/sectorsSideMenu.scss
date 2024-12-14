@@ -1,42 +1,41 @@
 .sectors {
     position: relative;
 
+    /* Hamburger Menü */
     &__toggle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: none; /* Varsayılan olarak görünmez */
         position: fixed;
         top: 20px;
-        right: 20px; /* Sağ tarafta, daha görünür bir yerde */
-        background-color: #ff5733; /* Canlı bir renk ekleyerek görünürlüğü artır */
+        right: 20px; /* Sağ üstte */
+        background-color: #ff5733;
         border: none;
         border-radius: 20px;
         color: white;
         font-size: 16px;
         font-weight: bold;
-        padding: 10px 20px; /* Daha büyük buton */
+        padding: 10px 20px;
         cursor: pointer;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         z-index: 1001;
         transition: background-color 0.3s ease, transform 0.3s ease;
 
         &:hover {
-            background-color: #e14e2d; /* Hover durumunda farklı bir renk */
-            transform: scale(1.05); /* Hafif büyüme efekti */
+            background-color: #e14e2d;
+            transform: scale(1.05);
         }
 
-        .bar {
-            display: none; /* Çizgiler artık kullanılmayacak */
+        @media (max-width: 768px) {
+            display: flex; /* Sadece mobilde görünür */
         }
     }
 
+    /* Menü */
     &__menu {
         display: grid;
         grid-template-columns: 1fr;
         gap: 10px;
         background-color: white;
         position: fixed;
-        top: 60px; /* Navbar ile hizalı */
+        top: 60px;
         right: 0;
         width: 250px;
         padding: 10px;
@@ -47,7 +46,7 @@
         transition: transform 0.3s ease;
 
         &.open {
-            transform: translateX(0); /* Menü açıldığında ekrana gelsin */
+            transform: translateX(0); /* Açıldığında ekrana gelsin */
         }
     }
 
@@ -74,28 +73,10 @@
         }
     }
 
-    @media (max-width: 768px) {
-        &__toggle {
-            /* Mobilde daha geniş ve merkezlenmiş */
-            width: auto;
-            padding: 12px 24px;
-        }
-
-        &__menu {
-            right: 0;
-            transform: translateX(300px); /* Gizlenmiş başlangıç durumu */
-        }
-
-        &__item {
-            margin: 5px 0;
-            height: 40px;
-            font-size: 14px;
-        }
-    }
-
     @media (min-width: 769px) {
+        /* Masaüstü için hamburger menüyü gizle */
         &__toggle {
-            /* Masaüstü görünümünde değişiklik yok */
+            display: none;
         }
 
         &__menu {
