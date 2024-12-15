@@ -43,7 +43,7 @@ const CreatePasswordForm = () => {
     const handleSubmit = async({token, password}) => {
         
         try{
-            await CreatePassword({token, password});
+            await CreatePassword({token, newPassword: password});
             onLoaded(); // Call onLoaded if successful
         } catch (error) {
             onError(error); // Handle error

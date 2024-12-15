@@ -93,35 +93,38 @@ const Requests = () => {
   return (
     <section className='requests'>
         <ul className="requests__products">
-                {orderRequests.map((order) => {
-                    const {id, order_Date, total_Price, orderItems} = order;
-                    const amount = orderItems.length
-                    return(
-                        <li key={id} className="requests__product">             
-                            <div  
-                                onClick={()=>onOpenDetails(order)} 
-                                className="requests__product-name">
-                                    {new Date(order_Date).toLocaleDateString()}
+                {orderRequests?.length> 0 ?
+                    orderRequests.map((order) => {
+                        const {id, order_Date, total_Price, orderItems} = order;
+                        const amount = orderItems.length
+                        return(
+                            <li key={id} className="requests__product">             
+                                <div  
+                                    onClick={()=>onOpenDetails(order)} 
+                                    className="requests__product-name">
+                                        {new Date(order_Date).toLocaleDateString()}
                                 </div>
-                            <div className="requests__product-amount">{amount}</div>
-                            <div className="requests__product-price">${total_Price}</div>
-                            <div className="requests__buttons">
-                                <button
-                                    onClick={(e) => handleAction(e, order, "reject")}
-                                    className="button button__small button__small-white"
-                                    >
-                                    Reject
-                                </button>
-                                <button
-                                    onClick={(e) => handleAction(e, order, "accept")}
-                                    className="button button__small"
-                                    >
-                                    Accept
-                                </button>
-                            </div>
-                        </li>
-                    )
-                })}
+                                <div className="requests__product-amount">{amount}</div>
+                                <div className="requests__product-price">${total_Price}</div>
+                                <div className="requests__buttons">
+                                    <button
+                                        onClick={(e) => handleAction(e, order, "reject")}
+                                        className="button button__small button__small-white"
+                                        >
+                                        Reject
+                                    </button>
+                                    <button
+                                        onClick={(e) => handleAction(e, order, "accept")}
+                                        className="button button__small"
+                                        >
+                                        Accept
+                                    </button>
+                                </div>
+                            </li>
+                        )
+                    }):
+                    <div  className="requests__product-name">  No requests yet </div>
+                    }
             </ul>
         {renderModal}
     </section>

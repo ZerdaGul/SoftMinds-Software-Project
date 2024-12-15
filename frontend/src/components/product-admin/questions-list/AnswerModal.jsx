@@ -10,7 +10,7 @@ const AnswerModal = ({onClose, question}) => {
     const {Id, Question_Text, Created_At} = question;
   return (
     <div className="overlay">
-        <div className="modal">
+        <div className="modal answer-modal">
             <button onClick={onClose} className="modal__close">
                     <img src={close} alt="close" />
             </button>
