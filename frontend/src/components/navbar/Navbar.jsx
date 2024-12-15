@@ -86,10 +86,22 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout, activeUser }) => {
                              to="/consultancy">Consultancy</NavLink>
                 </li>
                 <li>
-                    {activeUser?.role === "padmin" || activeUser?.role === "oadmin" ? null :
-                        <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                             to={activeUser ? "/contactUs": "/unauthorized"}>Contact Us</NavLink>
-                             }
+                    {activeUser 
+                        ? (activeUser.role !== "padmin" && activeUser.role !== "oadmin" && (
+                            <NavLink 
+                                style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })} 
+                                to="/contactUs" >
+                                Contact Us
+                            </NavLink>
+                            ))
+                        : (
+                            <NavLink 
+                            style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })} 
+                            to="/unauthorized" >
+                            Contact Us
+                            </NavLink>
+                        )
+                    }
                 </li>
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
@@ -103,14 +115,17 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout, activeUser }) => {
                 <li>
                     
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                             to={activeUser ? "/profile": "/unauthorized"}> <img src={user} alt="user" style={{ height: "40px", width: "auto" }} />
+                             to={activeUser ? 
+                                    (activeUser.role === "customer" ? "/profile/cart"
+                                        : "/profile/dashboard")
+                                    : "/unauthorized"}> <img src={user} alt="user" style={{ height: "40px", width: "auto" }} />
                     </NavLink>
                 </li>
                 {/* Bildirim butonu */}
                 {renderNotificationButton()}
                 {/* Kullanıcı giriş/çıkış */}
                 <li>
-                    {isLoggedIn && activeUser ? (
+                    {isLoggedIn || activeUser ? (
                         <Link onClick={confirmLogout}>Log Out</Link>
                     ) : (
                         <NavLink to="/login">Log In</NavLink>

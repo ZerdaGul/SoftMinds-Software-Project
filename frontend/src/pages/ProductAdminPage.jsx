@@ -27,10 +27,10 @@ const links=[
   
 ]
 
-const ProductAdminPage = () => {
+const ProductAdminPage = ({activeUser}) => {
   return (
     <div className='container' style={{display: 'flex' }}>
-        <SideMenu main_menu={links}/>
+        <SideMenu main_menu={links} activeUser={activeUser}/>
             <Outlet />
     </div>
     

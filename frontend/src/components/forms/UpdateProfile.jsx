@@ -70,7 +70,8 @@ const UpdateProfile = ({ initialValues,  }) => {
                             subtitle={"Your profile is updated"}
                             onClose={() => {    
                                 setShowModal(false)
-                                navigate('/profile/my-profile');}}/>,
+                                navigate('/profile/my-profile');
+                                window.location.reload();}}/>,
                             document.body
                         )}
                         {error && createPortal(

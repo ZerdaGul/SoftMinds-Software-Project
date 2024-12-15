@@ -73,38 +73,58 @@ const OrdersProgress = () => {
         <div className="progress__block">
             <div className="progress__title">In Progress</div>
             <ul className="progress__products">
-                {inProgressOrders.map((order) => {
-                    const {id, order_Date, orderItems} = order;
-                    const amount = orderItems.length
-                    return(
-                        <li key={id} className="progress__product">             
-                            <div
-                                onClick={()=>onOpenDetails(order)} 
-                                className="progress__product-name">{new Date(order_Date).toLocaleDateString()}</div>
-                            <div className="progress__product-amount">{amount}</div>
-                        </li>
-                    )
-                })}
+            {inProgressOrders?.length > 0 ? (
+                inProgressOrders.map((order) => {
+                    const { id, order_Date, orderItems } = order;
+                    const amount = Array.isArray(orderItems) ? orderItems.length : 0;
+                    return (
+                    <li key={id} className="progress__product">
+                        <div
+                        onClick={() => onOpenDetails(order)}
+                        className="progress__product-name"
+                        >
+                        {new Date(order_Date).toLocaleDateString()}
+                        </div>
+                        <div className="progress__product-amount">{amount}</div>
+                    </li>
+                    );
+                })
+                ) : (
+                <li className="progress__product">
+                    <div className="progress__product-name">No orders in progress</div>
+                </li>
+                )}
             </ul>
         </div>
+
         <div className="progress__block">
             <div className="progress__title">Done</div>
             <ul className="progress__products">
-                {doneOrders.map((order) => {
-                    const {id, order_Date, orderItems} = order;
-                    const amount = orderItems.length
-                    return(
-                        <li key={id} className="progress__product">             
-                            <div
-                                onClick={()=>onOpenDetails(order)} 
-                                className="progress__product-name">{new Date(order_Date).toLocaleDateString()}</div>
-                            <div className="progress__product-amount">{amount}</div>
-                        </li>
-                    )
-                })}
-            </ul> 
-               
+                {doneOrders?.length > 0 ? (
+                doneOrders.map((order) => {
+                    const { id, order_Date, orderItems } = order;
+                    const amount = Array.isArray(orderItems) ? orderItems.length : 0;
+                    return (
+                    <li key={id} className="progress__product">
+                        <div
+                        onClick={() => onOpenDetails(order)}
+                        className="progress__product-name"
+                        >
+                        {new Date(order_Date).toLocaleDateString()}
+                        </div>
+                        <div className="progress__product-amount">{amount}</div>
+                    </li>
+                    );
+                })
+                ) : (
+                <li className="progress__product">
+                    <div className="progress__product-name">No completed orders</div>
+                </li>
+                )}
+            </ul>
         </div>
+
+        
         {renderModal}
     </section>
   )

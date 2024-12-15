@@ -63,7 +63,7 @@ const LogInForm = ({ setIsLoggedIn }) => {
                 subtitle={errorMessage}
                 onClose={() => {
                     setShowModal(false)
-                    navigate('/');
+                    navigate('/login');
                 }} />,
             document.body
         )}
