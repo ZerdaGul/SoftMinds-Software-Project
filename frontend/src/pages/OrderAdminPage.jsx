@@ -28,7 +28,7 @@ const links=[
   
 ]
 
-const OrderAdminPage = (activeUser) => {
+const OrderAdminPage = () => {
     const [orderRequests, setOrderRequests] = useState([]);
     const [requestsCount, setRequestsCount] = useState(0);
 
@@ -50,8 +50,7 @@ const OrderAdminPage = (activeUser) => {
     }
   return (
     <div className='container' style={{display: 'flex'}}>
-        <SideMenu main_menu={links} requestsNotification={requestsCount}
-        activeUser ={activeUser}/>
+        <SideMenu main_menu={links} requestsNotification={requestsCount}/>
             <Outlet context={orderRequests}/>
     </div>
     

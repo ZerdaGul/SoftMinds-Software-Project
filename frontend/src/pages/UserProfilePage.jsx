@@ -19,11 +19,10 @@ const links=[
     icon: cart
   }
 ]
-const UserProfilePage = (activeUser) => {
+const UserProfilePage = () => {
   return (
     <div className='container' style={{display: 'flex'}}>
-        <SideMenu main_menu={links}
-        activeUser ={activeUser}/>
+        <SideMenu main_menu={links}/>
             <Outlet style={{paddingTop: '24px', paddingLeft: "30px" , }}/>
     </div>
     
