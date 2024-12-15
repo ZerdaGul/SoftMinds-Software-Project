@@ -85,10 +85,22 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout, activeUser }) => {
                              to="/consultancy">Consultancy</NavLink>
                 </li>
                 <li>
-                    {activeUser?.role === "padmin" || activeUser?.role === "oadmin" ? null :
-                        <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                             to={activeUser ? "/contactUs": "/unauthorized"}>Contact Us</NavLink>
-                             }
+                    {activeUser 
+                        ? (activeUser.role !== "padmin" && activeUser.role !== "oadmin" && (
+                            <NavLink 
+                                style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })} 
+                                to="/contactUs" >
+                                Contact Us
+                            </NavLink>
+                            ))
+                        : (
+                            <NavLink 
+                            style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })} 
+                            to="/unauthorized" >
+                            Contact Us
+                            </NavLink>
+                        )
+                    }
                 </li>
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
