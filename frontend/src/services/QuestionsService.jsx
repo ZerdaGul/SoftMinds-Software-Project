@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const api = "https://api.ekoinv.com/api/"
-const api = "http://localhost:5115/api/"
+const api = "https://api.ekoinv.com/api/"
+// const api = "http://localhost:5115/api/"
 
 export const GetQuestionsCustomer = async () => {
     try {
@@ -13,8 +13,8 @@ export const GetQuestionsCustomer = async () => {
       const allQuestions = response.data;
 
         // Sort questions into answered and unanswered arrays
-        const answered = allQuestions.filter(question => question.Answer_Text);
-        const unanswered = allQuestions.filter(question => !question.Answer_Text);
+        const answered = allQuestions.filter(question => question.answer_Text);
+        const unanswered = allQuestions.filter(question => !question.answer_Text);
 
         return { answered, unanswered };
       
@@ -63,8 +63,8 @@ export const GetQuestionsCustomer = async () => {
       const allQuestions = response.data;
 
       // Sort questions into answered and unanswered arrays
-      const answered = allQuestions.filter(question => question.Answer_Text);
-      const unanswered = allQuestions.filter(question => !question.Answer_Text);
+      const answered = allQuestions.filter(question => question.answer_Text);
+      const unanswered = allQuestions.filter(question => !question.answer_Text);
 
       return { answered, unanswered };
     } catch (error) {

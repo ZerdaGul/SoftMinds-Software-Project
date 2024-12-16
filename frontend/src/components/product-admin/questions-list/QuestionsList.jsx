@@ -39,9 +39,9 @@ const QuestionsList = () => {
         }
       }
 
-    const handleAnswer = (Id, Question_Text, Created_At) => {
+    const handleAnswer = (id, question_Text, created_At) => {
       setShowAnswerModal(true);
-      setQToAnswer({Id, Question_Text, Created_At});
+      setQToAnswer({id, question_Text, created_At});
     }
 
     const modal = <div>
@@ -69,12 +69,12 @@ const QuestionsList = () => {
             {unansweredQ.length > 0 && <div className="questions__block">
                 <div className="questions__title">Unanswered</div>
                 <ul className="questions__list">
-                    {unansweredQ.map(({Id, Question_Text, Created_At}) => {
+                    {unansweredQ.map(({id, question_Text, created_At}) => {
                         return (
-                            <li style={{cursor: "pointer"}} onClick={()=>handleAnswer(Id, Question_Text, Created_At)} key={Id} className="questions__item">
+                            <li style={{cursor: "pointer"}} onClick={()=>handleAnswer(id, question_Text, created_At)} key={id} className="questions__item">
                                 <div className="questions__item-q">
-                                    <div id="date" className="questions__date">{Created_At}</div>
-                                    <div className="questions__text">{Question_Text}</div>
+                                    <div id="date" className="questions__date">{created_At}</div>
+                                    <div className="questions__text">{question_Text}</div>
                                     
                                 </div>
                             </li>
@@ -86,17 +86,17 @@ const QuestionsList = () => {
             {answeredQ.length > 0 && <div className="questions__block">
                 <div className="questions__title">Answered</div>
                 <ul className="questions__list">
-                    {answeredQ.map(({Id, Question_Text, Created_At, Answer_Text, Answered_At}) => {
+                    {answeredQ.map(({id, question_Text, created_At, answer_Text, answered_At}) => {
                         return (
-                            <li key={Id} className="questions__item">
+                            <li key={id} className="questions__item">
                                 <div className="questions__item-q">
-                                    <div id="date" className="questions__date">{Created_At}</div>
-                                    <div className="questions__text">{Question_Text}</div>
+                                    <div id="date" className="questions__date">{created_At}</div>
+                                    <div className="questions__text">{question_Text}</div>
                                     
                                 </div>
                                 <div className="questions__item-a">
-                                    <div id="date" className="questions__date">{Answered_At}</div>
-                                    <div className="questions__text">{Answer_Text}</div>
+                                    <div id="date" className="questions__date">{answered_At}</div>
+                                    <div className="questions__text">{answer_Text}</div>
                                     
                                 </div>
                             </li>

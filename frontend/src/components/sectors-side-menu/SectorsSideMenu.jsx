@@ -17,6 +17,8 @@ const SectorsSideMenu = ({onFilter, filter}) => {
     setSectors([{name: 'All'}, ...sectorsList]);
   }
 
+  
+
   return (
     <aside className="sectors__menu">
         {sectors.map(item => {
