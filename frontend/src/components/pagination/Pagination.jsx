@@ -18,18 +18,26 @@ const Pagination = ({currentPage, totalPages, onPageChange}) => {
 			setInitialPage(initialPage => initialPage-1);
 			setLastPage(lastPage=>lastPage-1);
 		}
-		setWorkingPages([initialPage, initialPage+1, lastPage]);
-	}, [currentPage, initialPage, lastPage])
+		let pagesToShow = [];
+		if (totalPages === 1) {
+			pagesToShow = [initialPage ]
+		} else if (totalPages === 2) {
+			pagesToShow = [initialPage, initialPage+1]
+		} else{
+			pagesToShow = [initialPage, initialPage+1, lastPage];
+		}
+		setWorkingPages(pagesToShow);
+	}, [currentPage, initialPage, lastPage, totalPages])
 
 	return (
 		<div className="pagination__wrapper">
-			<button 
+			{totalPages !== 1 && <button 
 				onClick={()=> onPageChange(currentPage, -1)}
 				className="pagination__arrow"
 				disabled={currentPage <= 1}>
 
 				<img src={back} alt="page-back" />
-			</button>
+			</button>}
 			<div className="pagination__body">
 				{workingPages.map(page => {
 					const itemClasses = classNames("pagination__page", {active: page===currentPage})
@@ -48,13 +56,13 @@ const Pagination = ({currentPage, totalPages, onPageChange}) => {
 						
 					:null}
 			</div>
-			<button 
+			{totalPages !== 1 && <button 
 				onClick={()=> onPageChange(currentPage, 1)}
 				className="pagination__arrow"
 				disabled={currentPage >= totalPages}>
 
 				<img src={forward} alt="page-forward" />
-			</button>
+			</button>}
 		</div>
 	)
 }

@@ -53,6 +53,9 @@ const ProductsForAdmin = () => {
             setErrorMessage(error.message);
         }
     };
+    const handlePageChange = (current, direction=0) => {
+		setCurrentPage(current+direction);
+	}
 
     const modal = (
         <>
@@ -121,7 +124,7 @@ const ProductsForAdmin = () => {
                 <Pagination
                     currentPage={currentPage}
                     totalPages={totalPages}
-                    onPageChange={(page) => setCurrentPage(page)}
+                    onPageChange={handlePageChange}
                 />
             </section>
         </div>

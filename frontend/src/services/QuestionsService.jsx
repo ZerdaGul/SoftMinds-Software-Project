@@ -13,8 +13,8 @@ export const GetQuestionsCustomer = async () => {
       const allQuestions = response.data;
 
         // Sort questions into answered and unanswered arrays
-        const answered = allQuestions.filter(question => question.Answer_Text);
-        const unanswered = allQuestions.filter(question => !question.Answer_Text);
+        const answered = allQuestions.filter(question => question.answer_Text);
+        const unanswered = allQuestions.filter(question => !question.answer_Text);
 
         return { answered, unanswered };
       
@@ -63,8 +63,8 @@ export const GetQuestionsCustomer = async () => {
       const allQuestions = response.data;
 
       // Sort questions into answered and unanswered arrays
-      const answered = allQuestions.filter(question => question.Answer_Text);
-      const unanswered = allQuestions.filter(question => !question.Answer_Text);
+      const answered = allQuestions.filter(question => question.answer_Text);
+      const unanswered = allQuestions.filter(question => !question.answer_Text);
 
       return { answered, unanswered };
     } catch (error) {
