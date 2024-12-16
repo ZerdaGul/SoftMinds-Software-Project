@@ -1,24 +1,14 @@
 /* AddEditProductModal.scss */
 @import './modal.scss';
-// .modal {
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   background: rgba(0, 0, 0, 0.5);
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   z-index: 1000;
-// }
 
 .modal-content {
+  max-height: 90vh; /* Ekran yüksekliğinin %90'ı kadar olsun */
+  overflow-y: auto; /* İçerik sığmazsa kaydırma çubuğu ekle */
   background: #fff;
   border-radius: 10px;
-  padding: 30px;
+  padding: 20px;
   width: 600px;
-  max-width: 90%;
+  max-width: 90%; /* Ekran genişliğine göre ayarlanır */
   position: relative;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -64,6 +54,20 @@ textarea {
 textarea {
   height: 80px;
   resize: none;
+}
+
+/* Yeni Eklenen Kısım: Stock Input */
+input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+input[type="number"]::placeholder {
+  color: #aaa;
+  font-style: italic;
 }
 
 .photo-preview {
@@ -126,12 +130,6 @@ textarea {
   gap: 10px;
 }
 
-.sector-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
 .sector-button {
   border: 1px solid #5e2750;
   border-radius: 5px;
@@ -158,4 +156,17 @@ textarea {
 
 .sector-button:hover {
   background: #e8d6ea;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow: hidden; /* Kayma sorunlarını önlemek için */
 }

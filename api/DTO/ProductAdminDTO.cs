@@ -1,3 +1,5 @@
+using System.Reflection.Metadata;
+
 namespace api.DTO
 {
     public class ProductAdminDTO
@@ -8,6 +10,9 @@ namespace api.DTO
         public string Description { get; set; } = null!;
         public int Stock { get; set; }
         public string Sector { get; set; } = null!;
+
+        public byte[]? Photo { get; set; }
+        public string? ContentType { get; set; }
     }
     
     

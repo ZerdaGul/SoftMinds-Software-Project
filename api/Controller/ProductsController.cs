@@ -63,6 +63,17 @@ namespace api.Controller
             var products = await query
                 .Skip((pageNumber - 1) * itemsPerPage)
                 .Take(itemsPerPage)
+                .Select(p => new 
+                {
+                    p.Id,
+                    p.Name,
+                    p.Price,
+                    p.Description,
+                    p.Stock,
+                    p.Sector,
+                    PhotoUrl = p.Photo != null ? Url.Action("GetProductPhoto", "Products", new { id = p.Id }, Request.Scheme) : null,
+                    p.ContentType
+                })
                 .ToListAsync();
 
             var response = new
@@ -102,6 +113,8 @@ namespace api.Controller
                 product.Stock,
                 product.Sector,
                 Availability = product.Stock > 0 ? "In Stock" : "Out of Stock", // Check stock status
+                PhotoUrl = product.Photo != null ? Url.Action("GetProductPhoto", "Products", new { id = product.Id }, Request.Scheme) : null,
+                product.ContentType,
                 Comments = product.Comments.Select(c => new { c.Text, c.Created_At }),
             };
 
@@ -109,6 +122,18 @@ namespace api.Controller
             _logger.LogInformation("Product detail page for product ID: {ProductId} loaded in {ElapsedMilliseconds} ms", id, stopwatch.ElapsedMilliseconds);
 
             return Ok(response);
+        }
+
+        [HttpGet("{id}/photo")]
+        public async Task<IActionResult> GetProductPhoto(int id)
+        {
+            var product = await _context.Products.FindAsync(id);
+            if (product == null || product.Photo == null)
+            {
+                return NotFound("Fotoğraf bulunamadı.");
+            }
+            // Fotoğrafı direkt byte[] olarak dönüyoruz.
+            return File(product.Photo, product.ContentType ?? "image/jpeg");
         }
 
         [HttpGet("search")]
