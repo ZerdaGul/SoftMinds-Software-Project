@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './AddEditProductModal.scss';
-import { AddProduct } from '../../services/ProductService';
+import { AddProduct } from '../../services/ProductAdminService';
 import defaultPhoto from '../../assets/product-pic-default.jpg';
 
 export const AddProductModal = ({ onClose, onProductAdded }) => {

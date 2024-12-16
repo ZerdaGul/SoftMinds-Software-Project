@@ -42,7 +42,7 @@ const ResetPasswordForm = ({initialValues}) => {
 
     const handleSubmit = async(value) => {
         const formData = {
-            email: initialValues.email,
+            currentEmail: initialValues.email,
             currentPassword: value.currentPassword,
             password: value.password,
             confirmPassword: value.confirmation
