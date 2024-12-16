@@ -29,34 +29,30 @@ namespace api.Services
                 return null;
             }
 
-            var tokenHandler = new JwtSecurityTokenHandler();
             var jwtKey = _configuration["Jwt:Key"];
             if (string.IsNullOrEmpty(jwtKey))
             {
                 return null;
             }
+
+            var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(jwtKey);
 
             try
             {
-                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                var validationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     ClockSkew = TimeSpan.Zero
-                }, out SecurityToken validatedToken);
+                };
 
-                var jwtToken = (JwtSecurityToken)validatedToken;
-                var userIdClaim = jwtToken.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub);
-                if (userIdClaim == null)
-                {
-                    return null;
-                }
+                var principal = tokenHandler.ValidateToken(token, validationParameters, out _);
+                var userIdClaim = principal.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub);
 
-                var userId = userIdClaim.Value;
-                return int.Parse(userId);
+                return userIdClaim != null ? int.Parse(userIdClaim.Value) : null;
             }
             catch
             {
