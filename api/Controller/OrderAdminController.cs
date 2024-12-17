@@ -69,8 +69,6 @@ namespace api.Controller
             return Ok("Sipariş başarıyla kabul edildi ve stoklar güncellendi.");
         }
 
-
-
         [HttpPost("reject-order")]
         public async Task<IActionResult> RejectOrder([FromBody] OrderModel model)
         {
@@ -113,7 +111,7 @@ namespace api.Controller
             }
 
             var order = await _context.Orders
-                .Where(o => o.Id == model.OrderId && o.State == "Requested")
+                .Where(o => o.Id == model.OrderId && o.State == "Accepted")
                 .FirstOrDefaultAsync();
 
             if (order == null)
@@ -171,10 +169,10 @@ namespace api.Controller
                 .Where(o => o.State == "Done")
                 .ToListAsync();
 
-            return Ok(new 
-            { 
-                InProgress = inProgressOrders, 
-                Done = doneOrders 
+            return Ok(new
+            {
+                InProgress = inProgressOrders,
+                Done = doneOrders
             });
         }
 
@@ -191,7 +189,7 @@ namespace api.Controller
             var inProgress = userOrders.Where(o => o.State == "Accepted").ToList();
             var rejected = userOrders.Where(o => o.State == "Rejected").ToList();
 
-            return Ok(new 
+            return Ok(new
             {
                 Done = done,
                 InProgress = inProgress,
