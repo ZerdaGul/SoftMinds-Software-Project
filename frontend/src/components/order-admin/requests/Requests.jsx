@@ -69,7 +69,7 @@ const Requests = () => {
                             setShowReason(false);
                         }}
                         onConfirm={(reason) => {
-                                setOrderToAction({id: orderID, reason});
+                                setOrderToAction({orderID , reason});
                                 setShowReason(false);}}
                     />,
                     document.body

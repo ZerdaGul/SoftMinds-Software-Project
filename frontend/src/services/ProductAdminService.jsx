@@ -54,7 +54,7 @@ export const DeleteProduct = async (id) => {
 
 export const EditProduct = async (id, updatedData) => {
   try {
-    const response = await axios.put(`${api}products/${id}`, updatedData, {
+    const response = await axios.post(`${api}update-product`, updatedData, {
       headers: {
         'Content-Type': 'application/json'
       }

@@ -1,23 +1,36 @@
 import React, { useState } from 'react';
 import './AddEditProductModal.scss';
-import { EditProduct } from '../../services/ProductAdminService'; // API işlevini içe aktar
+import { EditProduct } from '../../services/ProductAdminService'; // API function import
 
 export const EditProductModal = ({ product, onClose, onProductUpdated }) => {
     const [name, setName] = useState(product.name);
     const [price, setPrice] = useState(product.price);
     const [description, setDescription] = useState(product.description);
-    const [sectors, setSectors] = useState(product.sectors || []);
-    const [photos, setPhotos] = useState(product.photos || []);
-    const [loading, setLoading] = useState(false); // Yüklenme durumunu takip etmek için
+    const [sector, setSector] = useState(product.sector);
+    const [photo, setPhotos] = useState([]); // Will hold uploaded photo files
+    const [loading, setLoading] = useState(false); // Track loading state
+    const { id, stock } = product;
 
     const handleSubmit = async () => {
-        const updatedProduct = { ...product, name, price, description, sectors, photos };
+        const formData = new FormData();
+        formData.append('id', id);
+        formData.append('productName', name);
+        formData.append('description', description);
+        formData.append('price', price);
+        formData.append('stock', stock);
+        formData.append('sector', sector);
+        formData.append("contentType", '');
+
+        // Append each photo to the formData
+        photo.forEach((file, index) => {
+            formData.append(`photo[${index}]`, file); // Include all photos in the request
+        });
 
         try {
             setLoading(true);
-            const response = await EditProduct(product.id, updatedProduct); // API'ye gönderim
-            onProductUpdated(response); // Güncellenen ürünü geri gönder
-            onClose(); // Modalı kapat
+            const response = await EditProduct(id, formData); // Pass FormData to the API
+            onProductUpdated(response); // Notify parent component with updated product
+            onClose(); // Close the modal
         } catch (error) {
             console.error('Error updating product:', error.message);
             alert('An error occurred while updating the product. Please try again.');
@@ -28,16 +41,16 @@ export const EditProductModal = ({ product, onClose, onProductUpdated }) => {
 
     const handlePhotoUpload = (e) => {
         const files = Array.from(e.target.files);
-        setPhotos([...photos, ...files]);
+        setPhotos([...photo, ...files]);
     };
 
     const handleRemovePhoto = (index) => {
-        const updatedPhotos = photos.filter((_, i) => i !== index);
+        const updatedPhotos = photo.filter((_, i) => i !== index);
         setPhotos(updatedPhotos);
     };
 
     return (
-        <div className="modal">
+        <div className="overlay">
             <div className="modal-content">
                 <button className="close-button" onClick={onClose}>X</button>
                 <h2>Update Product</h2>
@@ -62,20 +75,25 @@ export const EditProductModal = ({ product, onClose, onProductUpdated }) => {
                         onChange={(e) => setDescription(e.target.value)}
                         placeholder="Enter product description"
                     />
-                    <label>Pick Sectors</label>
+                    <label>Pick Sector</label>
                     <input
                         type="text"
-                        value={sectors.join(', ')}
-                        onChange={(e) => setSectors(e.target.value.split(','))}
-                        placeholder="Enter sectors (comma-separated)"
+                        value={sector}
+                        onChange={(e) => setSector(e.target.value)}
+                        placeholder="Enter sector"
                     />
                     <label>Add Photos</label>
                     <input type="file" multiple onChange={handlePhotoUpload} />
                     <div className="photo-preview">
-                        {photos.map((photo, index) => (
+                        {photo.map((file, index) => (
                             <div key={index} className="photo-item">
-                                <img src={URL.createObjectURL(photo)} alt="preview" />
-                                <button onClick={() => handleRemovePhoto(index)}>Remove</button>
+                                <img src={URL.createObjectURL(file)} alt="preview" />
+                                <button
+                                    type="button"
+                                    onClick={() => handleRemovePhoto(index)}
+                                >
+                                    Remove
+                                </button>
                             </div>
                         ))}
                     </div>
@@ -85,7 +103,7 @@ export const EditProductModal = ({ product, onClose, onProductUpdated }) => {
                     onClick={handleSubmit}
                     disabled={loading}
                 >
-                    {loading ? 'Updating...' : 'Update product'}
+                    {loading ? 'Updating...' : 'Update Product'}
                 </button>
             </div>
         </div>
