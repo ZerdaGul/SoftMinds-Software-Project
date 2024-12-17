@@ -47,8 +47,8 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", builder =>
     {   
-        builder.WithOrigins("https://ekoinv.com", "https://api.ekoinv.com") // React uygulamasının adresi
-        // builder.WithOrigins("http://localhost:3000") 
+        // builder.WithOrigins("https://ekoinv.com", "https://api.ekoinv.com") // React uygulamasının adresi
+        builder.WithOrigins("http://localhost:3000") 
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
