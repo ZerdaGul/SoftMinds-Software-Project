@@ -31,8 +31,8 @@ const OrdersProgress = () => {
     const updateOrders = async () => {
       try {
         const data = await GetOrdersByStatus();
-        setDoneOrders(data.Done);
-        setInProgressOrders(data.InProgress);
+        setDoneOrders(data.done);
+        setInProgressOrders(data.inProgress);
       } catch (error) {
         onError(error); // Handle error
       }

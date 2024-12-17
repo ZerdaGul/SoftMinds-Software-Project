@@ -61,7 +61,7 @@ const App = () => {
 		} else {
 			setIsLoggedOut(false);
 		}
-    }, [isLoggedIn]);
+    }, [isLoggedIn, isLoggedOut]);
 
 	const getUserFromLocalStorage = () => {
         const storedUser = localStorage.getItem('current-user');
@@ -153,7 +153,7 @@ const App = () => {
 							<Route path='orders' element={<CustomerOrders userId={activeUser.id}/>}></Route>
 							<Route path='cart' element={<CardForm />}></Route>
 							<Route path='my-profile' element={<ProfileForm initialValues={activeUser} />}></Route>
-							<Route path='contacts'></Route>
+							<Route path='contacts' element={<QuestionsListCustomer/>}></Route>
 							<Route path='settings/*' element={<Settings initialValues={activeUser}/>}>
 								<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser}/>} />
 							</Route>
@@ -168,7 +168,6 @@ const App = () => {
 							<Route path='dashboard' element={<ProductDashboard/>}></Route>
 							<Route path='questions' element={<QuestionsList/>}></Route>
 							<Route path='my-profile' element={<ProfileForm initialValues={activeUser || {}} />}></Route>
-							<Route path='contacts'></Route>
 							<Route path='settings/*' element={<Settings initialValues={activeUser} />}>
 								<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser} />} />
 							</Route>
@@ -183,7 +182,6 @@ const App = () => {
 							<Route path='orders-progress' element={<OrdersProgress />}></Route>
 							<Route path='requests' element={<Requests />}></Route>
 							<Route path='my-profile' element={<ProfileForm initialValues={activeUser || {}} />}></Route>
-							<Route path='contacts'></Route>
 							<Route path='settings/*' element={<Settings initialValues={activeUser} />}>
 								<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser} />} />
 							</Route>

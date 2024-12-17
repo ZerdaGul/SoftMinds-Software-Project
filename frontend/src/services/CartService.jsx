@@ -91,7 +91,7 @@ export const AddToCart = async (data) => {
   // Update cart item quantity
   export const UpdateCartItemQuantity = async (productId, quantity) => {
     try {
-      const response = await axios.put(`${api}cart/update-quantity`, { productId, quantity }, {
+      const response = await axios.patch(`${api}cart/update-quantity`, { productId, quantity }, {
         headers: {
           'Content-Type': 'application/json'
         },

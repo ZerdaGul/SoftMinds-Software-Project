@@ -25,7 +25,7 @@ const RequestReasonModal = ({ onClose, onConfirm }) => {
                             reason: Yup.string()
                                 .required('Reason in required! ')
                         })}
-                        onSubmit={(reason) => onConfirm(reason)}
+                        onSubmit={({reason}) => onConfirm(reason)}
                     >
                         {() => (
                             <Form className="form__wrapper">

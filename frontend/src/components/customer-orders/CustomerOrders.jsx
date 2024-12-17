@@ -60,9 +60,9 @@ const OrderList = ({ title, orders, onOpenDetails }) => (
 	const updateOrders = async () => {
 		try {
 		const data = await GetOrdersHistory(userId);
-		setRejectedOrders(data.Rejected);
-		setDoneOrders(data.Done);
-		setInhistoryOrders(data.Inhistory);
+		setRejectedOrders(data.rejected);
+		setDoneOrders(data.done);
+		setInhistoryOrders(data.inProgress);
 		} catch (error) {
 		onError(error);
 		}
