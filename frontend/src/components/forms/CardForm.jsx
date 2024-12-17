@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./CardForm.scss";
 import logoCircle from "../../assets/icons/pleaseLogin.png";
 import emptyCart from "../../assets/icons/cart.png";
-import { GetCartItems, GetCartSummary,UpdateCartItemQuantity, Checkout } from "../../services/CartService";
+import { GetCartItems, GetCartSummary,UpdateCartItemQuantity, Checkout, ClearCart, RemoveItemFromCart } from "../../services/CartService";
 
 const CardForm = () => {
     const [cartItems, setCartItems] = useState([]);
@@ -15,16 +15,22 @@ const CardForm = () => {
 
     
     useEffect(() => {
-        const fetchCartItems = async () => {
+        
+
+        fetchCartItems();
+    }, []);
+    
+    const fetchCartItems = async () => {
             try {
                 setLoading(true);
-                const response = await fetch("/api/cart", { credentials: "include" });
-                if (response.status === 401) {
-                    setIsAuthenticated(false);
-                    return;
-                }
-                if (!response.ok) throw new Error("Failed to fetch cart items");
-                const data = await response.json();
+                // const response = await fetch("/api/cart", { credentials: "include" });
+                // if (response.status === 401) {
+                //     setIsAuthenticated(false);
+                //     return;
+                // }
+                // if (!response.ok) throw new Error("Failed to fetch cart items");
+                // const data = await response.json();
+                const data = await GetCartItems();
                 setCartItems(data);
             } catch (err) {
                 setError(err.message);
@@ -32,9 +38,6 @@ const CardForm = () => {
                 setLoading(false);
             }
         };
-
-        fetchCartItems();
-    }, []);
 
     const calculateSubtotal = () => {
         return cartItems.reduce((acc, item) => acc + item.total_Price, 0);
@@ -185,14 +188,14 @@ const CardForm = () => {
             <div className="cart-items">
                 {cartItems.map((item) => (
                     <div className="cart-item" key={item.productId}>
-                        <img src={item.product?.imageUrl || "https://via.placeholder.com/150"} alt={item.product.name} className="cart-item__image" />
+                        <img src={item?.imageUrl || "https://via.placeholder.com/150"} alt={item.name} className="cart-item__image" />
                         <div className="cart-item__details">
-                            <h3>{item.product.name}</h3>
-                            <p>Price: ${item.product.price.toFixed(2)}</p>
+                            <h3>{item.name}</h3>
+                            <p>Price: ${item.price.toFixed(2)}</p>
                             <div className="quantity-controls">
                                 <button onClick={() => handleDecrease(item.productId, item.quantity)} disabled={item.quantity <= 1}>-</button>
                                 {item.quantity}
-                                <button onClick={() => handleIncrease(item.productId, item.quantity, item.product.stock)}>+</button>
+                                <button onClick={() => handleIncrease(item.productId, item.quantity, item.stock)}>+</button>
                             </div>
                             <p>Total: ${item.total_Price.toFixed(2)}</p>
                             <button onClick={() => handleRemoveItem(item.productId)}>Remove</button>
