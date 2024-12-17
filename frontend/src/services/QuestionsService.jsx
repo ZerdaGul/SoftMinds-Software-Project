@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-const api = "https://api.ekoinv.com/api/"
-// const api = "http://localhost:5115/api/"
+import { api } from './api';
 
 export const GetQuestionsCustomer = async () => {
     try {

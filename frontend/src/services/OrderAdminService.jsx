@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const api = "https://api.ekoinv.com/api/"
-// const api = "http://localhost:5115/api/"
+import { api } from './api';
 
 export const AcceptOrder = async (data) => {
     try {
@@ -9,6 +8,7 @@ export const AcceptOrder = async (data) => {
         headers: {
           'Content-Type': 'application/json'
         },
+        withCredentials: true
       })
       return response.data;
     } catch (error) {
@@ -28,6 +28,7 @@ export const AcceptOrder = async (data) => {
         headers: {
           'Content-Type': 'application/json'
         },
+        withCredentials: true
       })
       return response.data;
     } catch (error) {
@@ -47,6 +48,7 @@ export const AcceptOrder = async (data) => {
         headers: {
           'Content-Type': 'application/json'
         },
+        withCredentials: true
       })
       return response.data;
     } catch (error) {
@@ -66,6 +68,7 @@ export const AcceptOrder = async (data) => {
         headers: {
           'Content-Type': 'application/json'
         },
+        withCredentials: true
       })
       return response.data;
     } catch (error) {

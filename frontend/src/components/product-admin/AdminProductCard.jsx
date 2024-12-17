@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../product-card/productCard.scss';
 import product_pic from '../../assets/product-pic-default.jpg';
-import {DeleteProduct} from "../../services/ProductService"; // Varsayılan ürün resmi
+import {DeleteProduct} from "../../services/ProductAdminService"; // Varsayılan ürün resmi
 
 const AdminProductCard = ({ product, handleEdit, handleDelete }) => {
     const [showConfirmation, setShowConfirmation] = useState(false); // Popup kontrolü

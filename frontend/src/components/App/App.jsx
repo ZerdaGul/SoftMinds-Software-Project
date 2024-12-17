@@ -138,7 +138,7 @@ const App = () => {
 					<Route path='/sectors' element={<SectorPage />}></Route>
 					<Route path='/solutions' element={<SolutionPage />}></Route>
 					<Route path='/consultancy' element={<ConsultancyPage />}></Route>
-
+					<Route path='/cart' element={<CardForm/>}></Route>
 					{/*contactUs must be available to authed users, if not - redirect to unauthorized page */}
 					<Route path='/contactUs' element={<QuestionsListCustomer/>}></Route>
 					<Route path='/faq' element={<FAQPage/>}></Route>

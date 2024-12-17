@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './AddEditProductModal.scss';
-import { EditProduct } from '../../services/ProductService'; // API işlevini içe aktar
+import { EditProduct } from '../../services/ProductAdminService'; // API işlevini içe aktar
 
 export const EditProductModal = ({ product, onClose, onProductUpdated }) => {
     const [name, setName] = useState(product.name);

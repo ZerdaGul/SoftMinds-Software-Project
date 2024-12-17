@@ -7,7 +7,7 @@ import './modal.scss';
 import '../forms/form.scss'
 import close from '../../assets/icons/close-dark.svg';
 import InfoModal from '../modals/InfoModal';
-import { AddToCart } from '../../services/ProductService';
+import { AddToCart } from '../../services/CartService';
 
 const SetQuantityModal = ({ product_id, onClose }) => {
     const [loading, setLoading] = useState(false);
