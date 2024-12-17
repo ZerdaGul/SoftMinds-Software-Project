@@ -8,6 +8,7 @@ export const AcceptOrder = async (data) => {
         headers: {
           'Content-Type': 'application/json'
         },
+        withCredentials: true
       })
       return response.data;
     } catch (error) {
@@ -27,6 +28,7 @@ export const AcceptOrder = async (data) => {
         headers: {
           'Content-Type': 'application/json'
         },
+        withCredentials: true
       })
       return response.data;
     } catch (error) {
@@ -46,6 +48,7 @@ export const AcceptOrder = async (data) => {
         headers: {
           'Content-Type': 'application/json'
         },
+        withCredentials: true
       })
       return response.data;
     } catch (error) {
@@ -65,6 +68,7 @@ export const AcceptOrder = async (data) => {
         headers: {
           'Content-Type': 'application/json'
         },
+        withCredentials: true
       })
       return response.data;
     } catch (error) {
