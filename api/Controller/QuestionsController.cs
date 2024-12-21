@@ -2,9 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using api.Models;
 using api.DTO;
 using Microsoft.EntityFrameworkCore;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using api.Data;
+using api.Services;
 
 namespace api.Controllers
 {
@@ -13,26 +12,18 @@ namespace api.Controllers
     public class QuestionsController : ControllerBase
     {
         private readonly AppDBContext _context;
+        private readonly UserService _userService;
 
-        public QuestionsController(AppDBContext context)
+        public QuestionsController(AppDBContext context, UserService userService)
         {
             _context = context;
+            _userService = userService;
         }
 
         // Kullanıcının oturum bilgisinden UserId'yi al
         private int? GetCurrentUserId()
         {
-            var token = Request.Cookies["AuthToken"];
-            if (string.IsNullOrEmpty(token))
-            {
-                return null;
-            }
-
-            var handler = new JwtSecurityTokenHandler();
-            var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
-            var idClaim = jsonToken?.Claims.First(claim => claim.Type == JwtRegisteredClaimNames.Sub)?.Value;
-
-            return int.TryParse(idClaim, out var userId) ? userId : null;
+            return _userService.GetCurrentUserId();
         }
 
         // 1. Müşterinin soru sorması (POST /api/questions/customer)
@@ -42,7 +33,7 @@ namespace api.Controllers
             var userId = GetCurrentUserId();
             if (userId == null)
             {
-                return Unauthorized(new { message = "Kullanıcı oturumu bulunamadı." });
+                return Unauthorized(new { message = "User session not found." });
             }
 
             var question = new Questions
@@ -57,7 +48,7 @@ namespace api.Controllers
             _context.Questions.Add(question);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Soru başarıyla kaydedildi." });
+            return Ok(new { message = "The question has been saved successfully." });
         }
 
         // 2. Müşterinin sorduğu soruları görüntülemesi (GET /api/questions/customer)
@@ -67,7 +58,7 @@ namespace api.Controllers
             var userId = GetCurrentUserId();
             if (userId == null)
             {
-                return Unauthorized(new { message = "Kullanıcı oturumu bulunamadı." });
+                return Unauthorized(new { message = "User session not found." });
             }
 
             var questions = await _context.Questions
@@ -76,7 +67,7 @@ namespace api.Controllers
 
             if (questions == null || !questions.Any())
             {
-                return NotFound(new { message = "Herhangi bir soru bulunamadı." });
+                return NotFound(new { message = "No questions found." });
             }
 
             return Ok(questions);
@@ -91,7 +82,7 @@ namespace api.Controllers
 
             if (question == null)
             {
-                return NotFound(new { message = "Soru bulunamadı." });
+                return NotFound(new { message = "No questions found." });
             }
 
             question.Answer_Text = answerQuestionDto.AnswerText;
@@ -100,7 +91,7 @@ namespace api.Controllers
             _context.Questions.Update(question);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Cevap başarıyla kaydedildi." });
+            return Ok(new { message = "The answer has been saved successfully." });
         }
 
         // 4. Admin'in tüm soruları ve cevapları görüntülemesi (GET /api/questions/admin)
@@ -113,10 +104,11 @@ namespace api.Controllers
 
             if (questions == null || !questions.Any())
             {
-                return NotFound(new { message = "Herhangi bir soru bulunamadı." });
+                return NotFound(new { message = "No questions found." });
             }
 
             return Ok(questions);
+            
         }
     }
 }
