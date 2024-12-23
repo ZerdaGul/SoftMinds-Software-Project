@@ -43,30 +43,10 @@ namespace api.Controller
                 return NotFound("Sipariş bulunamadı veya sipariş durumu 'Requested' değil.");
             }
 
-            // Siparişin durumunu Accepted yap
-            order.State = "Accepted";
-
-            // Siparişteki ürünlerin stoklarını güncelle
-            foreach (var orderItem in order.OrderItems)
-            {
-                var product = orderItem.Product;
-                if (product == null)
-                {
-                    return NotFound($"Product with ID {orderItem.ProductId} not found.");
-                }
-
-                if (product.Stock < orderItem.Quantity)
-                {
-                    return BadRequest($"Product with ID {product.Id} has insufficient stock.");
-                }
-
-                product.Stock -= orderItem.Quantity; // Stok düşürme
-                _context.Products.Update(product);
-            }
-
+            order.State = "InProgress";
             await _context.SaveChangesAsync();
 
-            return Ok("Sipariş başarıyla kabul edildi ve stoklar güncellendi.");
+            return Ok("Sipariş incelemeye alındı.");
         }
 
         [HttpPost("reject-order")]
@@ -83,7 +63,7 @@ namespace api.Controller
             }
 
             var order = await _context.Orders
-                .Where(o => o.Id == model.OrderId && o.State == "Requested")
+                .Where(o => o.Id == model.OrderId && (o.State == "Requested" || o.State == "InProgress"))
                 .FirstOrDefaultAsync();
 
             if (order == null)
@@ -104,24 +84,44 @@ namespace api.Controller
             {
                 return Forbid("You are not authorized to perform this action.");
             }
-
+        
             if (model == null || model.OrderId <= 0)
             {
                 return BadRequest("Sipariş ID'si gereklidir.");
             }
-
+        
             var order = await _context.Orders
-                .Where(o => o.Id == model.OrderId && o.State == "Accepted")
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+                .Where(o => o.Id == model.OrderId && o.State == "InProgress")
                 .FirstOrDefaultAsync();
-
+        
             if (order == null)
             {
                 return NotFound("Sipariş bulunamadı veya sipariş durumu 'Requested' değil.");
             }
-
-            order.State = "Done";
+        
+            order.State = "Accepted";
+        
+            foreach (var orderItem in order.OrderItems)
+            {
+                var product = orderItem.Product;
+                if (product == null)
+                {
+                    return NotFound($"Product with ID {orderItem.ProductId} not found.");
+                }
+        
+                if (product.Stock < orderItem.Quantity)
+                {
+                    return BadRequest($"Product with ID {product.Id} has insufficient stock.");
+                }
+        
+                product.Stock -= orderItem.Quantity;
+                _context.Products.Update(product);
+            }
+        
             await _context.SaveChangesAsync();
-
+        
             return Ok("Sipariş başarıyla tamamlandı.");
         }
 
@@ -142,31 +142,23 @@ namespace api.Controller
             return Ok(orders);
         }
 
-        [HttpGet("orders")]
-        public async Task<IActionResult> GetAllOrders()
-        {
-            var orders = await _context.Orders
-                .Include(o => o.User)
-                .Include(o => o.OrderItems)
-                    .ThenInclude(oi => oi.Product)
-                .ToListAsync();
-
-            return Ok(orders);
-        }
-
         [HttpGet("orders-status")]
         public async Task<IActionResult> GetOrdersByStatus()
-        {
+        {   
+            if (_userService.GetRole() != "oadmin")
+            {
+                return Forbid("You are not authorized to perform this action.");
+            }
             var inProgressOrders = await _context.Orders
                 .Include(o => o.User)
                 .Include(o => o.OrderItems).ThenInclude(oi => oi.Product)
-                .Where(o => o.State == "Accepted")
+                .Where(o => o.State == "InProgress")
                 .ToListAsync();
 
             var doneOrders = await _context.Orders
                 .Include(o => o.User)
                 .Include(o => o.OrderItems).ThenInclude(oi => oi.Product)
-                .Where(o => o.State == "Done")
+                .Where(o => o.State == "Accepted" || o.State == "Rejected")
                 .ToListAsync();
 
             return Ok(new
@@ -176,45 +168,36 @@ namespace api.Controller
             });
         }
 
-        [HttpGet("order-history/{userId}")]
-        public async Task<IActionResult> GetOrderHistory([FromRoute] int userId)
+        [HttpGet("orders-history")]
+        public async Task<IActionResult> GetOrderHistory()
         {
+            var userId = _userService.GetCurrentUserId();
+            if (userId == null)
+            {
+                return Unauthorized("Kullanıcı kimliği bulunamadı.");
+            }
+
+            if (_userService.GetRole() != "customer")
+            {
+                return Forbid("You are not authorized to perform this action.");
+            }
+        
             var userOrders = await _context.Orders
                 .Include(o => o.User)
                 .Include(o => o.OrderItems).ThenInclude(oi => oi.Product)
                 .Where(o => o.UserId == userId)
                 .ToListAsync();
-
-            var done = userOrders.Where(o => o.State == "Done").ToList();
-            var inProgress = userOrders.Where(o => o.State == "Accepted").ToList();
-            var rejected = userOrders.Where(o => o.State == "Rejected").ToList();
-
+        
+            var requested = userOrders.Where(o => o.State == "Requested").ToList();
+            var inProgress = userOrders.Where(o => o.State == "InProgress").ToList();
+            var done = userOrders.Where(o => o.State == "Accepted" || o.State == "Rejected").ToList();
+        
             return Ok(new
             {
-                Done = done,
+                Requested = requested,
                 InProgress = inProgress,
-                Rejected = rejected
+                Done = done
             });
-        }
-
-        // New endpoint to get orders for the currently logged-in user
-        [HttpGet("my-orders")]
-        public async Task<IActionResult> GetMyOrders()
-        {
-            // Retrieve the user ID using the UserService
-            var userIdInt = _userService.GetCurrentUserId();
-
-            if (userIdInt == null)
-            {
-                return Unauthorized("Kullanıcı kimliği bulunamadı.");
-            }
-
-            var myOrders = await _context.Orders
-                .Include(o => o.OrderItems).ThenInclude(oi => oi.Product)
-                .Where(o => o.UserId == userIdInt)
-                .ToListAsync();
-
-            return Ok(myOrders);
         }
     }
 }
