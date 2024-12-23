@@ -29,39 +29,15 @@ namespace api.Services
                 return null;
             }
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var jwtKey = _configuration["Jwt:Key"];
-            if (string.IsNullOrEmpty(jwtKey))
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+            var idClaim = jsonToken?.Claims.First(claim => claim.Type == JwtRegisteredClaimNames.Sub)?.Value;
+            if (string.IsNullOrEmpty(idClaim))
             {
                 return null;
             }
-            var key = Encoding.UTF8.GetBytes(jwtKey);
 
-            try
-            {
-                tokenHandler.ValidateToken(token, new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ClockSkew = TimeSpan.Zero
-                }, out SecurityToken validatedToken);
-
-                var jwtToken = (JwtSecurityToken)validatedToken;
-                var userIdClaim = jwtToken.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub);
-                if (userIdClaim == null)
-                {
-                    return null;
-                }
-
-                var userId = userIdClaim.Value;
-                return int.Parse(userId);
-            }
-            catch
-            {
-                return null;
-            }
+            return int.TryParse(idClaim, out var userId) ? userId : (int?)null;
         }
 
         public string? GetRole()

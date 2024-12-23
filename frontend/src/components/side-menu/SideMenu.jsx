@@ -2,34 +2,8 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './sideMenu.scss';
 
-const SideMenu = ({ main_menu }) => {
-    const aUser = {
-        name: "Product Admin",
-        email: "Padmin@ekoinv.com",
-        role: "padmin"
-    };
-    // const getMainMenu = () => {
-    //     if (aUser?.role === "padmin") {
-    //         return [
-    //             { path: "/products-admin", text: "Manage Products" },
-    //             { path: "/product-dashboard", text: "Product Dashboard" }
-    //         ];
-    //     } else if (aUser?.role === "oadmin") {
-    //         return [
-    //             { path: "/orders-progress", text: "Orders Progress" },
-    //             { path: "/requests", text: "Requests" }
-    //         ];
-    //     } else if (aUser?.role === "customer") {
-    //         return [
-    //             { path: "/profile/orders", text: "My Orders" },
-    //             { path: "/profile/cart", text: "My Cart" }
-    //         ];
-    //     } else {
-    //         return [];
-    //     }
-    // };
-
-    // const mainMenu = getMainMenu();
+const SideMenu = ({ main_menu, requestsNotification, activeUser }) => {
+    
 
     return (
         <aside className="side-menu">
@@ -45,6 +19,8 @@ const SideMenu = ({ main_menu }) => {
                             })}
                         >
                             {text}
+                            {requestsNotification>0 && text==='Requests' &&
+                                <div className="indicator">{requestsNotification}</div> }
                         </NavLink>
                     </li>
                 ))}
@@ -89,8 +65,8 @@ const SideMenu = ({ main_menu }) => {
 
             <div className="side-menu__user">
                 <img src="" alt="" className="side-menu__user-pic" />
-                <p className="side-menu__user-name">{aUser?.name || "Guest"}</p>
-                <p className="side-menu__user-email">{aUser?.email || "Not logged in"}</p>
+                <p className="side-menu__user-name">{activeUser?.name || "Guest"}</p>
+                <p className="side-menu__user-email">{activeUser?.email || "Not logged in"}</p>
             </div>
         </aside>
     );

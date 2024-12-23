@@ -19,8 +19,8 @@ const ForgotPasswordRequest = () => {
     const onLoaded =() => {
         setLoading(false);
         setLoaded(true);
-        setShowModal(true)
-        
+        setShowModal(true);
+        navigate('/login');
     }
 
     const onError = (error) => {

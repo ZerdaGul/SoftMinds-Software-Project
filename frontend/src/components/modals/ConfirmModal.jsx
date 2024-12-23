@@ -4,8 +4,8 @@ import './modal.scss';
 
 const ConfirmModal = ({ title, subtitle, buttonConfirmText, buttonCloseText, onClose, onConfirm }) => {
     return (
-        <div className="overlay">
-            <div className="modal">
+        <div className="overlay" onClick={onClose} >
+            <div className="modal" onClick={(e) => e.stopPropagation()}>
                 <button onClick={onClose} className="modal__close">
                     <img src={close} alt="close" />
                 </button>

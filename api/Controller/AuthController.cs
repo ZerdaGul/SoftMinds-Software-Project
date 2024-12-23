@@ -40,18 +40,18 @@ namespace api.Controller
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
             if (user == null)
             {
-                return Unauthorized("Geçersiz email");
+                return Unauthorized("Invalid email");
             }
 
             if (user.Is_Email_Verified == false)
             {
-                return Unauthorized("Email adresiniz doğrulanmamış. Lütfen email adresinizi doğrulayın.");
+                return Unauthorized("Your email address hasn't been approved. Please approve your email address.");
             }
 
             // Hesap kilitli mi kontrol et
             if (user.Lockout_End.HasValue && user.Lockout_End.Value > DateTime.UtcNow)
             {
-                return Unauthorized($"Hesabınız {user.Lockout_End.Value.Subtract(DateTime.UtcNow).Minutes} dakika boyunca kilitli.");
+                return Unauthorized($"Your account {user.Lockout_End.Value.Subtract(DateTime.UtcNow).Minutes} minutes long is locked.");
             }
 
             // Şifreyi doğrula
@@ -64,13 +64,21 @@ namespace api.Controller
                     user.Failed_Login_Attempts = 0; // Başarısız giriş denemelerini sıfırla
                 }
                 await _context.SaveChangesAsync();
-                return Unauthorized("Geçersiz şifre.");
+                return Unauthorized("Invalid password.");
             }
 
             // Başarılı giriş, başarısız giriş denemelerini sıfırla
             user.Failed_Login_Attempts = 0;
             user.Lockout_End = null;
             await _context.SaveChangesAsync();
+
+            // Mevcut AuthToken çerezini sil
+            Response.Cookies.Delete("AuthToken", new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
+            });
 
             var claims = new List<Claim>
             {
@@ -90,7 +98,6 @@ namespace api.Controller
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddDays(1),  // Token süresi 1 gün
                 signingCredentials: creds);
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
@@ -116,7 +123,7 @@ namespace api.Controller
                 Secure = true,
                 SameSite = SameSiteMode.None
             });
-            return Ok(new { message = "Çıkış başarılı." });
+            return Ok(new { message = "Log out is successfull." });
         }
 
         // GET /api/auth/active-session

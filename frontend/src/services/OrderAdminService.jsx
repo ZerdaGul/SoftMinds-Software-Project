@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const api = "https://api.ekoinv.com/api/"
+import { api } from './api';
 
 export const AcceptOrder = async (data) => {
     try {
@@ -8,6 +8,7 @@ export const AcceptOrder = async (data) => {
         headers: {
           'Content-Type': 'application/json'
         },
+        withCredentials: true
       })
       return response.data;
     } catch (error) {
@@ -27,6 +28,7 @@ export const AcceptOrder = async (data) => {
         headers: {
           'Content-Type': 'application/json'
         },
+        withCredentials: true
       })
       return response.data;
     } catch (error) {
@@ -40,12 +42,33 @@ export const AcceptOrder = async (data) => {
     }
   }
 
-  export const GetOrders = async () => {
+  export const GetRequestedOrders = async () => {
     try {
-      const response = await axios.get(`${api}get-orders`, {
+      const response = await axios.get(`${api}requested-orders`, {
         headers: {
           'Content-Type': 'application/json'
         },
+        withCredentials: true
+      })
+      return response.data;
+    } catch (error) {
+      console.log(error)
+      if (error.response) {
+  
+        throw new Error(error.response.data); // Ensure error.response.data exists
+      } else {
+        throw new Error("An unknown error occurred."); // Catch other errors
+      }
+    }
+  }
+
+  export const GetOrdersByStatus = async () => {
+    try {
+      const response = await axios.get(`${api}orders-status`, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        withCredentials: true
       })
       return response.data;
     } catch (error) {

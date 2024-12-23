@@ -4,11 +4,13 @@ import { useLocation } from 'react-router-dom';
 import SectorsSideMenu from '../sectors-side-menu/SectorsSideMenu';
 import AdminProductCard from './AdminProductCard';
 import '../../pages/productsPage.scss';
-import { LoadProducts, DeleteProduct } from '../../services/ProductService';
+import { LoadProducts } from '../../services/ProductService';
+import { DeleteProduct } from '../../services/ProductAdminService';
 import { EditProductModal } from '../modals/EditProductModal';
 import { AddProductModal } from '../modals/AddProductModal';
 import InfoModal from '../modals/InfoModal';
 import Pagination from '../pagination/Pagination';
+import ConfirmModal from '../modals/ConfirmModal';
 
 const ProductsForAdmin = () => {
     const location = useLocation();
@@ -40,19 +42,23 @@ const ProductsForAdmin = () => {
     };
 
     const handleAddProduct = () => setShowAddModal(true);
-    const handleEditProduct = (productId) => {
-        setEditProductId(productId);
+
+    const handleEditProduct = (product) => {
+        setEditProductId(product);
         setShowEditModal(true);
     };
     const handleDeleteProduct = async (productId) => {
         try {
             await DeleteProduct(productId);
-            await updateProducts();
+            updateProducts();
         } catch (error) {
             setError(true);
             setErrorMessage(error.message);
         }
     };
+    const handlePageChange = (current, direction=0) => {
+		setCurrentPage(current+direction);
+	}
 
     const modal = (
         <>
@@ -67,7 +73,7 @@ const ProductsForAdmin = () => {
             {showEditModal &&
                 createPortal(
                     <EditProductModal
-                        productId={editProductId}
+                        product={editProductId}
                         onClose={() => setShowEditModal(false)}
                         onProductUpdated={updateProducts}
                     />,
@@ -75,7 +81,7 @@ const ProductsForAdmin = () => {
                 )}
             {deleteProductId &&
                 createPortal(
-                    <InfoModal
+                    <ConfirmModal
                         title="Delete Product"
                         subtitle="Are you sure you want to delete this product?"
                         onConfirm={() => {
@@ -83,7 +89,9 @@ const ProductsForAdmin = () => {
                             setDeleteProductId(null); // Modal kapatılır
                         }}
                         onClose={() => setDeleteProductId(null)} // Modal kapatılır
-                    />,
+                        buttonConfirmText = {"Delete"}
+                        buttonCloseText ={'Cancel'}
+                        />,
                     document.body
                 )}
             {error &&
@@ -113,7 +121,7 @@ const ProductsForAdmin = () => {
                         <AdminProductCard
                             key={product.id}
                             product={product}
-                            handleEdit={() => handleEditProduct(product.id)}
+                            handleEdit={() => handleEditProduct(product)}
                             handleDelete={() => setDeleteProductId(product.id)}
                         />
                     ))}
@@ -121,7 +129,7 @@ const ProductsForAdmin = () => {
                 <Pagination
                     currentPage={currentPage}
                     totalPages={totalPages}
-                    onPageChange={(page) => setCurrentPage(page)}
+                    onPageChange={handlePageChange}
                 />
             </section>
         </div>

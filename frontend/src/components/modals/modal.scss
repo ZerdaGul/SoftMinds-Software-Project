@@ -2,7 +2,7 @@
 
 .modal {
     width: 480px;
-    height: 240px;
+    min-height: 240px;
     border-radius: 16px;
     border: 1px solid $dark-op-50;
     background-color: #fff;

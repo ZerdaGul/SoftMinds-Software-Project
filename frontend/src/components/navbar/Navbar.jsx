@@ -19,11 +19,12 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout, activeUser }) => {
     // Çıkış işlemi
     const handleLogout = async () => {
         try {
-            await LogOut(); // Backend çıkış işlemi
+            const response = await LogOut(); // Backend çıkış işlemi
             setIsLoggedIn(false);
             localStorage.removeItem('current-user');
             setShowLogoutModal(false);
             onLogout();
+            alert(response.message);
             navigate('/login'); // Giriş sayfasına yönlendir
         } catch (error) {
             console.error("Çıkış işlemi sırasında hata oluştu:", error);
@@ -85,8 +86,22 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout, activeUser }) => {
                              to="/consultancy">Consultancy</NavLink>
                 </li>
                 <li>
-                    <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                             to="/contactUs">Contact Us</NavLink>
+                    {activeUser 
+                        ? (activeUser.role !== "padmin" && activeUser.role !== "oadmin" && (
+                            <NavLink 
+                                style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })} 
+                                to="/contactUs" >
+                                Contact Us
+                            </NavLink>
+                            ))
+                        : (
+                            <NavLink 
+                            style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })} 
+                            to="/unauthorized" >
+                            Contact Us
+                            </NavLink>
+                        )
+                    }
                 </li>
                 <li>
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
@@ -98,15 +113,19 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout, activeUser }) => {
                     </NavLink>
                 </li>
                 <li>
+                    
                     <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
-                             to="/profile"> <img src={user} alt="user" style={{ height: "40px", width: "auto" }} />
+                             to={activeUser ? 
+                                    (activeUser.role === "customer" ? "/profile/cart"
+                                        : "/profile/dashboard")
+                                    : "/unauthorized"}> <img src={user} alt="user" style={{ height: "40px", width: "auto" }} />
                     </NavLink>
                 </li>
                 {/* Bildirim butonu */}
                 {renderNotificationButton()}
                 {/* Kullanıcı giriş/çıkış */}
                 <li>
-                    {isLoggedIn ? (
+                    {isLoggedIn || activeUser ? (
                         <Link onClick={confirmLogout}>Log Out</Link>
                     ) : (
                         <NavLink to="/login">Log In</NavLink>

@@ -35,6 +35,10 @@ import SolutionPage from "../../pages/SolutionPage";
 import ConsultancyPage from "../../pages/ConsultancyPage";
 import OrderAdminDashboard from '../order-admin/dashboard/Dashboard';
 import ProductAdminPage from '../../pages/ProductAdminPage';
+import CustomerOrders from '../customer-orders/CustomerOrders';
+import UnauthorizedPage from '../../pages/unauthorized-page/UnauthorizedPage';
+import QuestionsListCustomer from '../questions-list-customer/QuestionsListCustomer';
+import QuestionsList from '../product-admin/questions-list/QuestionsList';
 
 
 const App = () => {
@@ -44,14 +48,19 @@ const App = () => {
 	const location = useLocation();
 
 	// Load user information on app initialization
-    useEffect(() => {
+	useEffect(() => {
         const storedUser = getUserFromLocalStorage();
         if (storedUser) {
             console.log('User found in localStorage:', storedUser);
             setActiveUser(storedUser);
-        } else {
-            loadUserFromServer();
-        } 
+        }
+    }, []);
+    useEffect(() => {
+        if(!isLoggedOut && isLoggedIn) {
+			loadUserFromServer(); // Fetch from server 
+		} else {
+			setIsLoggedOut(false);
+		}
     }, [isLoggedIn, isLoggedOut]);
 
 	const getUserFromLocalStorage = () => {
@@ -131,17 +140,22 @@ const App = () => {
 					<Route path='/sectors' element={<SectorPage />}></Route>
 					<Route path='/solutions' element={<SolutionPage />}></Route>
 					<Route path='/consultancy' element={<ConsultancyPage />}></Route>
-					<Route path='/contactUs' element={<ContactForm/>}></Route>
+					<Route path='/cart' element={<CardForm/>}></Route>
+					{/*contactUs must be available to authed users, if not - redirect to unauthorized page */}
+					<Route path='/contactUs' element={<QuestionsListCustomer/>}></Route>
 					<Route path='/faq' element={<FAQPage/>}></Route>
 					<Route path='/forgot-password-request' element={<ForgotPasswordRequest />}></Route>
 					<Route path='/create-password' element={<CreatePasswordForm />}></Route>
+					{activeUser === null &&
+						<Route path="/unauthorized" element={<UnauthorizedPage/>}></Route>	
+					}
 					{activeUser?.role === "customer" && 
-						<Route path='/profile/*' element={<UserProfilePage />}>
+						<Route path='/profile/*' element={<UserProfilePage activeUser={activeUser}/>}>
 							<Route path='dashboard'></Route>
-							<Route path='orders'></Route>
+							<Route path='orders' element={<CustomerOrders userId={activeUser.id}/>}></Route>
 							<Route path='cart' element={<CardForm />}></Route>
 							<Route path='my-profile' element={<ProfileForm initialValues={activeUser} />}></Route>
-							<Route path='contacts'></Route>
+							<Route path='contacts' element={<QuestionsListCustomer/>}></Route>
 							<Route path='settings/*' element={<Settings initialValues={activeUser}/>}>
 								<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser}/>} />
 							</Route>
@@ -152,10 +166,10 @@ const App = () => {
 					{activeUser?.role === "padmin" && 
 					<>
 						<Route path='/products-admin' element={<ProductsForAdmin />}></Route>
-						<Route path='/profile/*' element={<ProductAdminPage />}>
+						<Route path='/profile/*' element={<ProductAdminPage activeUser={activeUser}/>}>
 							<Route path='dashboard' element={<ProductDashboard/>}></Route>
+							<Route path='questions' element={<QuestionsList/>}></Route>
 							<Route path='my-profile' element={<ProfileForm initialValues={activeUser || {}} />}></Route>
-							<Route path='contacts'></Route>
 							<Route path='settings/*' element={<Settings initialValues={activeUser} />}>
 								<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser} />} />
 							</Route>
@@ -165,12 +179,11 @@ const App = () => {
 					</>
 					} 
 					{activeUser?.role === "oadmin" && 
-						<Route path='/profile/*' element={<OrderAdminPage />}>
+						<Route path='/profile/*' element={<OrderAdminPage activeUser={activeUser}/>}>
 							<Route path='dashboard' element={<OrderAdminDashboard/>}></Route>
 							<Route path='orders-progress' element={<OrdersProgress />}></Route>
 							<Route path='requests' element={<Requests />}></Route>
 							<Route path='my-profile' element={<ProfileForm initialValues={activeUser || {}} />}></Route>
-							<Route path='contacts'></Route>
 							<Route path='settings/*' element={<Settings initialValues={activeUser} />}>
 								<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser} />} />
 							</Route>
@@ -193,46 +206,3 @@ const App = () => {
 
 export default App;
 
-{/* {activeUser.role === "customer" && 
-						<Route path='/profile/*' element={<UserProfilePage />}>
-							<Route path='dashboard'></Route>
-							<Route path='orders'></Route>
-							<Route path='cart'></Route>
-							<Route path='my-profile' element={<ProfileForm initialValues={activeUser} />}></Route>
-							<Route path='contacts'></Route>
-							<Route path='settings/*' element={<Settings initialValues={activeUser}/>}>
-								<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser}/>} />
-							</Route>
-							<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
-							
-						</Route> 
-					}
-					{activeUser.role === "padmin" && 
-					<>
-						<Route path='product-admin' element={<ProductsForAdmin />}></Route>
-						<Route path='/profile/*' element={<ProductAdminPage />}>
-							<Route path='dashboard' element={<ProductDashboard/>}></Route>
-							<Route path='my-profile' element={<ProfileForm initialValues={activeUser || {}} />}></Route>
-							<Route path='contacts'></Route>
-							<Route path='settings/*' element={<Settings initialValues={activeUser} />}>
-								<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser} />} />
-							</Route>
-							<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
-
-						</Route>
-					</>
-					} 
-					{activeUser.role === "oadmin" && 
-						<Route path='/profile/*' element={<OrderAdminPage />}>
-							<Route path='dashboard' element={<OrderAdminDashboard/>}></Route>
-							<Route path='orders-progress' element={<OrdersProgress />}></Route>
-							<Route path='requests' element={<Requests />}></Route>
-							<Route path='my-profile' element={<ProfileForm initialValues={activeUser || {}} />}></Route>
-							<Route path='contacts'></Route>
-							<Route path='settings/*' element={<Settings initialValues={activeUser} />}>
-								<Route path='reset-password' element={<ResetPasswordForm initialValues={activeUser} />} />
-							</Route>
-							<Route path='update-profile' element={<UpdateProfile initialValues={activeUser} />}></Route>
-
-						</Route>
-					} */}

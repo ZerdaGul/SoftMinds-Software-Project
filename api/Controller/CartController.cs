@@ -200,10 +200,19 @@ namespace api.Controller
             if (order == null)
             {
                 _logger.LogWarning("No pending order found for the user.");
-                return Ok(new List<OrderItem>()); // Return an empty list
+                return Ok(new List<object>()); // Return an empty list
             }
 
-            return Ok(order.OrderItems);
+            var orderItemsWithProductNames = order.OrderItems.Select(oi => new
+            {
+                oi.Id,
+                oi.ProductId,
+                oi.Quantity,
+                oi.Total_Price,
+                ProductName = oi.Product?.Name
+            }).ToList();
+
+            return Ok(orderItemsWithProductNames);
         }
 
         // GET: api/cart/summary

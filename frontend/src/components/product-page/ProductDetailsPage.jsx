@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import { LoadSingleProduct } from '../../services/ProductService';
 import './productDetailsPage.scss'
 import default_img from '../../assets/product-pic-default.jpg';
-import { AddToCart } from '../../services/ProductService';
+import { AddToCart } from '../../services/CartService';
 import InfoModal from '../modals/InfoModal';
 import { Link } from "react-router-dom";
 
@@ -54,10 +54,13 @@ const ProductDetailsPage = () => {
 		// Navigate back to /products with the previous state
 		navigate('/products', { state: location.state });
 	};
+
+
 	const handleAddToCart = async(e )=> {
 		e.preventDefault();
 		try{
 			await AddToCart({productId, quantity: amount})
+			navigate('/cart')
 		} catch (error) {
             onError(error);
 		}
@@ -121,9 +124,9 @@ const ProductDetailsPage = () => {
 								className="form__input"
 							/>
 						</div>
-						<Link to="/cart" className="add-to-cart-button">
+						<button type='submit' className="add-to-cart-button">
 							Add to Card
-						</Link>
+						</button>
 					</form>
 				</div>
 				<div className="product__comment-wrapper">

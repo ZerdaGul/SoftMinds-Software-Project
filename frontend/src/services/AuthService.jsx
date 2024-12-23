@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const api = "https://api.ekoinv.com/api/"
+import { api } from './api';
 
 export const RegisterUser = async (data) => {
   try {
@@ -75,7 +74,7 @@ export const LogIn = async (data) => {
 
       throw new Error(error.response.data); // Ensure error.response.data exists
     } else {
-      throw new Error("An unknown error occurred."); // Catch other errors
+      throw new Error("An unknown error occurred while log in."); // Catch other errors
     }
   }
 }
@@ -87,13 +86,14 @@ export const LogOut = async () => {
       },
       withCredentials: true
     })
-    return response.data;
+    return { success: true, message: response.data.message || "Successfully logged out" };
   } catch (error) {
     if (error.response) {
-
-      throw new Error(error.response.data); // Ensure error.response.data exists
+      // Backend'den gelen hata mesajı
+      throw new Error(error.response.data.message || "Logout failed due to an API error.");
     } else {
-      throw new Error("An unknown error occurred."); // Catch other errors
+      // Diğer durumlarda hata
+      throw new Error("An unknown error occurred while logging out.");
     }
   }
 }
@@ -176,22 +176,3 @@ export const CreatePassword = async (data) => {
   }
 }
 
-export const Contact = async (data) => {
-  try {
-    const response = await axios.post(`${api}support-request`, data, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      withCredentials: true
-    })
-    return response.data;
-  } catch (error) {
-    console.log(error)
-    if (error.response) {
-
-      throw new Error(error); // Ensure error.response.data exists
-    } else {
-      throw new Error("An unknown error occurred."); // Catch other errors
-    }
-  }
-}

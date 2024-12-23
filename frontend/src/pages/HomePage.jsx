@@ -1,45 +1,45 @@
 
 import { Link } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { createPortal } from 'react-dom';
 import smartCityImg from '../assets/img/SmartCity.png';
 import energyImg from '../assets/img/energy.png';
 import itsTrafficImg from '../assets/img/ITS.png';
 import securitySurveillanceImg from '../assets/img/Security.png';
 import ironSteelImg from '../assets/img/IronSteel.webp';
 import packagingImg from '../assets/img/Packaging.jpg';
+import { LoadFeaturedProducts } from '../services/ProductService';
 import './HomePage.scss';
 import ContactForm from '../components/contact-form/ContactForm';
-import React, { useEffect, useState } from "react";
+import ProductCard from '../components/product-card/ProductCard';
+import SetQuantityModal from '../components/modals/SetQuantityModal';
+import InfoModal from '../components/modals/InfoModal';
+
 
 const sectors = [
     {
-        sector: 'Smart City',
-        descr: 'Innovative solutions for urban development, integrating technology to improve infrastructure, communication, and sustainability.',
+        sector: 'Smart Cities',
         picture: smartCityImg,
     },
     {
         sector: 'Energy',
-        descr: 'Cutting-edge approaches to energy generation, storage, and distribution, focusing on renewable and sustainable resources.',
         picture: energyImg,
     },
     {
         sector: 'ITS & Traffic',
-        descr: 'Intelligent Transportation Systems to enhance traffic management, safety, and efficiency in transportation networks.',
         picture: itsTrafficImg,
     },
     {
-        sector: 'Security & Surveillance',
-        descr: 'Advanced security and surveillance technologies to ensure safety and monitor critical areas effectively.',
+        sector: 'Security & Survellience',
         picture: securitySurveillanceImg,
     },
     {
         sector: 'Iron & Steel',
-        descr: 'High-quality solutions for the iron and steel industry, driving innovation in materials and production.',
         picture: ironSteelImg,
     },
     {
         sector: 'Packaging',
-        descr: 'Innovative packaging solutions designed for efficiency, sustainability, and adaptability across industries.',
         picture: packagingImg,
     },
 ];
@@ -49,25 +49,71 @@ function HomePage() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await fetch("https://api.ekoinv.com/api/homepage/featured-products");
-                if (!response.ok) {
-                    throw new Error("Something went wrong while fetching products");
-                }
-                const data = await response.json();
-                setProducts(data);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
+    const [productToBuy, setProductToBuy] = useState(0);
+    const [showModal, setShowModal] = useState(false);
+    const navigate = useNavigate();
+	const [errorMessage, setErrorMessage] = useState('');
     
-        fetchProducts();
+    useEffect(() => {
+        loadFeaturedProducts();
     }, []);
+
+    const onLoaded =(data) => {
+        setProducts(data);
+    }
+
+    const onError = (error) => {
+        setError(true);  
+        setShowModal(true);
+        setErrorMessage(error.message)      
+    }
+
+    const loadFeaturedProducts = async() => {
+        try {
+            const data = await LoadFeaturedProducts();
+            onLoaded(data);
+        } catch (error) {
+            onError(error); // Handle error
+        }
+    }
+    const handleAddToCart = (id) => {
+		setProductToBuy(id);
+		setShowModal(true)
+	}
+
+	const handleProductClick = (productId) => {
+		// Navigate to the single product page, preserving state
+		navigate(`/products/${productId}`);
+	};
+
+    const modal = (
+        <div>
+			{productToBuy && 
+				createPortal(
+					<SetQuantityModal
+						product_id={productToBuy}
+						onClose={() => {
+							setShowModal(false);
+							setProductToBuy(0)
+						}}
+					/>,
+					document.body
+				)}
+            {error &&
+                createPortal(
+                    <InfoModal
+                        title="Error"
+                        subtitle={errorMessage}
+                        onClose={() => {
+                            setShowModal(false);
+                            setError(false);
+                        }}
+                    />,
+                    document.body
+                )}
+            <div className="overlay"></div>
+        </div>
+    );
 
     return (
         <div className="home-page">
@@ -83,20 +129,16 @@ function HomePage() {
 
             {/* New Products Section */}
             <section className="new-products">
+            {showModal && modal}
             <h2>Featured Products</h2>
             <div className="products">
-                {products.map((product) => (
-                    <div key={product.id} className="product-card">
-                        <img
-                            src="https://via.placeholder.com/150" // Placeholder image
-                            alt={product.name}
-                        />
-                        <div className="product-details">
-                            <h3>{product.name}</h3>
-                            <p>${product.price.toFixed(2)}</p>
-                        </div>
-                    </div>
-                ))}
+                    {products.map(product => (
+                        <ProductCard 
+                            handleAddToCart={handleAddToCart}
+                            key={product.id}
+                            product={product}
+                            onClick={() => handleProductClick(product.id)}/>
+                    ))}
             </div>
         </section>
 
@@ -105,15 +147,18 @@ function HomePage() {
                 <div className="container">
                     <h2>Sectors</h2>
                     <div className=" sector-cards">
-                        {sectors.map(({sector, descr, picture}) => {
+                        {sectors.map(({sector, picture}) => {
                             return(
                             <div key={sector} className="sector-card">
                                 <img className='sector-img' src={picture} alt={sector} />
-                                <div >
-                                <Link to="/sectors" className="sector-name" >
+                                <Link 
+                                    to="/products" 
+                                    state={{ filter: sector }} 
+                                    className="sector-name"
+                                    >
                                     {sector}
                                 </Link>
-                                </div>
+                                
                             </div>
                             )
                         })}

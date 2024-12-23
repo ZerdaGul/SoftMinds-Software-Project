@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../product-card/productCard.scss';
 import product_pic from '../../assets/product-pic-default.jpg';
-import {DeleteProduct} from "../../services/ProductService"; // Varsayılan ürün resmi
+import {DeleteProduct} from "../../services/ProductAdminService"; // Varsayılan ürün resmi
 
 const AdminProductCard = ({ product, handleEdit, handleDelete }) => {
     const [showConfirmation, setShowConfirmation] = useState(false); // Popup kontrolü
@@ -24,14 +24,14 @@ const AdminProductCard = ({ product, handleEdit, handleDelete }) => {
     return (
         <div className="productCard">
             <img
-                src={product.imageUrl || product_pic} // Eğer `imageUrl` yoksa varsayılan resmi göster
-                alt={product.name || "Product Image"}
+                src={product?.imageUrl || product_pic} // Eğer `imageUrl` yoksa varsayılan resmi göster
+                alt={product?.name || "Product Image"}
                 className="productCard__image"
             />
 
             <div className="productCard__wrapper">
-                <div className="productCard__title">{product.name}</div>
-                <div className="productCard__price">${product.price}</div>
+                <div className="productCard__title">{product?.name}</div>
+                <div className="productCard__price">${product?.price}</div>
                 <div className="productCard__actions">
                     <button
                         onClick={handleEditClick}

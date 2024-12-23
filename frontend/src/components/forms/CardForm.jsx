@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./CardForm.scss";
 import logoCircle from "../../assets/icons/pleaseLogin.png";
 import emptyCart from "../../assets/icons/cart.png";
+import { GetCartItems, GetCartSummary,UpdateCartItemQuantity, Checkout, ClearCart, RemoveItemFromCart } from "../../services/CartService";
 
 const CardForm = () => {
     const [cartItems, setCartItems] = useState([]);
@@ -14,16 +15,20 @@ const CardForm = () => {
 
     
     useEffect(() => {
-        const fetchCartItems = async () => {
+        fetchCartItems();
+    }, []);
+    
+    const fetchCartItems = async () => {
             try {
                 setLoading(true);
-                const response = await fetch("/api/cart", { credentials: "include" });
-                if (response.status === 401) {
-                    setIsAuthenticated(false);
-                    return;
-                }
-                if (!response.ok) throw new Error("Failed to fetch cart items");
-                const data = await response.json();
+                // const response = await fetch("/api/cart", { credentials: "include" });
+                // if (response.status === 401) {
+                //     setIsAuthenticated(false);
+                //     return;
+                // }
+                // if (!response.ok) throw new Error("Failed to fetch cart items");
+                // const data = await response.json();
+                const data = await GetCartItems();
                 setCartItems(data);
             } catch (err) {
                 setError(err.message);
@@ -32,32 +37,14 @@ const CardForm = () => {
             }
         };
 
-        fetchCartItems();
-    }, []);
-
     const calculateSubtotal = () => {
         return cartItems.reduce((acc, item) => acc + item.total_Price, 0);
     };
 
-    const updateQuantity = async (productId, newQuantity) => {
+    const updateQuantity = async (productId, quantity) => {
         try {
-            const response = await fetch("/api/cart/update-quantity", {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify({ ProductId: productId, Quantity: newQuantity }),
-            });
-
-            if (response.ok) {
-                setCartItems(cartItems.map(item =>
-                    item.productId === productId ? { ...item, quantity: newQuantity, total_Price: item.price * newQuantity } : item
-                ));
-                setSuccessMessage("Quantity updated successfully.");
-                setTimeout(() => setSuccessMessage(""), 2000);
-            } else {
-                const data = await response.json();
-                setError(data.message || "An error occurred");
-            }
+            await UpdateCartItemQuantity(productId, quantity);
+            fetchCartItems();
         } catch (err) {
             setError("Unable to update quantity. Please try again.");
         }
@@ -79,15 +66,8 @@ const CardForm = () => {
 
     const handleRemoveItem = async (productId) => {
         try {
-            const response = await fetch(`/api/cart/remove-item?productId=${productId}`, {
-                method: "DELETE",
-                credentials: "include",
-            });
-            if (response.ok) {
-                setCartItems(cartItems.filter(item => item.productId !== productId));
-            } else {
-                setError("Failed to remove item from cart");
-            }
+            await RemoveItemFromCart(productId);
+            fetchCartItems();
         } catch (err) {
             setError("Unable to remove item. Please try again.");
         }
@@ -95,18 +75,11 @@ const CardForm = () => {
 
     const handleCheckout = async () => {
         try {
-            const response = await fetch("/api/cart/checkout", {
-                method: "POST",
-                credentials: "include",
-            });
-            if (response.ok) {
-                alert("Order placed successfully!");
-                setCartItems([]);
-            } else {
-                setError("Failed to complete checkout.");
-            }
+            await Checkout();
+            alert("Order placed successfully!");
+            setCartItems([]);
         } catch (err) {
-            setError("An error occurred. Please try again later.");
+            setError("Failed to complete checkout");
         }
     };
 
@@ -184,14 +157,14 @@ const CardForm = () => {
             <div className="cart-items">
                 {cartItems.map((item) => (
                     <div className="cart-item" key={item.productId}>
-                        <img src={item.product.imageUrl || "https://via.placeholder.com/150"} alt={item.product.name} className="cart-item__image" />
+                        <img src={item?.imageUrl || "https://via.placeholder.com/150"} alt={item.name} className="cart-item__image" />
                         <div className="cart-item__details">
-                            <h3>{item.product.name}</h3>
-                            <p>Price: ${item.product.price.toFixed(2)}</p>
+                            <h3>{item.productName}</h3>
+                            <p>Price: ${item.price}</p>
                             <div className="quantity-controls">
                                 <button onClick={() => handleDecrease(item.productId, item.quantity)} disabled={item.quantity <= 1}>-</button>
                                 {item.quantity}
-                                <button onClick={() => handleIncrease(item.productId, item.quantity, item.product.stock)}>+</button>
+                                <button onClick={() => handleIncrease(item.productId, item.quantity, item.stock)}>+</button>
                             </div>
                             <p>Total: ${item.total_Price.toFixed(2)}</p>
                             <button onClick={() => handleRemoveItem(item.productId)}>Remove</button>
