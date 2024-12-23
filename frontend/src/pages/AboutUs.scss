@@ -106,106 +106,63 @@
   }
 }
 
-/* Media Queries */
-@media (max-width: 1024px) {
-  .hero {
-    padding: 30px 0;
-
-    h1 {
-      font-size: 2rem;
-    }
-  }
-
-  .who-we-are,
-  .our-vision,
-  .our-mission,
-  .partners {
-    margin: 30px 0;
-
-    h2 {
-      font-size: 1.5rem;
-    }
-
-    p {
-      font-size: 0.95rem;
-    }
-  }
-
-  .partners .partner-card {
-    width: calc(50% - 20px);
-  }
-
-  .our-vision,
-  .our-mission {
-    padding: 15px;
-  }
-}
-
 @media (max-width: 768px) {
-  .hero {
-    padding: 20px 0;
-
-    h1 {
-      font-size: 1.8rem;
-    }
-  }
-
-  .who-we-are,
-  .our-vision,
-  .our-mission,
-  .partners {
-    margin: 20px 0;
-
-    h2 {
-      font-size: 1.3rem;
-    }
-
-    p {
-      font-size: 0.9rem;
-    }
-  }
-
-  .partners .partner-card {
-    width: calc(100% - 20px);
-  }
-
-  .our-vision,
-  .our-mission {
+  .about-us-page {
     padding: 10px;
-  }
-}
 
-@media (max-width: 480px) {
-  .hero {
-    padding: 15px 0;
-
-    h1 {
-      font-size: 1.5rem;
-    }
-  }
-
-  .who-we-are,
-  .our-vision,
-  .our-mission,
-  .partners {
-    margin: 15px 0;
-
-    h2 {
-      font-size: 1.2rem;
+    .hero {
+      padding: 30px 0;
+      
+      h1 {
+        font-size: 2rem;
+      }
     }
 
-    p {
-      font-size: 0.85rem;
+    .who-we-are,
+    .our-vision,
+    .our-mission,
+    .partners {
+      margin: 20px 10px;
+      padding: 20px;
+      
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      p {
+        font-size: 0.9rem;
+      }
     }
-  }
 
-  .partners .partner-card {
-    padding: 15px;
-    width: 100%;
-  }
+    .our-vision,
+    .our-mission {
+      padding: 20px;
+      border-radius: 8px;
+    }
 
-  .our-vision,
-  .our-mission {
-    padding: 10px;
+    .partners {
+      .partner-cards {
+        flex-direction: column;
+        gap: 15px;
+        justify-content: center;
+      }
+
+      .partner-card {
+        width: 100%;
+        padding: 15px;
+        
+        h3 {
+          font-size: 1.3rem;
+        }
+
+        .title {
+          font-size: 0.9rem;
+        }
+
+        p {
+          font-size: 0.8rem;
+        }
+      }
+    }
   }
 }
