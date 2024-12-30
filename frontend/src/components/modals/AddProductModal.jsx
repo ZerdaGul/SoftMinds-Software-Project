@@ -31,13 +31,23 @@ export const AddProductModal = ({ onClose, onProductAdded }) => {
     const handlePhotoUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
+            if (file.size > 2 * 1024 * 1024) { // 2MB max file size
+                setError('File size must be less than 2MB.');
+                return;
+            }
+            if (!['image/jpeg', 'image/png'].includes(file.type)) {
+                setError('Only JPEG and PNG images are allowed.');
+                return;
+            }
             setPhoto(file);
-            setPhotoType(file.type); // Fotoğraf türü
-            setPhotoSize(file.size); // Fotoğraf boyutu
+            setPhotoType(file.type); // Get the file's type
+            setPhotoSize(file.size); // Get the file's size
+            setError('');
         }
     };
 
-    const handleRemovePhoto = () => {
+    const handleRemovePhoto = (e) => {
+        e.preventDefault();
         setPhoto(null);
         setPhotoType('');
         setPhotoSize(0);
@@ -55,31 +65,21 @@ export const AddProductModal = ({ onClose, onProductAdded }) => {
         setError('');
     };
 
+    // Convert image to base64
+    const convertImageToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    };
+
     const handleSubmit = async () => {
         if (!name || !price || !description || !stock || !sector) {
             setError('Tüm alanları doldurmanız gerekmektedir.');
             return;
         }
-
-        const formData = new FormData();
-
-        formData.append('ProductName', name);
-        formData.append('Description', description);
-        formData.append('Price', price);
-        formData.append('Stock', stock);
-        formData.append('Sector', sector);
-        formData.append('Photo', photo);
-
-        console.log([...formData.entries()]);
-
-        if (photo) {
-            let contentType = photo.type; // photo.type yerine doğru değer alınır
-            formData.append('PhotoType', contentType);
-        }else {
-            const defaultBlob = new Blob([], { type: "image/jpeg" }); // Boş bir Blob oluştur
-            formData.append("Photo", defaultBlob);
-            formData.append("PhotoType", "image/jpeg"); // Varsayılan tür
-        }        
 
         if (isNaN(price) || price <= 0) {
             setError('Geçerli bir fiyat girin.');
@@ -91,19 +91,36 @@ export const AddProductModal = ({ onClose, onProductAdded }) => {
             return;
         }
 
+        const productData = {
+            productName: name,
+            description: description,
+            price: price,
+            stock: stock,
+            sector: sector,
+            photo: '', // Base64 encoded image string
+            contentType: 'image/jpeg', // Default MIME type if no photo
+        };
+
+        // If there's a photo, convert it to base64 and append it
+        if (photo) {
+            const base64Image = await convertImageToBase64(photo);
+            productData.photo = base64Image; // Send base64 encoded string as photo
+            productData.contentType = photo.type; // Send photo type
+        }
+
         setIsSubmitting(true);
-        setError('');
+        setError(''); // Reset error before submitting
 
         try {
-            await AddProduct(formData);
-            onProductAdded();
-            resetForm();
-            onClose();
+            await AddProduct(productData); // Assuming AddProduct is correctly defined in services
+            onProductAdded(); // Notify the parent component
+            resetForm(); // Reset form fields
+            onClose(); // Close the modal
         } catch (err) {
-            console.error("Error Response:", err.response?.data || err.message);
+            console.error('Error Response:', err.response?.data || err.message);
             setError(err.response?.data?.message || 'Ürün eklenirken bir hata oluştu.');
         } finally {
-            setIsSubmitting(false);
+            setIsSubmitting(false); // Reset submitting state
         }
     };
 
