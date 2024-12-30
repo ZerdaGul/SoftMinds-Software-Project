@@ -182,7 +182,9 @@ function HomePage() {
                 </div>
             </section>
 
-            <ContactForm/>
+<div className="contact-form">
+<ContactForm/>
+</div>
 
 
         </div>

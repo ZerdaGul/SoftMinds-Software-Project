@@ -14,7 +14,10 @@ import NotificationModal from '../modals/NotificationModal'; // Bildirim modalı
 const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout, activeUser }) => {
     const navigate = useNavigate();
     const [showLogoutModal, setShowLogoutModal] = useState(false);
-    const [showNotificationModal, setShowNotificationModal] = useState(false); // Bildirim modalı kontrolü
+    const [showNotificationModal, setShowNotificationModal] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Mobil menü kontrolü
+
+    const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
     // Çıkış işlemi
     const handleLogout = async () => {
@@ -132,11 +135,76 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, onLogout, activeUser }) => {
                     )}
                 </li>
             </ul>
-            <div className="navbar-toggle">
+            <div className="navbar-toggle" onClick={toggleMobileMenu}>
                 <span className="bar"></span>
                 <span className="bar"></span>
                 <span className="bar"></span>
-            </div>
+<ul className={`navbar-links ${isMobileMenuOpen ? 'active' : ''}`}>
+    <li>
+        <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
+                 to="/aboutUs">About Us</NavLink>
+    </li>
+    <li>
+        <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
+                 to="/products">Products</NavLink>
+    </li>
+    <li>
+        <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
+                 to="/sectors">Sectors</NavLink>
+    </li>
+    <li>
+        <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
+                 to="/solutions">Solutions</NavLink>
+    </li>
+    <li>
+        <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
+                 to="/consultancy">Consultancy</NavLink>
+    </li>
+    <li>
+        {activeUser 
+            ? (activeUser.role !== "padmin" && activeUser.role !== "oadmin" && (
+                <NavLink 
+                    style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })} 
+                    to="/contactUs" >
+                    Contact Us
+                </NavLink>
+                ))
+            : (
+                <NavLink 
+                style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })} 
+                to="/unauthorized" >
+                Contact Us
+                </NavLink>
+            )
+        }
+    </li>
+    <li>
+        <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
+            to="/faq">FAQ</NavLink>
+    </li>
+    <li>
+        <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
+            to="/"> <img src={earth} alt="languages" style={{ height: "20px", width: "auto" }} />
+        </NavLink>
+    </li>
+    <li>
+        <NavLink style={({ isActive }) => ({ color: isActive ? '#FF5733' : '#571846' })}
+                 to={activeUser ? 
+                        (activeUser.role === "customer" ? "/profile/cart"
+                            : "/profile/dashboard")
+                        : "/unauthorized"}> <img src={user} alt="user" style={{ height: "40px", width: "auto" }} />
+        </NavLink>
+    </li>
+    {renderNotificationButton()}
+    <li>
+        {isLoggedIn || activeUser ? (
+            <Link onClick={confirmLogout}>Log Out</Link>
+        ) : (
+            <NavLink to="/login">Log In</NavLink>
+                                            )}
+                                </li>
+                        </ul>
+                </div>
 
             {/* Çıkış Modalı */}
             {showLogoutModal &&
