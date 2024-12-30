@@ -54,6 +54,10 @@
 
 /* Küçük ekranlar için */
 @media (max-width: 768px) {
+    .navbar {
+        padding: 0 30px; 
+    }
+
     .navbar-links {
         display: none;
         flex-direction: column;
@@ -61,16 +65,38 @@
         position: absolute;
         top: 60px;
         left: 0;
-        background-color: #333;
+        background-color: rgb(255, 255, 255);
         text-align: center;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .navbar-links.active {
+        display: flex;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        &:hover {
+          transform: scale(1.05); 
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+          background-color: #eaeaea; 
+        }
     }
 
     .navbar-links li {
         margin: 10px 0;
     }
 
+    .navbar-links a {
+        padding: 15px 0;
+        font-size: 18px;
+        color: #fff;
+    }
+
     .navbar-toggle {
         display: flex;
+    }
+
+    .bar {
+        background-color: #333;
     }
 }
 
@@ -93,6 +119,11 @@
     border-radius: 8px;
     text-align: center;
     width: 300px;
+
+    @media (max-width: 768px) {
+        width: 90%;
+        padding: 15px;
+    }
 }
 
 .modal-buttons {
@@ -117,6 +148,7 @@
     background-color: #ccc;
 }
 
+/* Bildirimler */
 .navbar-notification {
     position: relative;
     background: none;
@@ -151,6 +183,13 @@
         z-index: 1000;
         width: 300px;
 
+        @media (max-width: 768px) {
+            width: 90%;
+            right: 5%;
+            top: 50px;
+            max-height: 80vh; /* Ekranın %80 yüksekliği */
+        }
+
         &__header {
             display: flex;
             justify-content: space-between;
@@ -164,6 +203,7 @@
         &__close {
             cursor: pointer;
             color: #888;
+
             &:hover {
                 color: black;
             }
@@ -172,6 +212,10 @@
         &__items {
             max-height: 300px;
             overflow-y: auto;
+
+            @media (max-width: 768px) {
+                max-height: calc(80vh - 50px);
+            }
         }
 
         .notification-item {
@@ -200,4 +244,18 @@
             }
         }
     }
+}
+
+/* Genel Stil */
+body {
+    font-size: 16px;
+
+    @media (max-width: 768px) {
+        font-size: 14px;
+    }
+}
+
+img {
+    max-width: 100%;
+    height: auto;
 }
