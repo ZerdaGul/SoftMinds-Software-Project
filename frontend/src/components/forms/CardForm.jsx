@@ -50,15 +50,17 @@ const CardForm = () => {
         }
     };
 
-    const handleIncrease = (productId, quantity) => {
+    const handleIncrease = (productId, quantity, stock) => {
+        if (quantity < stock) {
             updateQuantity(productId, quantity + 1);
+        } else {
+            setError("Insufficient stock available for this product.");
+        }
     };
 
     const handleDecrease = (productId, quantity) => {
         if (quantity > 1) {
             updateQuantity(productId, quantity - 1);
-        } else if(quantity == 0){
-            handleRemoveItem(productId);
         }
     };
 

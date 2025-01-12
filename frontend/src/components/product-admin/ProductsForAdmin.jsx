@@ -67,9 +67,6 @@ const ProductsForAdmin = () => {
                     <AddProductModal
                         onClose={() => setShowAddModal(false)}
                         onProductAdded={updateProducts}
-                        onError={(errMessage) => {setErrorMessage(errMessage);
-                            setError(true);
-                            }}
                     />,
                     document.body
                 )}
@@ -79,9 +76,6 @@ const ProductsForAdmin = () => {
                         product={editProductId}
                         onClose={() => setShowEditModal(false)}
                         onProductUpdated={updateProducts}
-                        onError={(errMessage) => {setErrorMessage(errMessage);
-                            setError(true);
-                            }}
                     />,
                     document.body
                 )}

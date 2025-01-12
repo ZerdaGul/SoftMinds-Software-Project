@@ -77,7 +77,6 @@ const App = () => {
         }
     };
 
-	
     // Fetch user info from the server
     const loadUserFromServer = async () => {
         console.log('Fetching user from the server...');
@@ -105,7 +104,6 @@ const App = () => {
         setActiveUser(null); // Clear active user
         saveUserToLocalStorage(null); // Clear localStorage
     };
-	
 	const ScrollToTop = () => {
 		const { pathname } = useLocation();
 

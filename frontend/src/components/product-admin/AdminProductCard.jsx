@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import '../product-card/productCard.scss';
 import product_pic from '../../assets/product-pic-default.jpg';
-import ProductImage from '../product-page/ProductImage';
 import {DeleteProduct} from "../../services/ProductAdminService"; // Varsayılan ürün resmi
 
 const AdminProductCard = ({ product, handleEdit, handleDelete }) => {
@@ -24,9 +23,10 @@ const AdminProductCard = ({ product, handleEdit, handleDelete }) => {
 
     return (
         <div className="productCard">
-            <ProductImage 
-                photoUrl={product.photoUrl}
-                name={product.name}
+            <img
+                src={product?.imageUrl || product_pic} // Eğer `imageUrl` yoksa varsayılan resmi göster
+                alt={product?.name || "Product Image"}
+                className="productCard__image"
             />
 
             <div className="productCard__wrapper">

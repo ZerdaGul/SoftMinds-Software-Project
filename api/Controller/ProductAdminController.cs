@@ -34,10 +34,10 @@ namespace api.Controller
             }
 
             // Ürün adı kontrolü: Sadece harf ve boşluk karakteri
-            // if (!System.Text.RegularExpressions.Regex.IsMatch(model.ProductName, @"^[a-zA-Z\s]+$"))
-            // {
-            //     return BadRequest("Ürün adı yalnızca harflerden ve boşluk karakterlerinden oluşmalıdır.");
-            // }
+            if (!System.Text.RegularExpressions.Regex.IsMatch(model.ProductName, @"^[a-zA-Z\s]+$"))
+            {
+                return BadRequest("Ürün adı yalnızca harflerden ve boşluk karakterlerinden oluşmalıdır.");
+            }
 
             // Ürün fiyatı kontrolü
             if (model.Price <= 0)
@@ -52,10 +52,10 @@ namespace api.Controller
             }
 
             // Ürün sektörü kontrolü
-            // if (!System.Text.RegularExpressions.Regex.IsMatch(model.Sector, @"^[a-zA-Z\s]+$"))
-            // {
-            //     return BadRequest("Sektör yalnızca harflerden ve boşluk karakterlerinden oluşmalıdır.");
-            // }
+            if (!System.Text.RegularExpressions.Regex.IsMatch(model.Sector, @"^[a-zA-Z\s]+$"))
+            {
+                return BadRequest("Sektör yalnızca harflerden ve boşluk karakterlerinden oluşmalıdır.");
+            }
 
             // Ürün adı benzersiz mi kontrol et
             var existingProduct = await _context.Products.FirstOrDefaultAsync(p => p.Name == model.ProductName);
@@ -95,10 +95,10 @@ namespace api.Controller
             }
 
             // Ürün adı kontrolü: Sadece harf ve boşluk karakteri
-            // if (!System.Text.RegularExpressions.Regex.IsMatch(model.ProductName, @"^[a-zA-Z\s]+$"))
-            // {
-            //     return BadRequest("Ürün adı yalnızca harflerden ve boşluk karakterlerinden oluşmalıdır.");
-            // }
+            if (!System.Text.RegularExpressions.Regex.IsMatch(model.ProductName, @"^[a-zA-Z\s]+$"))
+            {
+                return BadRequest("Ürün adı yalnızca harflerden ve boşluk karakterlerinden oluşmalıdır.");
+            }
 
             // Ürün fiyatı kontrolü
             if (model.Price <= 0)
@@ -113,10 +113,10 @@ namespace api.Controller
             }
 
             // Ürün sektörü kontrolü
-            // if (!System.Text.RegularExpressions.Regex.IsMatch(model.Sector, @"^[a-zA-Z\s]+$"))
-            // {
-            //     return BadRequest("Sektör yalnızca harflerden ve boşluk karakterlerinden oluşmalıdır.");
-            // }
+            if (!System.Text.RegularExpressions.Regex.IsMatch(model.Sector, @"^[a-zA-Z\s]+$"))
+            {
+                return BadRequest("Sektör yalnızca harflerden ve boşluk karakterlerinden oluşmalıdır.");
+            }
 
             // Ürünü veritabanında bul
             var product = await _context.Products.FirstOrDefaultAsync(p => p.Name == model.ProductName);
