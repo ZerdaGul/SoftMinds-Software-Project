@@ -12,13 +12,12 @@ export const AddProduct = async (data) => {
     return response.data;
   } catch (error) {
     if (error.response) {
-      throw new Error(error.response.data); // API'den gelen hatayı işleyin
+      throw new Error(error.response.data); // Handle API errors
     } else {
-      throw new Error("An unknown error occurred while adding product."); // Diğer hatalar için
+      throw new Error("An unknown error occurred while adding product."); // Handle other errors
     }
   }
 };
-
 export const GetProductPhoto = async (id) => {
   try {
       const response = await axios.get(`${api}products/${id}/photo`, {
@@ -37,7 +36,7 @@ export const GetProductPhoto = async (id) => {
 
 export const DeleteProduct = async (id) => {
   try {
-    const response = await axios.delete(`${api}products/${id}`, {
+    const response = await axios.delete(`${api}delete-product/${id}`, {
       headers: {
         'Content-Type': 'application/json'
       }
@@ -52,7 +51,7 @@ export const DeleteProduct = async (id) => {
   }
 };
 
-export const EditProduct = async (id, updatedData) => {
+export const EditProduct = async (updatedData) => {
   try {
     const response = await axios.post(`${api}update-product`, updatedData, {
       headers: {
