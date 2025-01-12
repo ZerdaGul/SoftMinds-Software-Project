@@ -2,7 +2,7 @@ import React from 'react'
 
 import './productCard.scss';
 import product_pic from '../../assets/product-pic-default.jpg';
-
+import ProductImage from '../product-page/ProductImage';
 const ProductCard = ({ product, onClick, handleAddToCart }) => {
   const handleButtonClick = (e) => {
     e.stopPropagation(); // Prevent the click event from bubbling to the parent
@@ -11,7 +11,10 @@ const ProductCard = ({ product, onClick, handleAddToCart }) => {
 
   return (
     <div onClick={onClick} className="productCard">
-      <img src={product_pic} alt="product-picture" className="productCard__image" />
+      <ProductImage 
+                photoUrl={product.photoUrl}
+                name={product.name}
+            />
 
       <div className="productCard__wrapper">
         <div className="productCard__title">{product.name}</div>

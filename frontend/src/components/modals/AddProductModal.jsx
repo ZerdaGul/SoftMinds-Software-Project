@@ -3,7 +3,9 @@ import './AddEditProductModal.scss';
 import { AddProduct } from '../../services/ProductAdminService';
 import defaultPhoto from '../../assets/product-pic-default.jpg';
 
-export const AddProductModal = ({ onClose, onProductAdded }) => {
+import closeButton from '../../assets/icons/close-dark.svg'
+
+export const AddProductModal = ({ onClose, onProductAdded, onError }) => {
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [description, setDescription] = useState('');
@@ -16,7 +18,7 @@ export const AddProductModal = ({ onClose, onProductAdded }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const sectors = [
-        'Smart City',
+        'Smart Cities',
         'Energy',
         'ITS & Traffic',
         'Security & Surveillance',
@@ -55,67 +57,70 @@ export const AddProductModal = ({ onClose, onProductAdded }) => {
         setError('');
     };
 
-    const handleSubmit = async () => {
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                resolve(reader.result.split(',')[1]); // Get Base64 part of Data URL
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file); // Read as Data URL to extract Base64
+        });
+    };
+    
+
+      const handleSubmit = async () => {
         if (!name || !price || !description || !stock || !sector) {
             setError('Tüm alanları doldurmanız gerekmektedir.');
             return;
         }
-
-        const formData = new FormData();
-
-        formData.append('ProductName', name);
-        formData.append('Description', description);
-        formData.append('Price', price);
-        formData.append('Stock', stock);
-        formData.append('Sector', sector);
-        formData.append('Photo', photo);
-
-        console.log([...formData.entries()]);
-
+    
+        // Prepare the object
+        const productData = {
+            id: 0,
+            productName: name,
+            description: description,
+            price: price,
+            stock: stock,
+            sector: sector,
+            photo: '', // This will hold the byte array
+            contentType: '', // Content type for the photo (e.g., image/jpeg, image/png)
+        };
+    
         if (photo) {
-            let contentType = photo.type; // photo.type yerine doğru değer alınır
-            formData.append('PhotoType', contentType);
-        }else {
-            const defaultBlob = new Blob([], { type: "image/jpeg" }); // Boş bir Blob oluştur
-            formData.append("Photo", defaultBlob);
-            formData.append("PhotoType", "image/jpeg"); // Varsayılan tür
-        }        
-
-        if (isNaN(price) || price <= 0) {
-            setError('Geçerli bir fiyat girin.');
-            return;
+            try {
+                const base64Photo = await convertToBase64(photo);
+                productData.photo = base64Photo; // Set the Base64-encoded photo
+                productData.contentType = photoType; // Set the content type
+            } catch (err) {
+                setError('Error converting image to Base64.');
+                return;
+            }
         }
-
-        if (isNaN(stock) || stock <= 0) {
-            setError('Geçerli bir stok değeri girin.');
-            return;
-        }
-
-        setIsSubmitting(true);
-        setError('');
-
+    
         try {
-            await AddProduct(formData);
+            setIsSubmitting(true);
+            const response = await AddProduct(productData); // Send the data as JSON
             onProductAdded();
             resetForm();
             onClose();
         } catch (err) {
-            console.error("Error Response:", err.response?.data || err.message);
-            setError(err.response?.data?.message || 'Ürün eklenirken bir hata oluştu.');
+            console.error("Error Response:",err.message);
+            setError(err.message || 'Ürün eklenirken bir hata oluştu.');
+            onError(error);
         } finally {
             setIsSubmitting(false);
         }
     };
-
+    
     return (
         <div className="overlay">
             <div className="modal-content">
                 <button className="close-button" onClick={onClose}>
-                    X
+                    <img src={closeButton} alt="close" />
                 </button>
                 <h2>Add Product</h2>
                 <form>
-                    {error && <p className="error-message">{error}</p>}
                     <div className="form-group">
                         <label>Name</label>
                         <input
@@ -165,23 +170,27 @@ export const AddProductModal = ({ onClose, onProductAdded }) => {
                                 </button>
                             ))}
                         </div>
-                        {sector && <p>Selected Sector: {sector}</p>}
                     </div>
                     <div className="form-group">
                         <label>Photo</label>
                         <input type="file" accept="image/*" onChange={handlePhotoUpload} />
                         {photo && (
+                            
                             <div className="photo-preview">
-                                <img src={URL.createObjectURL(photo)} alt="preview" />
-                                <p>Type: {photoType}</p>
-                                <p>Size: {(photoSize / 1024).toFixed(2)} KB</p>
-                                <button onClick={handleRemovePhoto}>Remove Photo</button>
+                                <div className="photo-wrapper">
+                                    <img src={URL.createObjectURL(photo)} alt="preview" />
+                                    <button className='photo-remove' onClick={handleRemovePhoto}>
+                                        <img src={closeButton} alt="close" />
+                                    </button>
+
+                                </div>
                             </div>
                         )}
                     </div>
                 </form>
                 <button
-                    className="submit-button"
+                    style={{marginTop: "15px"}}
+                    className="button button__long submit-button" 
                     onClick={handleSubmit}
                     disabled={isSubmitting}
                 >
