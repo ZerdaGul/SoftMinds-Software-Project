@@ -72,7 +72,7 @@ export const fetchMonthlyRevenue = async () => {
   try {
     const responses = await Promise.all(
       Array.from({ length: 12 }, (_, i) =>
-        axios.get(`${api}get-income-by-month?month=${i + 1}&year=2023`)
+        axios.get(`${api}get-income-by-month?month=${i + 1}&year=2025`)
       )
     );
     return responses.map(response => response.data);
