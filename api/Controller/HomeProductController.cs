@@ -29,6 +29,7 @@ public class HomeProductController : ControllerBase
                 Id = p.Id,
                 Name = p.Name,
                 Price = p.Price,
+                PhotoUrl = p.Photo != null ? $"data:{p.ContentType};base64,{Convert.ToBase64String(p.Photo)}" : null
             })
             .ToListAsync();
 
