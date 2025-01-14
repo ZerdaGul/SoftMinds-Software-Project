@@ -354,5 +354,30 @@ namespace api.Controller
 
             return Ok(new { message = "Comment updated successfully." });
         }
+
+        // get product stock
+        [HttpGet("{productId}/stock")]
+        public async Task<IActionResult> GetProductStock(int productId)
+        {
+            var product = await _context.Products.FindAsync(productId);
+            if (product == null)
+            {
+                return NotFound("Product not found.");
+            }
+
+            return Ok(new { Stock = product.Stock });
+        }
+
+        // get product stock sector by sector
+        [HttpGet("stock-by-sector")]
+        public async Task<IActionResult> GetProductStockBySector()
+        {
+            var stockBySector = await _context.Products
+                .GroupBy(p => p.Sector)
+                .Select(g => new { Sector = g.Key, Stock = g.Sum(p => p.Stock) })
+                .ToListAsync();
+
+            return Ok(stockBySector);
+        }
     }
 }

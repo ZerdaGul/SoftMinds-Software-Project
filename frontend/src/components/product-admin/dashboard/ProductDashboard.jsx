@@ -1,6 +1,7 @@
-import React from "react";
-import { Line } from "react-chartjs-2";
+import React, { useEffect, useState } from "react";
+import { Line, Bar } from "react-chartjs-2";
 import geography from "../../../maps/world-countries.json";
+import { fetchMonthlyRevenue, getStockBySector } from "../../../services/ProductAdminService";
 
 import {
     Chart as ChartJS,
@@ -14,20 +15,41 @@ import {
     ComposableMap,
     Geographies,
     Geography,
-    Marker,
 } from "react-simple-maps";
 import "./Dashboard.scss";
 
 ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, BarElement);
 
 const ProductDashboard = () => {
+    const [monthlyRevenue, setMonthlyRevenue] = useState([]);
+    const [totalBalance, setTotalBalance] = useState(0);
+    const [stockBySector, setStockBySector] = useState([]);
+
+    useEffect(() => {
+        const getRevenueData = async () => {
+            const revenueData = await fetchMonthlyRevenue();
+            setMonthlyRevenue(revenueData);
+
+            const total = revenueData.reduce((acc, curr) => acc + curr, 0);
+            setTotalBalance(total);
+        };
+
+        const fetchStockBySector = async () => {
+            const stockData = await getStockBySector();
+            setStockBySector(stockData);
+        };
+
+        getRevenueData();
+        fetchStockBySector();
+    }, []);
+
     // Aylık gelir grafiği verisi
     const lineChartData = {
         labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
         datasets: [
             {
                 label: "Monthly Revenue",
-                data: [20000, 45000, 70000, 90000, 120000, 150000, 170000, 200000, 180000, 150000, 120000, 100000],
+                data: monthlyRevenue,
                 fill: false,
                 borderColor: "#7b3370",
                 tension: 0.1,
@@ -35,19 +57,13 @@ const ProductDashboard = () => {
         ],
     };
 
-    // Harita üzerinde işaretlenecek ülkeler
-    const customersLocations = [
-        { name: "USA", coordinates: [-100.0, 40.0] },
-        { name: "Germany", coordinates: [10.0, 51.0] },
-        { name: "Japan", coordinates: [138.0, 36.0] },
-    ];
-
+    // Sektörlere göre stok durumu verisi
     const barChartData = {
-        labels: ["Smart City", "Energy", "ITS & Traffic", "Security & Surveillance", "Iron & Steel", "Packaging"],
+        labels: stockBySector.map(item => item.Sector),
         datasets: [
             {
                 label: "Stock",
-                data: [50, 80, 120, 60],
+                data: stockBySector.map(item => item.Stock),
                 backgroundColor: "#7b3370",
             },
         ],
@@ -88,19 +104,18 @@ const ProductDashboard = () => {
                             }
                         </Geographies>
                     </ComposableMap>
-
                 </div>
 
                 {/* Toplam bakiye */}
                 <div className="summary__balance">
                     <h2>Total Balance</h2>
-                    <p>$2,548.00</p>
+                    <p>${totalBalance.toLocaleString()}</p>
                 </div>
 
                 {/* Stok durumu */}
                 <div className="summary__bar">
-                    <h2>Product Stock</h2>
-                    <Line data={barChartData} />
+                    <h2>Product Stock by Sector</h2>
+                    <Bar data={barChartData} />
                 </div>
             </div>
         </div>

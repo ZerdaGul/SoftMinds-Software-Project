@@ -402,7 +402,7 @@ namespace api.Controller
         public async Task<IActionResult> GetIncomeByMonth([FromQuery] int month, [FromQuery] int year)
         {
             var income = await _context.Orders
-                .Where(o => o.Order_Date.Month == month && o.Order_Date.Year == year)
+                .Where(o => o.Order_Date.Month == month && o.Order_Date.Year == year && (o.State.Equals("Accepted") || o.State.Equals("Done")))
                 .SumAsync(o => o.Total_Price);
 
             return Ok(income);

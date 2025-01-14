@@ -67,3 +67,26 @@ export const EditProduct = async (updatedData) => {
     }
   }
 };
+
+export const fetchMonthlyRevenue = async () => {
+  try {
+    const responses = await Promise.all(
+      Array.from({ length: 12 }, (_, i) =>
+        axios.get(`${api}get-income-by-month?month=${i + 1}&year=2025`)
+      )
+    );
+    return responses.map(response => response.data);
+  } catch (error) {
+    console.error("Error fetching monthly revenue:", error);
+  }
+};
+
+export const getStockBySector = async () => {
+  try {
+    const response = await axios.get(`${api}stock-by-sector`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching stock by sector:", error);
+    return []; // Hata durumunda boş bir dizi döndür
+  }
+};
