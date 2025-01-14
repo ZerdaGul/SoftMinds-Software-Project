@@ -27,6 +27,8 @@ export const LoadProducts = async (data) => {
     }
   }
 }
+
+
 export const LoadFeaturedProducts = async () => {
   try {
     const response = await axios.get(`${api}homepage/featured-products`, {

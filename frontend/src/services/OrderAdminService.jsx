@@ -21,6 +21,25 @@ export const AcceptOrder = async (data) => {
       }
     }
   }
+  export const CompleteOrder = async (data) => {
+    try {
+      const response = await axios.post(`${api}complete-order`, data, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        withCredentials: true
+      })
+      return response.data;
+    } catch (error) {
+      console.log(error)
+      if (error.response) {
+  
+        throw new Error(error.response.data); // Ensure error.response.data exists
+      } else {
+        throw new Error("An unknown error occurred."); // Catch other errors
+      }
+    }
+  }
 
   export const RejectOrder = async (data) => {
     try {

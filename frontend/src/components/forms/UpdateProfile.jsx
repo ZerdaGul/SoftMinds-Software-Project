@@ -10,6 +10,8 @@ import profile_pic from '../../assets/img/profile-pic-default.png';
 import './ProfileForm.scss'
 import './form.scss'
 import back from '../../assets/icons/arrow-back.svg'
+import closeButton from '../../assets/icons/close-dark.svg';
+import '../modals/AddEditProductModal.scss';
 
 const UpdateProfile = ({ initialValues,  }) => {
     const [page, setPage] = useState(1);
@@ -53,7 +55,18 @@ const UpdateProfile = ({ initialValues,  }) => {
             currentPassword: value.password,
             phone: value.phone??initialValues.phone,
             country: value.country??initialValues.country,
+            photo: "",
         }
+        if (imageFile) {
+            try {
+                const base64Photo = await convertToBase64(imageFile);
+                data.photo = base64Photo; // Set the Base64-encoded photo
+            } catch (err) {
+                setError('Error converting image to Base64.');
+                return;
+            }
+        }
+        console.log(data)
         setLoading(true);
         try {
             await UpdateUser(data);
@@ -62,6 +75,17 @@ const UpdateProfile = ({ initialValues,  }) => {
             onError(error); // Handle error
         }
     };
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                resolve(reader.result.split(',')[1]); // Get Base64 part of Data URL
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file); // Read as Data URL to extract Base64
+        });
+    };
+
 
     const modal = <div>
                         {loaded && createPortal(
@@ -93,7 +117,7 @@ const UpdateProfile = ({ initialValues,  }) => {
         phone: Yup.string().required('Phone number is required'),
         // companyName: Yup.string().required('Company name is required'),
         country: Yup.string().required('Country is required'),
-        // image: Yup.mixed(),
+        image: Yup.mixed(),
         password: Yup.string().required('This field is required!').min(8, "Must contain minimum 8 symbols"),
     });
 
@@ -196,9 +220,8 @@ const UpdateProfile = ({ initialValues,  }) => {
                     </div> 
                     :
                     <div className="form__wrapper">
-                        <a href='#' className="form__pages back" onClick={() => setPage(1)}>
-                            <img src={back} alt="arrow-back"/>
-                            Back to updates
+                        <a href='#' className="back" onClick={() => setPage(1)}>
+                            Back
                         </a>
                         <div className="input__wrapper">
                             <label htmlFor="password" className="form__label">Verification</label>
@@ -209,7 +232,7 @@ const UpdateProfile = ({ initialValues,  }) => {
                                 className="form__input"/>
                             <ErrorMessage component='div' className='form__error' name='password'/>
                         </div>
-                        <button className="button button__long" disabled={loading} type="submit">Confirm</button>
+                        <button type="submit" className="button button__long" disabled={loading} >Confirm</button>
                     </div>}
                 </Form>
             </Formik>
@@ -244,11 +267,20 @@ const ImageUploadField = ({ name, setImageFile }) => {
                 onChange={handleImageChange}
             />
             {preview && (
-                <img
-                    src={preview}
-                    alt="preview"
-                    className='image'
-                />
+                
+                <div className="photo-preview">
+                    <div className="photo-wrapper">
+                        <img
+                            src={preview}
+                            alt="preview"
+                            className='image'
+                        />
+                        <button style={{top: "15px"}} className='photo-remove' onClick={()=> setPreview(null)}>
+                            <img src={closeButton} alt="close" />
+                        </button>
+
+                    </div>
+                </div>
             )}
         </div>
     );

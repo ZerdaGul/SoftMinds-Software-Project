@@ -78,11 +78,11 @@ export const AddProductModal = ({ onClose, onProductAdded, onError }) => {
         // Prepare the object
         const productData = {
             id: 0,
-            productName: name,
-            description: description,
+            ProductName: name,
+            Description: description,
             price: price,
             stock: stock,
-            sector: sector,
+            Sector: sector,
             photo: '', // This will hold the byte array
             contentType: '', // Content type for the photo (e.g., image/jpeg, image/png)
         };

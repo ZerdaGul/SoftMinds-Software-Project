@@ -4,7 +4,7 @@ import "./CardForm.scss";
 import logoCircle from "../../assets/icons/pleaseLogin.png";
 import emptyCart from "../../assets/icons/cart.png";
 import { GetCartItems, GetCartSummary,UpdateCartItemQuantity, Checkout, ClearCart, RemoveItemFromCart } from "../../services/CartService";
-
+import ProductImage from '../product-page/ProductImage';
 const CardForm = () => {
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -155,7 +155,12 @@ const CardForm = () => {
             <div className="cart-items">
                 {cartItems.map((item) => (
                     <div className="cart-item" key={item.productId}>
-                        <img src={item?.imageUrl || "https://via.placeholder.com/150"} alt={item.name} className="cart-item__image" />
+                        {/* <img src={item?.imageUrl || "https://via.placeholder.com/150"} alt={item.name} className="cart-item__image" /> */}
+                        <ProductImage 
+                            photoUrl={item.photoUrl}
+                            name={item.name}
+                        className="cart-item__image"
+                        />
                         <div className="cart-item__details">
                             <h3>{item.productName}</h3>
                             <p>Price: ${item.price}</p>

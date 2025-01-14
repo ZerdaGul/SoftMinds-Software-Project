@@ -67,7 +67,8 @@ p {
     font-size: 28px;
     color: $red;
     position: absolute;
-    left: 250px;
+    bottom: 100%;
+    left: -150px;
     text-decoration: underline;
     &::before{
         content: '';
