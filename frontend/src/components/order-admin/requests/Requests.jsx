@@ -83,6 +83,8 @@ const Requests = () => {
                         showActions={true}
                         onAccept={handleAction}
                         onReject={handleAction}
+                        buttonCloseText={'Reject'}
+                        buttonConfirmText={"Accept"}
                     />, 
                     document.body
                 )

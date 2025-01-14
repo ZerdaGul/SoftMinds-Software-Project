@@ -6,6 +6,7 @@ import InfoModal from '../../modals/InfoModal';
 import { GetOrdersByStatus } from '../../../services/OrderAdminService';
 import OrderDetailsModal from '../order-details/OrderDetailsModal';
 import './ordersProgress.scss';
+import { CompleteOrder } from '../../../services/OrderAdminService';
 
 const OrdersProgress = () => {
     const [inProgressOrders, setInProgressOrders] = useState([]);
@@ -15,6 +16,7 @@ const OrdersProgress = () => {
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [showModal, setShowModal] = useState(false);
+    const [showActions, setShowActions] = useState(true);
 
     const navigate = useNavigate();
   
@@ -41,6 +43,23 @@ const OrdersProgress = () => {
     const onOpenDetails = (order) => {
         setOrderToShow(o => order);
         setShowDetails(true)
+        setShowActions(true)
+    }
+    const onOpenDetailsDone = (order) => {
+        setOrderToShow(o => order);
+        setShowDetails(true)
+        setShowActions(false)
+    }
+
+    const onComplete = async(e, order) => {
+        e.stopPropagation(); // Prevent triggering other events
+        const data = {orderId : order.id, reason: ""}
+        try{
+            await CompleteOrder(data);
+            setShowDetails(false);
+        } catch (error){
+            console.log(error)
+        }
     }
 
 
@@ -61,7 +80,11 @@ const OrdersProgress = () => {
                     <OrderDetailsModal
                         order={orderToShow}
                         onClose={() => setShowDetails(false)}
-                        showActions={false}
+                        showActions={showActions}
+                        onAccept={onComplete}
+                        onReject={() => setShowDetails(false)}
+                        buttonCloseText={"Cancel"}
+                        buttonConfirmText={"Complete"}
                     />, 
                     document.body
                 )
@@ -107,7 +130,7 @@ const OrdersProgress = () => {
                     return (
                     <li key={id} className="progress__product">
                         <div
-                        onClick={() => onOpenDetails(order)}
+                        onClick={() => onOpenDetailsDone(order)}
                         className="progress__product-name"
                         >
                         {new Date(order_Date).toLocaleDateString()}
