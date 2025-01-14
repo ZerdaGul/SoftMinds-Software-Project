@@ -36,6 +36,11 @@ namespace api.Controllers
                 return Unauthorized(new { message = "User session not found." });
             }
 
+            if (_userService.GetRole() != "customer")
+            {
+                return Forbid("You are not authorized to perform this action.");
+            }
+
             var question = new Questions
             {
                 UserId = userId.Value,
@@ -59,6 +64,11 @@ namespace api.Controllers
             if (userId == null)
             {
                 return Unauthorized(new { message = "User session not found." });
+            }
+
+            if (_userService.GetRole() != "customer")
+            {
+                return Forbid("You are not authorized to perform this action.");
             }
 
             var questions = await _context.Questions
@@ -85,6 +95,11 @@ namespace api.Controllers
                 return NotFound(new { message = "No questions found." });
             }
 
+            if (_userService.GetRole() != "padmin" && _userService.GetRole() != "oadmin")
+            {
+                return Forbid("You are not authorized to perform this action.");
+            }
+
             question.Answer_Text = answerQuestionDto.AnswerText;
             question.Answered_At = DateTime.UtcNow;
 
@@ -98,6 +113,11 @@ namespace api.Controllers
         [HttpGet("admin")]
         public async Task<IActionResult> GetAllQuestions()
         {
+            if (_userService.GetRole() != "padmin" && _userService.GetRole() != "oadmin")
+            {
+                return Forbid("You are not authorized to perform this action.");
+            }
+
             var questions = await _context.Questions
                 .Include(q => q.User) // Kullanıcı bilgileriyle birlikte soruları getir
                 .ToListAsync();
@@ -108,7 +128,7 @@ namespace api.Controllers
             }
 
             return Ok(questions);
-            
+
         }
     }
 }
