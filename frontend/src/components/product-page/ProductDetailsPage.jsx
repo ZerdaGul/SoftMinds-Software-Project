@@ -8,6 +8,7 @@ import default_img from '../../assets/product-pic-default.jpg';
 import { AddToCart } from '../../services/CartService';
 import InfoModal from '../modals/InfoModal';
 import { Link } from "react-router-dom";
+import ProductImage from './ProductImage';
 
 
 const ProductDetailsPage = () => {
@@ -93,7 +94,7 @@ const ProductDetailsPage = () => {
         </div>
     );
 
-	const {name, price, description, comments} = product;
+	const {name, price, description, comments, photoUrl} = product;
 	return (
 		loaded ? 
 		<>{showModal && modal}
@@ -104,7 +105,10 @@ const ProductDetailsPage = () => {
 					Back
 				</button>
 
-				<img src={default_img} alt="product-image" className="product__image"/>
+				<ProductImage 
+                photoUrl={photoUrl}
+                name={name}
+            	className="product__image"/>
 				<div className="product__info">
 
 					<div className="product__title">{name}</div>

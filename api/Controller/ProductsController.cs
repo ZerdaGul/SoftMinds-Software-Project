@@ -156,9 +156,7 @@ namespace api.Controller
             _logger.LogInformation("Search query received: {Keyword}", keyword);
 
             var query = _context.Products
-                .Where(p => p.Name.Contains(keyword) ||
-                            p.Description.Contains(keyword) ||
-                            p.Sector.Contains(keyword))
+                .Where(p => p.Name.Contains(keyword) )
                 .Select(p => new
                 {
                     p.Id,
