@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Line, Bar } from "react-chartjs-2";
-import axios from "axios";
 import geography from "../../../maps/world-countries.json";
-import { fetchMonthlyRevenue } from "../../../services/ProductAdminService";
+import { fetchMonthlyRevenue, getStockBySector } from "../../../services/ProductAdminService";
 
 import {
     Chart as ChartJS,
@@ -24,18 +23,25 @@ ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, BarEleme
 const ProductDashboard = () => {
     const [monthlyRevenue, setMonthlyRevenue] = useState([]);
     const [totalBalance, setTotalBalance] = useState(0);
+    const [stockBySector, setStockBySector] = useState([]);
 
-  useEffect(() => {
-    const getRevenueData = async () => {
-      const revenueData = await fetchMonthlyRevenue();
-      setMonthlyRevenue(revenueData);
+    useEffect(() => {
+        const getRevenueData = async () => {
+            const revenueData = await fetchMonthlyRevenue();
+            setMonthlyRevenue(revenueData);
 
-      const total = revenueData.reduce((acc, curr) => acc + curr, 0);
-      setTotalBalance(total);
-    };
+            const total = revenueData.reduce((acc, curr) => acc + curr, 0);
+            setTotalBalance(total);
+        };
 
-    getRevenueData();
-  }, []);
+        const fetchStockBySector = async () => {
+            const stockData = await getStockBySector();
+            setStockBySector(stockData);
+        };
+
+        getRevenueData();
+        fetchStockBySector();
+    }, []);
 
     // Aylık gelir grafiği verisi
     const lineChartData = {
@@ -51,13 +57,13 @@ const ProductDashboard = () => {
         ],
     };
 
-    // Stok durumu verisi
+    // Sektörlere göre stok durumu verisi
     const barChartData = {
-        labels: ["Smart City", "Energy", "ITS & Traffic", "Security & Surveillance", "Iron & Steel", "Packaging"],
+        labels: stockBySector.map(item => item.Sector),
         datasets: [
             {
                 label: "Stock",
-                data: [50, 80, 120, 60, 90, 100],
+                data: stockBySector.map(item => item.Stock),
                 backgroundColor: "#7b3370",
             },
         ],
@@ -108,7 +114,7 @@ const ProductDashboard = () => {
 
                 {/* Stok durumu */}
                 <div className="summary__bar">
-                    <h2>Product Stock</h2>
+                    <h2>Product Stock by Sector</h2>
                     <Bar data={barChartData} />
                 </div>
             </div>

@@ -80,3 +80,13 @@ export const fetchMonthlyRevenue = async () => {
     console.error("Error fetching monthly revenue:", error);
   }
 };
+
+export const getStockBySector = async () => {
+  try {
+    const response = await axios.get(`${api}stock-by-sector`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching stock by sector:", error);
+    return []; // Hata durumunda boş bir dizi döndür
+  }
+};
