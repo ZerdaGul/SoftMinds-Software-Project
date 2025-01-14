@@ -1,4 +1,5 @@
-import { Line } from "react-chartjs-2";
+import React, { useEffect, useState } from "react";
+import { Line, Bar } from "react-chartjs-2";
 import {
     Chart as ChartJS,
     LineElement,
@@ -11,42 +12,42 @@ import {
     ComposableMap,
     Geographies,
     Geography,
-    Marker,
 } from "react-simple-maps";
 import "./Dashboard.scss";
 import geography from "../../../maps/world-countries.json";
 import StockDashboard from "./StockDashboard";
+import { getStockBySector, fetchMonthlyRevenue } from "../../../services/ProductAdminService";
 
 ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, BarElement);
 
 const OrderAdminDashboard = () => {
-    // Aylık gelir grafiği verisi
-    const lineChartData = {
-        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        datasets: [
-            {
-                label: "Monthly Revenue",
-                data: [20000, 45000, 70000, 90000, 120000, 150000, 170000, 200000, 180000, 150000, 120000, 100000],
-                fill: false,
-                borderColor: "#7b3370",
-                tension: 0.1,
-            },
-        ],
-    };
+    const [stockBySector, setStockBySector] = useState([]);
+    const [totalBalance, setTotalBalance] = useState(0);
+    const [monthlyRevenue, setMonthlyRevenue] = useState([]);
 
-    // Harita üzerinde işaretlenecek ülkeler
-    const customersLocations = [
-        { name: "USA", coordinates: [-100.0, 40.0] },
-        { name: "Germany", coordinates: [10.0, 51.0] },
-        { name: "Japan", coordinates: [138.0, 36.0] },
-    ];
+    useEffect(() => {
+        const getRevenueData = async () => {
+            const revenueData = await fetchMonthlyRevenue();
+            setMonthlyRevenue(revenueData);
+            const total = revenueData.reduce((acc, curr) => acc + curr, 0);
+            setTotalBalance(total);
+        };
+        const fetchStockBySector = async () => {
+            const stockData = await getStockBySector();
+            setStockBySector(stockData);
+        };
 
+        getRevenueData();
+        fetchStockBySector();
+    }, []);
+
+    // Sektörlere göre stok durumu verisi
     const barChartData = {
-        labels: ["Smart City", "Energy", "ITS & Traffic", "Security & Surveillance", "Iron & Steel", "Packaging"],
+        labels: stockBySector.map(item => item.sector),
         datasets: [
             {
                 label: "Stock",
-                data: [50, 80, 120, 60],
+                data: stockBySector.map(item => item.stock),
                 backgroundColor: "#7b3370",
             },
         ],
@@ -57,7 +58,7 @@ const OrderAdminDashboard = () => {
             <div className="dashboard-content">                
                 {/* Dünya haritası */}
                 <div className="dashboard__summary">
-                    <div id="map"className="summary__map">
+                    <div id="map" className="summary__map">
                         <ComposableMap
                             projection="geoMercator"
                             projectionConfig={{
@@ -81,19 +82,18 @@ const OrderAdminDashboard = () => {
                                 }
                             </Geographies>
                         </ComposableMap>
-
                     </div>
 
                     {/* Toplam bakiye */}
                     <div id='balance' className="summary__balance">
-                        <h2>Total Balance</h2>
-                        <p>$2,548.00</p>
+                    <h2>Total Balance</h2>
+                    <p>${totalBalance.toLocaleString()}</p>
                     </div>
 
                     {/* Stok durumu */}
-                    <div id='bar'className="summary__bar">
+                    <div id='bar' className="summary__bar">
                         <h2>Product Stock</h2>
-                        <Line data={barChartData} />
+                        <Bar data={barChartData} />
                     </div>
                 </div>
             </div>
@@ -103,4 +103,3 @@ const OrderAdminDashboard = () => {
 };
 
 export default OrderAdminDashboard;
-

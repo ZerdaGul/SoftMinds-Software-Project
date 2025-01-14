@@ -36,6 +36,7 @@ const ProductDashboard = () => {
 
         const fetchStockBySector = async () => {
             const stockData = await getStockBySector();
+            console.log(stockData); // API yanıtını kontrol edin
             setStockBySector(stockData);
         };
 
@@ -59,11 +60,11 @@ const ProductDashboard = () => {
 
     // Sektörlere göre stok durumu verisi
     const barChartData = {
-        labels: stockBySector.map(item => item.Sector),
+        labels: stockBySector.map(item => item.sector),
         datasets: [
             {
                 label: "Stock",
-                data: stockBySector.map(item => item.Stock),
+                data: stockBySector.map(item => item.stock),
                 backgroundColor: "#7b3370",
             },
         ],
