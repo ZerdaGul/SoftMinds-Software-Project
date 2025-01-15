@@ -75,11 +75,6 @@ namespace api.Controllers
                 .Where(q => q.UserId == userId.Value)
                 .ToListAsync();
 
-            if (questions == null || !questions.Any())
-            {
-                return NotFound(new { message = "No questions found." });
-            }
-
             return Ok(questions);
         }
 
@@ -121,11 +116,6 @@ namespace api.Controllers
             var questions = await _context.Questions
                 .Include(q => q.User) // Kullanıcı bilgileriyle birlikte soruları getir
                 .ToListAsync();
-
-            if (questions == null || !questions.Any())
-            {
-                return NotFound(new { message = "No questions found." });
-            }
 
             return Ok(questions);
 
