@@ -8,6 +8,7 @@ export const GetQuestionsCustomer = async () => {
         headers: {
           'Content-Type': 'application/json'
         },
+        withCredentials: true
       })
       const allQuestions = response.data;
 
@@ -36,6 +37,7 @@ export const GetQuestionsCustomer = async () => {
         headers: {
           'Content-Type': 'application/json'
         },
+        withCredentials: true
       })
       return response.data;
     } catch (error) {
@@ -58,6 +60,7 @@ export const GetQuestionsCustomer = async () => {
         headers: {
           'Content-Type': 'application/json'
         },
+        withCredentials: true
       })
       const allQuestions = response.data;
 
@@ -85,6 +88,7 @@ export const GetQuestionsCustomer = async () => {
         headers: {
           'Content-Type': 'application/json'
         },
+        withCredentials: true
       })
       
         return response.data;
