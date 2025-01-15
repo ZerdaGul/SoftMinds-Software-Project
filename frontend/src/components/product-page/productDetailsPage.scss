@@ -41,6 +41,16 @@
         }
     }
 
+    &__comment-wrapper {
+        margin-top: 30px;
+    }
+
+    &__comment-title {
+        color: $dark;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
     &__comment {
         margin-top: 10px;
         border-bottom: 1px solid $dark-op-30;
@@ -72,6 +82,20 @@
             color: $dark-op-50;
             border-radius: 8px;
             border: 1px solid $dark-op-30;
+        }
+
+        &-button {
+            background-color: $red;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+            &:hover {
+                background-color: darken($red, 10%);
+            }
         }
     }
 }
