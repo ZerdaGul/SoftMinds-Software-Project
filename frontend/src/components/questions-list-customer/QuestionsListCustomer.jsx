@@ -51,7 +51,7 @@ const QuestionsListCustomer = () => {
   return (
     <div className="container">
         <div className="questions">
-            <ContactForm/>
+            <ContactForm fetchQuestions={loadQuestions}/>
             {unansweredQ.length > 0 && <div className="questions__block">
                 <div className="questions__title">Unanswered</div>
                 <ul className="questions__list">

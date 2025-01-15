@@ -5,7 +5,7 @@ import ContactForm from '../../contact-form/ContactForm';
 import './answerModal.scss'
 
 
-const AnswerModal = ({onClose, question}) => {
+const AnswerModal = ({onClose, question, fetchQuestions}) => {
 
     const {id, question_Text, created_At} = question;
   return (
@@ -21,6 +21,7 @@ const AnswerModal = ({onClose, question}) => {
                 </div>
             </div>
             <ContactForm    
+                fetchQuestions={fetchQuestions}
                 label='Leave an answer'
                 placeholder='Enter your answer'
                 buttonText='Reply'

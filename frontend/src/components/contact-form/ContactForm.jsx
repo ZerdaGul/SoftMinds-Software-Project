@@ -8,7 +8,7 @@ import { createPortal } from 'react-dom';
 import InfoModal from '../modals/InfoModal';
 import { SendAnswerAdmin } from '../../services/QuestionsService';
 
-const ContactForm = ({label = "Leave a Message", placeholder= "Enter your message", buttonText="Send Message", user="customer", QuestionId}) => {
+const ContactForm = ({label = "Leave a Message", placeholder= "Enter your message", buttonText="Send Message", user="customer", QuestionId, fetchQuestions}) => {
     const [loading, setLoading] = useState(false);
     const [loaded, setLoaded] = useState(false);
     const [error, setError] = useState(false);
@@ -34,8 +34,10 @@ const ContactForm = ({label = "Leave a Message", placeholder= "Enter your messag
         try {
             if (user === "customer"){
                 await SendQuestionsCustomer({QuestionText: value.message});
+                fetchQuestions();
             } else if (user === "admin") {
                 await SendAnswerAdmin({QuestionId, AnswerText: value.message})
+                fetchQuestions();
             }
             
             onLoaded();
