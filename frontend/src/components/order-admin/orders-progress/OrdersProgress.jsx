@@ -57,6 +57,7 @@ const OrdersProgress = () => {
         try{
             await CompleteOrder(data);
             setShowDetails(false);
+            updateOrders();
         } catch (error){
             console.log(error)
         }

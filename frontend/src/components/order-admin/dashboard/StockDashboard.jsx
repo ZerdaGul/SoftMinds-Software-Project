@@ -1,65 +1,91 @@
 import React, { useEffect, useState } from "react";
-
-import { LoadProducts } from "../../../services/ProductService";
+import { LoadProducts, SearchProducts } from "../../../services/ProductService";
 import "./stockDashboard.scss";
-import arrow from '../../../assets/icons/arrow-forward-orange.svg'
+import arrow from "../../../assets/icons/arrow-forward-orange.svg";
 
 function StockDashboard() {
   const [stocks, setStocks] = useState([]);
   const [searchQuery, setSearchQuery] = useState(""); // Track the search query
   const [lowStockOnly, setLowStockOnly] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [showMore, setShowMore] = useState(true)
-  const [totalPages, setTotalPages] = useState();
+  const [totalPages, setTotalPages] = useState(0);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    updateStocks();
-  }, [currentPage]);
+    // Fetch stocks based on the current state of searchQuery and pagination
+    if (searchQuery) {
+      fetchSearchResults();
+    } else {
+      fetchStocks();
+    }
+  }, [searchQuery, currentPage]);
 
-  const onError = (error) => {
-    setError(true);
-    setShowModal(true);
-    setErrorMessage(error.message);
-  };
-
-  const updateStocks = async () => {
+  const fetchStocks = async () => {
     try {
       const data = await LoadProducts({ pageNumber: currentPage });
-      setStocks((prevStocks) => [...prevStocks, ...data.products]);
-      setTotalPages(data.totalPages);
+      if (Array.isArray(data.products)) {
+        setStocks((prevStocks) =>
+          currentPage === 1 ? data.products : [...prevStocks, ...data.products]
+        );
+        setTotalPages(data.totalPages);
+      } else {
+        console.error("Error: products is not an array");
+        setStocks([]);
+      }
     } catch (error) {
-      onError(error); // Handle error
+      handleError(error);
     }
   };
 
-  const incrementPage = () => {
-
-    if (currentPage < totalPages) {
-      setCurrentPage(page => page+1);
-      if (currentPage+1 === totalPages) {
-        setShowMore(false)
+  const fetchSearchResults = async () => {
+    try {
+      const data = await SearchProducts({
+        keyword: searchQuery,
+        pageNumber: currentPage,
+      });
+      if (Array.isArray(data.products)) {
+        setStocks((prevStocks) =>
+          currentPage === 1 ? data.products : [...prevStocks, ...data.products]
+        );
+        setTotalPages(data.totalPages);
+      } else {
+        console.error("Error: products is not an array");
+        setStocks([]);
       }
+    } catch (error) {
+      handleError(error);
     }
-  }
+  };
 
-  
+  const handleError = (error) => {
+    setError(true);
+    setErrorMessage(error.message || "Something went wrong!");
+  };
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value.toLowerCase());
+    setCurrentPage(1); // Reset to the first page when performing a new search
+  };
+
+  const incrementPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const resetPagination = () => {
+    setCurrentPage(1); // Reset to the first page
+    setStocks([]); // Clear stocks to reload fresh data
   };
 
   const handleFilter = () => {
     setLowStockOnly((prev) => !prev);
   };
-  
-  // Dynamically compute filtered stocks based on search query and filter state
+
   const filteredStocks = stocks.filter((stock) => {
-    const matchesSearch = stock.name.toLowerCase().includes(searchQuery);
     const matchesLowStock = !lowStockOnly || stock.stock < 10;
-    return matchesSearch && matchesLowStock;
+    return matchesLowStock;
   });
 
   return (
@@ -70,6 +96,7 @@ function StockDashboard() {
         <input
           type="text"
           placeholder="Search products..."
+          value={searchQuery}
           onChange={handleSearch}
         />
       </div>
@@ -84,6 +111,12 @@ function StockDashboard() {
           Low-Stock Products
         </label>
       </div>
+
+      {error && (
+        <div className="stock-dashboard__error">
+          <p>{errorMessage}</p>
+        </div>
+      )}
 
       <table>
         <thead>
@@ -105,10 +138,28 @@ function StockDashboard() {
           ))}
         </tbody>
       </table>
-      {showMore && 
-        <button onClick={incrementPage} className="stock-dashboard__more">Load More 
+
+      <div className="stock-dashboard__actions">
+        {currentPage < totalPages && !error && (
+          <button
+            onClick={incrementPage}
+            className="stock-dashboard__more"
+            disabled={currentPage >= totalPages}
+          >
+            Load More
             <img src={arrow} alt="arrow" />
-        </button>}
+          </button>
+        )}
+        {currentPage === totalPages && totalPages>1 &&(
+          <button
+            onClick={resetPagination}
+            className="stock-dashboard__more"
+          >
+            Show Less
+            <img style={{rotate: '180deg'}}src={arrow} alt="arrow" />
+          </button>
+        )}
+      </div>
     </div>
   );
 }

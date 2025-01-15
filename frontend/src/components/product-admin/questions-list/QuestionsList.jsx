@@ -48,6 +48,7 @@ const QuestionsList = () => {
                         {showAnswerModal && createPortal(
                             <AnswerModal 
                             question={qToAnswer}
+                            fetchQuestions={loadQuestions}
                             onClose={() => {    
                                 setShowAnswerModal(false)
                                 }}/>,

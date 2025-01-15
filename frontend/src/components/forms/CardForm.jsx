@@ -155,12 +155,14 @@ const CardForm = () => {
             <div className="cart-items">
                 {cartItems.map((item) => (
                     <div className="cart-item" key={item.productId}>
-                        {/* <img src={item?.imageUrl || "https://via.placeholder.com/150"} alt={item.name} className="cart-item__image" /> */}
-                        <ProductImage 
+                        <div className="cart-item__image">
+                            <ProductImage 
                             photoUrl={item.photoUrl}
                             name={item.name}
-                        className="cart-item__image"
+                        
                         />
+                        </div>
+                        
                         <div className="cart-item__details">
                             <h3>{item.productName}</h3>
                             <p>Price: ${item.price}</p>
