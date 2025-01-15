@@ -20,7 +20,7 @@ const Requests = () => {
     const [orderID, setOrderID] = useState(0);
     const [action, setAction] = useState('')
 
-    const orderRequests = useOutletContext();
+    const { orderRequests, refreshOrders } = useOutletContext();
 
     const handleAction = (e, order, actionType) => {
         e.stopPropagation(); // Prevent triggering other events
@@ -46,6 +46,7 @@ const Requests = () => {
     const acceptOrder = async() => {
         try{
             await AcceptOrder(orderToAction);
+            refreshOrders();
         } catch (error){
             console.log(error)
         }
@@ -55,6 +56,7 @@ const Requests = () => {
     const rejectOrder = async() => {
         try{
             await RejectOrder(orderToAction);
+            refreshOrders();
         } catch (error){
             console.log(error)
         }

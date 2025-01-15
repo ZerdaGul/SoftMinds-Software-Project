@@ -209,7 +209,8 @@ namespace api.Controller
                 oi.ProductId,
                 oi.Quantity,
                 oi.Total_Price,
-                ProductName = oi.Product?.Name
+                ProductName = oi.Product?.Name,
+                PhotoUrl = oi.Product?.Photo != null ? Url.Action("GetProductPhoto", "Products", new { id = oi.Product.Id }, Request.Scheme) : null,
             }).ToList();
 
             return Ok(orderItemsWithProductNames);
