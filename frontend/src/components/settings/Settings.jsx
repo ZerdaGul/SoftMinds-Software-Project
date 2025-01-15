@@ -67,7 +67,8 @@ const Settings = ({ initialValues }) => {
           <div className='settings__item'>
             <Link to="reset-password" className='settings__action'>Reset password</Link>
           </div>
-          <div className='settings__item'>
+          {initialValues.status === 'customer' &&
+            <div className='settings__item'>
             <a href="#"
               onClick={() => setShowModal(true)}
               className='settings__action settings__action-delete'>Delete my account</a>
@@ -84,6 +85,7 @@ const Settings = ({ initialValues }) => {
             )}
             {showModal && <div className='overlay'></div>}
           </div>
+          }
         </div>
       ) : (
         <Outlet />

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import { LoadProducts, SearchProducts } from "../../../services/ProductService";
 import "./stockDashboard.scss";
 import arrow from "../../../assets/icons/arrow-forward-orange.svg";
@@ -10,7 +9,6 @@ function StockDashboard() {
   const [lowStockOnly, setLowStockOnly] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [showMore, setShowMore] = useState(true);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -31,7 +29,6 @@ function StockDashboard() {
           currentPage === 1 ? data.products : [...prevStocks, ...data.products]
         );
         setTotalPages(data.totalPages);
-        setShowMore(currentPage < data.totalPages);
       } else {
         console.error("Error: products is not an array");
         setStocks([]);
@@ -52,7 +49,6 @@ function StockDashboard() {
           currentPage === 1 ? data.products : [...prevStocks, ...data.products]
         );
         setTotalPages(data.totalPages);
-        setShowMore(currentPage < data.totalPages);
       } else {
         console.error("Error: products is not an array");
         setStocks([]);
@@ -76,6 +72,11 @@ function StockDashboard() {
     if (currentPage < totalPages) {
       setCurrentPage((prevPage) => prevPage + 1);
     }
+  };
+
+  const resetPagination = () => {
+    setCurrentPage(1); // Reset to the first page
+    setStocks([]); // Clear stocks to reload fresh data
   };
 
   const handleFilter = () => {
@@ -138,16 +139,27 @@ function StockDashboard() {
         </tbody>
       </table>
 
-      {showMore && !error && (
-        <button
-          onClick={incrementPage}
-          className="stock-dashboard__more"
-          disabled={currentPage >= totalPages}
-        >
-          Load More
-          <img src={arrow} alt="arrow" />
-        </button>
-      )}
+      <div className="stock-dashboard__actions">
+        {currentPage < totalPages && !error && (
+          <button
+            onClick={incrementPage}
+            className="stock-dashboard__more"
+            disabled={currentPage >= totalPages}
+          >
+            Load More
+            <img src={arrow} alt="arrow" />
+          </button>
+        )}
+        {currentPage === totalPages && totalPages>1 &&(
+          <button
+            onClick={resetPagination}
+            className="stock-dashboard__more"
+          >
+            Show Less
+            <img style={{rotate: '180deg'}}src={arrow} alt="arrow" />
+          </button>
+        )}
+      </div>
     </div>
   );
 }
