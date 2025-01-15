@@ -74,8 +74,9 @@ const ProductsPage = () => {
 
 	const handleSearch = async (query) => {
 		setQuery(query);
-		if(query){
+		if(query !== ""){
 			try{
+				setCurrentPage(1);
 				const data = await SearchProducts({keyword: query, pageNumber: currentPage});
 				onLoaded(data);
 				setReset(true);
