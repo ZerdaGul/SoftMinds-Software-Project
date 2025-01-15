@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using api.Data;
 using api.Services;
 
-namespace api.Controllers
+namespace api.Controller
 {
     [Route("api/questions")]
     [ApiController]
